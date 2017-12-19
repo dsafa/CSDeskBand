@@ -11,62 +11,31 @@ using static CSDeskband.Interop.DESKBANDINFO.DBIF;
 
 namespace CSDeskband
 {
+    /// <summary>
+    /// Default implementation for icsdeskband
+    /// </summary>
     public class CSDeskBandImpl : ICSDeskBand
     {
         public static readonly int S_OK = 0;
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
         public static readonly int TASKBAR_DEFAULT_LARGE = 40;
         public static readonly int TASKBAR_DEFAULT_SMALL = 30;
+        public static readonly int NO_LIMIT = int.MaxValue - 1;
 
-        /// <summary>
-        /// Min Size veritcally
-        /// </summary>
-        public Size MinVertical { get; set; }
-
-        /// <summary>
-        /// Max size vertically. int.MaxValue - 1 for no limit
-        /// </summary>
-        public Size MaxVertical { get; set; }
-
-        /// <summary>
-        /// Min size horizontal
-        /// </summary>
-        public Size MinHorizontal { get; set; }
-
-        /// <summary>
-        /// Max size horizontal
-        /// </summary>
-        public Size MaxHorizontal { get; set; }
-
-        /// <summary>
-        /// Ideal size vertically
-        /// </summary>
-        public Size Vertical { get; set; }
-
-        /// <summary>
-        /// Ideal size horizontally
-        /// </summary>
-        public Size Horizontal { get; set; }
-
-        /// <summary>
-        /// Step size for resizing
-        /// </summary>
+        public Size MinVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
+        public Size MaxVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
+        public Size Vertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
+        public Size MinHorizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
+        public Size MaxHorizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
+        public Size Horizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
         public int Increment { get; set; } = NO_LIMIT;
-
-        /// <summary>
-        /// Title
-        /// </summary>
         public string Title { get; set; } = "";
-
-        /// <summary>
-        /// Deskband options
-        /// </summary>
-        public CSDeskBandOptions Options { get; set; }
+        public CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
         private IntPtr _handle;
         private IInputObjectSite _site;
-        private const int NO_LIMIT = int.MaxValue - 1;
-        private static readonly Guid CATID_DESKBAND = new Guid("00021492 - 0000 - 0000 - C000 - 000000000046");
+        
+        private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
 
         public CSDeskBandImpl(IntPtr handle)
         {
@@ -81,22 +50,23 @@ namespace CSDeskband
 
         public int ContextSensitiveHelp(bool fEnterMode)
         {
-            throw new NotImplementedException();
+            return S_OK;
         }
 
         public int ShowDW([In] bool fShow)
         {
-            throw new NotImplementedException();
+            return S_OK;
         }
 
         public int CloseDW([In] uint dwReserved)
         {
-            throw new NotImplementedException();
+            return S_OK;
         }
 
         public int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved)
         {
-            throw new NotImplementedException();
+            //must to return notimpl
+            return E_NOTIMPL;
         }
 
         public int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)

@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSDeskBandImpl.cs" />
-    <Compile Include="CSDeskBandInfoAttribute.cs" />
+    <Compile Include="CSDeskBandRegistrationAttribute.cs" />
+    <Compile Include="CSDeskBandOptions.cs" />
     <Compile Include="ICSDeskBand.cs" />
     <Compile Include="Interop\COLORREF.cs" />
     <Compile Include="Interop\COM\IDeskBand.cs" />

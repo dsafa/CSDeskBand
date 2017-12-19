@@ -8,11 +8,11 @@ namespace CSDeskband
 {
     public class CSDeskBandOptions
     {
-        public bool VariableHeight { get; set; }
-        public bool Sunken { get; set; }
-        public bool Fixed { get; set; }
-        public bool Undeleteable { get; set; }
-        public bool AlwaysShowGripper { get; set; }
-        public bool NoMargins { get; set; }
+        public bool VariableHeight { get; set; } = false;
+        public bool Sunken { get; set; } = false;
+        public bool Fixed { get; set; } = false;
+        public bool Undeleteable { get; set; } = false;
+        public bool AlwaysShowGripper { get; set; } = false;
+        public bool NoMargins { get; set; } = false;
     }
 }
