@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Linq;
+using System.Drawing;
+using Microsoft.Win32;
 using CSDeskband.Interop;
 using CSDeskband.Interop.COM;
-using System.Drawing;
 using static CSDeskband.Interop.DESKBANDINFO.DBIM;
 using static CSDeskband.Interop.DESKBANDINFO.DBIMF;
 using static CSDeskband.Interop.DESKBANDINFO.DBIF;
@@ -64,6 +66,7 @@ namespace CSDeskband
         private IntPtr _handle;
         private IInputObjectSite _site;
         private const int NO_LIMIT = int.MaxValue - 1;
+        private static readonly Guid CATID_DESKBAND = new Guid("00021492 - 0000 - 0000 - C000 - 000000000046");
 
         public CSDeskBandImpl(IntPtr handle)
         {
@@ -198,6 +201,34 @@ namespace CSDeskband
         public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
         {
             ppvSite = _site;
+        }
+
+        [ComRegisterFunction]
+        private static void Register(Type t)
+        {
+            string guid = t.GUID.ToString("B");
+            RegistryKey rkClass = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
+            rkClass.SetValue(null, GetToolbarName(t));
+
+            RegistryKey rkCat = rkClass.CreateSubKey("Implemented Categories");
+            rkCat.CreateSubKey(CATID_DESKBAND.ToString("B"));
+
+            Console.WriteLine($"Succesfully registered deskband {GetToolbarName(t)} - GUID: {guid}");
+        }
+
+        [ComUnregisterFunction]
+        private static void Unregister(Type t)
+        {
+            string guid = t.GUID.ToString("B");
+            Registry.ClassesRoot.CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);
+
+            Console.WriteLine($"Successfully unregistered deskband {GetToolbarName(t)} - GUID: {guid}");
+        }
+
+        private static string GetToolbarName(Type t)
+        {
+            var registrationInfo = (CSDeskBandRegistrationAttribute[])t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
+            return registrationInfo.FirstOrDefault()?.Name ?? t.Name;
         }
     }
 }
