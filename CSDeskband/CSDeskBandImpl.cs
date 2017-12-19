@@ -174,7 +174,7 @@ namespace CSDeskband
         }
 
         [ComRegisterFunction]
-        private static void Register(Type t)
+        public static void Register(Type t)
         {
             string guid = t.GUID.ToString("B");
             RegistryKey rkClass = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
@@ -187,7 +187,7 @@ namespace CSDeskband
         }
 
         [ComUnregisterFunction]
-        private static void Unregister(Type t)
+        public static void Unregister(Type t)
         {
             string guid = t.GUID.ToString("B");
             Registry.ClassesRoot.CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);

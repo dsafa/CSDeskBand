@@ -21,7 +21,7 @@ namespace CSDeskband.Wpf
 
         private CSDeskBandImpl _impl;
 
-        public CSDeskBand()
+        public void CSDeskBand1()
         {
             var handleSrc = (HwndSource)PresentationSource.FromVisual(this);
             _impl = new CSDeskBandImpl(IntPtr.Zero)
@@ -92,6 +92,18 @@ namespace CSDeskband.Wpf
         public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
         {
             _impl.GetSite(ref riid, out ppvSite);
+        }
+
+        [ComRegisterFunction]
+        private static void Register(Type t)
+        {
+            CSDeskBandImpl.Register(t);
+        }
+
+        [ComUnregisterFunction]
+        private static void Unregister(Type t)
+        {
+            CSDeskBandImpl.Unregister(t);
         }
     }
 }
