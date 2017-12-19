@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>37ecdfdd-fa85-4b91-b69f-8b53cb2a23e2</ProjectGuid>
+    <ProjectGuid>{37ECDFDD-FA85-4B91-B69F-8B53CB2A23E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CSDeskband</RootNamespace>
@@ -30,24 +30,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CSDeskBandImpl.cs" />
+    <Compile Include="CSDeskBandInfoAttribute.cs" />
+    <Compile Include="ICSDeskBand.cs" />
+    <Compile Include="Interop\COLORREF.cs" />
+    <Compile Include="Interop\COM\IDeskBand.cs" />
+    <Compile Include="Interop\COM\IDeskBand2.cs" />
+    <Compile Include="Interop\COM\IDockingWindow.cs" />
+    <Compile Include="Interop\COM\IInputObjectSite.cs" />
+    <Compile Include="Interop\COM\IObjectWithSite.cs" />
+    <Compile Include="Interop\COM\IOleWindow.cs" />
+    <Compile Include="Interop\DESKBANDINFO.cs" />
+    <Compile Include="Interop\POINT.cs" />
+    <Compile Include="Interop\RECT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>
