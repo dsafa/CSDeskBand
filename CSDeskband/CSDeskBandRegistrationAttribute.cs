@@ -3,7 +3,7 @@
 namespace CSDeskband
 {
     [AttributeUsage(AttributeTargets.Class)]
-    class CSDeskBandRegistrationAttribute : Attribute
+    public class CSDeskBandRegistrationAttribute : Attribute
     {
         public string Name { get; set; }
     }
