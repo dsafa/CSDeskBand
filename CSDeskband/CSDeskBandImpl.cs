@@ -22,6 +22,37 @@ namespace CSDeskband
         public static readonly int TASKBAR_DEFAULT_SMALL = 30;
         public static readonly int NO_LIMIT = int.MaxValue - 1;
 
+        public EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
+        public EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;
+        public EventHandler OnClose;
+
+        private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
+        public TaskbarOrientation Orientation
+        {
+            get
+            {
+                return _orientation;
+            }
+
+            private set
+            {
+                if (value == _orientation)
+                {
+                    return;
+                }
+
+                _orientation = value;
+
+                if (!_initialized)
+                {
+                    return;
+                }
+
+                var handler = TaskbarOrientationChanged;
+                handler?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
+            }
+        }
+
         public Size MinVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
         public Size MaxVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
         public Size Vertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
@@ -34,6 +65,8 @@ namespace CSDeskband
 
         private IntPtr _handle;
         private IInputObjectSite _site;
+        private bool _initialized = false; //initialized when getbandinfo is called
+        private uint _id;
         
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
 
@@ -55,11 +88,17 @@ namespace CSDeskband
 
         public int ShowDW([In] bool fShow)
         {
+            var handler = VisibilityChanged;
+            handler?.Invoke(this, new VisibilityChangedEventArgs { IsVisible = fShow });
+
             return S_OK;
         }
 
         public int CloseDW([In] uint dwReserved)
         {
+            var handler = OnClose;
+            handler?.Invoke(this, null);
+
             return S_OK;
         }
 
@@ -71,6 +110,8 @@ namespace CSDeskband
 
         public int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)
         {
+            _id = dwBandID;
+
             if (pdbi.dwMask.HasFlag(DBIM_MINSIZE))
             {
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
@@ -120,6 +161,15 @@ namespace CSDeskband
                 }
             }
 
+            if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
+            {
+                Orientation = TaskbarOrientation.Vertical;
+            }
+            else if (dwViewMode.HasFlag(DBIF_VIEWMODE_NORMAL))
+            {
+                Orientation = TaskbarOrientation.Horizontal;
+            }
+
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
                 pdbi.wszTitle = Options.ShowTitle ? Title : "";
@@ -136,6 +186,7 @@ namespace CSDeskband
                 pdbi.dwModeFlags |= Options.VariableHeight ? DBIMF_VARIABLEHEIGHT : 0;
             }
 
+            _initialized = true;
             return S_OK;
         }
 

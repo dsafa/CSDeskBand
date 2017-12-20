@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSDeskBandEvents.cs" />
     <Compile Include="CSDeskBandImpl.cs" />
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
