@@ -1,36 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms.Integration;
 using CSDeskBand.Interop;
 
-namespace CSDeskBand.Wpf
+namespace CSDeskBand.Win
 {
-    public class CSDeskBand : UserControl, ICSDeskBand
+    public class CSDeskBandWin: UserControl, ICSDeskBand
     {
         public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
-        //so we can get a handle
-        protected ElementHost Host { get; }
         private CSDeskBandImpl _impl;
-        
-        public CSDeskBand()
-        {
-            Host = new ElementHost
-            {
-                Child = this,
-                AutoSize = true,
-                BackColorTransparent = true
-            };
 
-            _impl = new CSDeskBandImpl(Host.Handle, Options);
+        public CSDeskBandWin()
+        {
+            _impl = new CSDeskBandImpl(Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
+            _impl.OnClose += OnClose;
+        }
+
+        private void OnClose(object sender, EventArgs eventArgs)
+        {
+            Dispose(true);
         }
 
         private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
         {
-            Visibility = visibilityChangedEventArgs.IsVisible ? Visibility.Visible : Visibility.Hidden;
+            if (visibilityChangedEventArgs.IsVisible)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
         }
 
         public int GetWindow(out IntPtr phwnd)
