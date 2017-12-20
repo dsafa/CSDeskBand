@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
+using System.Windows.Forms.Integration;
 using CSDeskband.Interop;
 
 namespace CSDeskband.Wpf
@@ -11,12 +11,20 @@ namespace CSDeskband.Wpf
     {
         public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
+        //so we can get a handle
+        protected ElementHost Host { get; }
         private CSDeskBandImpl _impl;
-
+        
         public CSDeskBand()
         {
-            var handleSrc = (HwndSource)PresentationSource.FromVisual(this);
-            _impl = new CSDeskBandImpl(IntPtr.Zero, Options);
+            Host = new ElementHost
+            {
+                Child = this,
+                AutoSize = true,
+                BackColorTransparent = true
+            };
+
+            _impl = new CSDeskBandImpl(Host.Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
         }
 
