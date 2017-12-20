@@ -65,7 +65,7 @@ namespace CSDeskband
 
         public int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved)
         {
-            //must to return notimpl
+            //must return notimpl
             return E_NOTIMPL;
         }
 

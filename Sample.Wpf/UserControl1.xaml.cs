@@ -18,8 +18,9 @@ using CSDeskband;
 
 namespace Sample.Wpf
 {
+    [ComVisible(true)]
     [Guid("89BF6B36-A0B0-4C95-A666-87A55C226986")]
-    [CSDeskBandRegistration(Name = "Sample Deskband")]
+    [CSDeskBandRegistration(Name = "Sample WPF Deskband")]
     public partial class UserControl1 : CSDeskBand
     {
         public UserControl1()

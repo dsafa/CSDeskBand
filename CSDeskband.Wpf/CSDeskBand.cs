@@ -21,7 +21,7 @@ namespace CSDeskband.Wpf
 
         private CSDeskBandImpl _impl;
 
-        public void CSDeskBand1()
+        public CSDeskBand()
         {
             var handleSrc = (HwndSource)PresentationSource.FromVisual(this);
             _impl = new CSDeskBandImpl(IntPtr.Zero)
