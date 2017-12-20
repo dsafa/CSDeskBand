@@ -14,5 +14,6 @@ namespace CSDeskband
         public bool Undeleteable { get; set; } = false;
         public bool AlwaysShowGripper { get; set; } = false;
         public bool NoMargins { get; set; } = false;
+        public bool ShowTitle { get; set; } = false;
     }
 }

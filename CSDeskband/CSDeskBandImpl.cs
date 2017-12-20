@@ -122,10 +122,8 @@ namespace CSDeskband
 
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
-                pdbi.wszTitle = Title;
+                pdbi.wszTitle = Options.ShowTitle ? Title : "";
             }
-
-            pdbi.dwMask = pdbi.dwMask & ~DBIM_BKCOLOR | DBIM_TITLE;
 
             if (pdbi.dwMask.HasFlag(DBIM_MODEFLAGS))
             {
