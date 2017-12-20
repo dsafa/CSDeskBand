@@ -9,33 +9,14 @@ namespace CSDeskband.Wpf
 {
     public class CSDeskBand : UserControl, ICSDeskBand
     {
-        public System.Drawing.Size MinVertical { get; set; } = new System.Drawing.Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public System.Drawing.Size MaxVertical { get; set; } = new System.Drawing.Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public System.Drawing.Size Vertical { get; set; } = new System.Drawing.Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public System.Drawing.Size MinHorizontal { get; set; } = new System.Drawing.Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public System.Drawing.Size MaxHorizontal { get; set; } = new System.Drawing.Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public System.Drawing.Size Horizontal { get; set; } = new System.Drawing.Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public int Increment { get; set; } = CSDeskBandImpl.NO_LIMIT;
-        public string Title { get; set; } = "";
-        public CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
+        public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
         private CSDeskBandImpl _impl;
 
         public CSDeskBand()
         {
             var handleSrc = (HwndSource)PresentationSource.FromVisual(this);
-            _impl = new CSDeskBandImpl(IntPtr.Zero)
-            {
-                MinHorizontal = MinHorizontal,
-                MaxHorizontal = MaxHorizontal,
-                Horizontal = Horizontal,
-                MinVertical = MinVertical,
-                MaxVertical = MaxVertical,
-                Vertical = Vertical,
-                Increment = Increment,
-                Title = Title,
-                Options = Options,
-            };
+            _impl = new CSDeskBandImpl(IntPtr.Zero, Options);
         }
 
         public int GetWindow(out IntPtr phwnd)

@@ -94,8 +94,11 @@
     <Compile Include="Interop\COM\IDockingWindow.cs" />
     <Compile Include="Interop\COM\IInputObjectSite.cs" />
     <Compile Include="Interop\COM\IObjectWithSite.cs" />
+    <Compile Include="Interop\COM\IOleCommandTarget.cs" />
     <Compile Include="Interop\COM\IOleWindow.cs" />
     <Compile Include="Interop\DESKBANDINFO.cs" />
+    <Compile Include="Interop\OLECMD.cs" />
+    <Compile Include="Interop\OLECMDTEXT.cs" />
     <Compile Include="Interop\POINT.cs" />
     <Compile Include="Interop\RECT.cs" />
     <Compile Include="Interop\User32.cs" />

@@ -14,32 +14,13 @@ namespace CSDeskband.Win
 {
     public class CSDeskBand: UserControl, ICSDeskBand
     {
-        public Size MinVertical { get; set; } = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public Size MaxVertical { get; set; } = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public Size Vertical { get; set; } = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 100);
-        public Size MinHorizontal { get; set; } = new Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public Size MaxHorizontal { get; set; } = new Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public Size Horizontal { get; set; } = new Size(100, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        public int Increment { get; set; } = CSDeskBandImpl.NO_LIMIT;
-        public string Title { get; set; } = "";
-        public CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
+        public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
         private CSDeskBandImpl _impl;
 
         public CSDeskBand()
         {
-            _impl = new CSDeskBandImpl(Handle)
-            {
-                MinHorizontal = MinHorizontal,
-                MaxHorizontal = MaxHorizontal,
-                Horizontal = Horizontal,
-                MinVertical = MinVertical,
-                MaxVertical = MaxVertical,
-                Vertical = Vertical,
-                Increment = Increment,
-                Title = Title,
-                Options = Options,
-            };
+            _impl = new CSDeskBandImpl(Handle, Options);
         }
 
         public int GetWindow(out IntPtr phwnd)

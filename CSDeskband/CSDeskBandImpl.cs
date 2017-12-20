@@ -53,15 +53,7 @@ namespace CSDeskband
             }
         }
 
-        public Size MinVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
-        public Size MaxVertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
-        public Size Vertical { get; set; } = new Size(TASKBAR_DEFAULT_SMALL, 100);
-        public Size MinHorizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
-        public Size MaxHorizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
-        public Size Horizontal { get; set; } = new Size(100, TASKBAR_DEFAULT_SMALL);
-        public int Increment { get; set; } = NO_LIMIT;
-        public string Title { get; set; } = "";
-        public CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
+        public CSDeskBandOptions Options { get; set; }
 
         private IntPtr _handle;
         private IntPtr _parentWindowHandle;
@@ -71,9 +63,10 @@ namespace CSDeskband
         
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
 
-        public CSDeskBandImpl(IntPtr handle)
+        public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
             _handle = handle;
+            Options = options;
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -117,13 +110,13 @@ namespace CSDeskband
             {
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptMinSize.Y = MinVertical.Width;
-                    pdbi.ptMinSize.X = MinVertical.Height;
+                    pdbi.ptMinSize.Y = Options.MinVertical.Width;
+                    pdbi.ptMinSize.X = Options.MinVertical.Height;
                 }
                 else
                 {
-                    pdbi.ptMinSize.X = MinHorizontal.Width;
-                    pdbi.ptMinSize.Y = MinHorizontal.Height;
+                    pdbi.ptMinSize.X = Options.MinHorizontal.Width;
+                    pdbi.ptMinSize.Y = Options.MinHorizontal.Height;
                 }
             }
 
@@ -131,20 +124,20 @@ namespace CSDeskband
             {
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptMaxSize.Y = MaxVertical.Width;
-                    pdbi.ptMaxSize.X = MaxVertical.Height;
+                    pdbi.ptMaxSize.Y = Options.MaxVertical.Width;
+                    pdbi.ptMaxSize.X = Options.MaxVertical.Height;
                 }
                 else
                 {
-                    pdbi.ptMaxSize.X = MaxHorizontal.Width;
-                    pdbi.ptMaxSize.Y = MaxHorizontal.Height;
+                    pdbi.ptMaxSize.X = Options.MaxHorizontal.Width;
+                    pdbi.ptMaxSize.Y = Options.MaxHorizontal.Height;
                 }
             }
 
             // x member is ignored
             if (pdbi.dwMask.HasFlag(DBIM_INTEGRAL))
             {
-                pdbi.ptIntegral.Y = Increment;
+                pdbi.ptIntegral.Y = Options.Increment;
                 pdbi.ptIntegral.X = 0;
             }
 
@@ -152,13 +145,13 @@ namespace CSDeskband
             {
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptActual.Y = Vertical.Width;
-                    pdbi.ptActual.X = Vertical.Height;
+                    pdbi.ptActual.Y = Options.Vertical.Width;
+                    pdbi.ptActual.X = Options.Vertical.Height;
                 }
                 else
                 {
-                    pdbi.ptActual.X = Vertical.Width;
-                    pdbi.ptActual.Y = Vertical.Height;
+                    pdbi.ptActual.X = Options.Vertical.Width;
+                    pdbi.ptActual.Y = Options.Vertical.Height;
                 }
             }
 
@@ -173,7 +166,7 @@ namespace CSDeskband
 
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
-                pdbi.wszTitle = Options.ShowTitle ? Title : "";
+                pdbi.wszTitle = Options.ShowTitle ? Options.Title : "";
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_MODEFLAGS))
