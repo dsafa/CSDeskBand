@@ -98,6 +98,7 @@
     <Compile Include="Interop\DESKBANDINFO.cs" />
     <Compile Include="Interop\POINT.cs" />
     <Compile Include="Interop\RECT.cs" />
+    <Compile Include="Interop\User32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

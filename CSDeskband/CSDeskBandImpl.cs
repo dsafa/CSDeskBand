@@ -64,6 +64,7 @@ namespace CSDeskband
         public CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
 
         private IntPtr _handle;
+        private IntPtr _parentWindowHandle;
         private IInputObjectSite _site;
         private bool _initialized = false; //initialized when getbandinfo is called
         private uint _id;
@@ -210,10 +211,17 @@ namespace CSDeskband
 
         public void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
         {
-            if (_site != null)
+            Marshal.ReleaseComObject(_site);
+
+            if (pUnkSite == null)
             {
-                Marshal.ReleaseComObject(_site);
+                var handler = OnClose;
+                handler?.Invoke(this, null);
             }
+
+            var oleWindow = (IOleWindow)pUnkSite;
+            oleWindow.GetWindow(out _parentWindowHandle);
+            User32.SetParent(_handle, _parentWindowHandle);
 
             _site = (IInputObjectSite)pUnkSite;
         }
@@ -221,6 +229,7 @@ namespace CSDeskband
         public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
         {
             ppvSite = _site;
+
         }
 
         [ComRegisterFunction]
