@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4EE0B5C1-E49B-4CE8-AD43-75DB00104A00}</ProjectGuid>
+    <ProjectGuid>{0B37AA31-CA9C-4B2C-B541-22284FCAD5F2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Sample.Win</RootNamespace>
-    <AssemblyName>Sample.Win</AssemblyName>
+    <RootNamespace>CSDeskBand.Win</RootNamespace>
+    <AssemblyName>CSDeskBand.Win</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,25 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserControl1.cs">
+    <Compile Include="CSDeskBand.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UserControl1.resx">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CSDeskBand.Win\CSDeskBand.Win.csproj">
-      <Project>{0b37aa31-ca9c-4b2c-b541-22284fcad5f2}</Project>
-      <Name>CSDeskBand.Win</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CSDeskBand\CSDeskBand.csproj">
       <Project>{37ecdfdd-fa85-4b91-b69f-8b53cb2a23e2}</Project>
       <Name>CSDeskBand</Name>
