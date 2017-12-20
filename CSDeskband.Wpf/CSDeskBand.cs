@@ -17,6 +17,12 @@ namespace CSDeskband.Wpf
         {
             var handleSrc = (HwndSource)PresentationSource.FromVisual(this);
             _impl = new CSDeskBandImpl(IntPtr.Zero, Options);
+            _impl.VisibilityChanged += VisibilityChanged;
+        }
+
+        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        {
+            Visibility = visibilityChangedEventArgs.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -31,7 +37,6 @@ namespace CSDeskband.Wpf
 
         public int ShowDW([In] bool fShow)
         {
-            Visibility = fShow ? Visibility.Visible : Visibility.Hidden;
             return _impl.ShowDW(fShow);
         }
 

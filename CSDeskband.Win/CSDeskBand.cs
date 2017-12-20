@@ -21,6 +21,25 @@ namespace CSDeskband.Win
         public CSDeskBand()
         {
             _impl = new CSDeskBandImpl(Handle, Options);
+            _impl.VisibilityChanged += VisibilityChanged;
+            _impl.OnClose += OnClose;
+        }
+
+        private void OnClose(object sender, EventArgs eventArgs)
+        {
+            Dispose(true);
+        }
+
+        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        {
+            if (visibilityChangedEventArgs.IsVisible)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -35,20 +54,11 @@ namespace CSDeskband.Win
 
         public int ShowDW([In] bool fShow)
         {
-            if (fShow)
-            {
-                Show();
-            }
-            else
-            {
-                Hide();
-            }
             return _impl.ShowDW(fShow);
         }
 
         public int CloseDW([In] uint dwReserved)
         {
-            Dispose(true);
             return _impl.CloseDW(dwReserved);
         }
 
