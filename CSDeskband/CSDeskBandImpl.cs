@@ -184,6 +184,7 @@ namespace CSDeskband
                 pdbi.dwModeFlags |= Options.Sunken ? DBIMF_DEBOSSED : 0;
                 pdbi.dwModeFlags |= Options.Undeleteable ? DBIMF_UNDELETEABLE : 0;
                 pdbi.dwModeFlags |= Options.VariableHeight ? DBIMF_VARIABLEHEIGHT : 0;
+                pdbi.dwModeFlags &= ~DBIMF_BKCOLOR;
             }
 
             _initialized = true;
