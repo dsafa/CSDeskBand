@@ -25,12 +25,12 @@ namespace CSDeskBand.Win
             _impl.OnClose += OnClose;
         }
 
-        private void OnClose(object sender, EventArgs eventArgs)
+        protected virtual void OnClose(object sender, EventArgs eventArgs)
         {
             Dispose(true);
         }
 
-        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        protected virtual void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
         {
             if (visibilityChangedEventArgs.IsVisible)
             {

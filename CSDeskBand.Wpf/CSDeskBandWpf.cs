@@ -28,7 +28,7 @@ namespace CSDeskBand.Wpf
             _impl.VisibilityChanged += VisibilityChanged;
         }
 
-        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        protected virtual void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
         {
             Visibility = visibilityChangedEventArgs.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
