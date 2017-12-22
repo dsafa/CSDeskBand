@@ -101,7 +101,9 @@
     <Compile Include="Interop\OLECMDTEXT.cs" />
     <Compile Include="Interop\POINT.cs" />
     <Compile Include="Interop\RECT.cs" />
+    <Compile Include="Interop\tagDeskBandCID.cs" />
     <Compile Include="Interop\User32.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

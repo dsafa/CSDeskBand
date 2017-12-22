@@ -13,6 +13,6 @@ namespace CSDeskBand.Interop.COM
         void QueryStatus(ref Guid pguidCmdGroup, uint cCmds, [MarshalAs(UnmanagedType.LPArray), In, Out] OLECMD[] prgCmds, [In, Out] ref OLECMDTEXT pCmdText);
 
         [PreserveSig]
-        int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdExecOpt, object[] pvaIn, [In, Out, MarshalAs(UnmanagedType.LPArray)] object[] pvaOut);
+        int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdExecOpt, ref object pvaIn, [In, Out] ref object pvaOut);
     }
 }

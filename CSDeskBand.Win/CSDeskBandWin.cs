@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using CSDeskBand.Interop;
@@ -14,15 +7,21 @@ namespace CSDeskBand.Win
 {
     public class CSDeskBandWin: UserControl, ICSDeskBand
     {
-        public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
 
-        private CSDeskBandImpl _impl;
+        private readonly CSDeskBandImpl _impl;
 
         public CSDeskBandWin()
         {
+            InitializeComponent();
             _impl = new CSDeskBandImpl(Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
             _impl.OnClose += OnClose;
+            _impl.TaskbarOrientationChanged += TaskbarOrientationChanged;
+        }
+
+        protected virtual void TaskbarOrientationChanged(object sender, TaskbarOrientationChangedEventArgs taskbarOrientationChangedEventArgs)
+        {
         }
 
         protected virtual void OnClose(object sender, EventArgs eventArgs)

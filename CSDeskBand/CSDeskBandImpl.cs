@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Linq;
-using System.Drawing;
 using Microsoft.Win32;
 using CSDeskBand.Interop;
 using CSDeskBand.Interop.COM;
@@ -47,19 +46,36 @@ namespace CSDeskBand
             }
         }
 
-        public CSDeskBandOptions Options { get; set; }
+        public CSDeskBandOptions Options { get; }
 
         private IntPtr _handle;
         private IntPtr _parentWindowHandle;
-        private IInputObjectSite _site;
+
+        //IInputObjectSite, IOleWindow, IOleCommandTarget
+        private object _parentSite;
         private uint _id;
-        
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
+        ///Command group id for deskband
+        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
             _handle = handle;
             Options = options;
+            Options.PropertyChanged += Options_PropertyChanged;
+        }
+
+        private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (_parentSite == null)
+            {
+                return;
+            }
+
+            var parent = (IOleCommandTarget) _parentSite;
+            //Set pvaln to the id that was passed in setsite
+            //When int is marshalled to variant, it is marshalled to VT_i4 see default marshalling for objects
+            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, 0, 0);
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -70,7 +86,7 @@ namespace CSDeskBand
 
         public int ContextSensitiveHelp(bool fEnterMode)
         {
-            return S_OK;
+            return E_NOTIMPL;
         }
 
         public int ShowDW([In] bool fShow)
@@ -200,7 +216,7 @@ namespace CSDeskBand
 
         public void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
         {
-            Marshal.ReleaseComObject(_site);
+            Marshal.ReleaseComObject(_parentSite);
 
             if (pUnkSite == null)
             {
@@ -213,12 +229,12 @@ namespace CSDeskBand
             oleWindow.GetWindow(out _parentWindowHandle);
             User32.SetParent(_handle, _parentWindowHandle);
 
-            _site = (IInputObjectSite)pUnkSite;
+            _parentSite = pUnkSite;
         }
 
         public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
         {
-            ppvSite = _site;
+            ppvSite = _parentSite;
         }
 
         [ComRegisterFunction]

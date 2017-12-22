@@ -9,11 +9,11 @@ namespace CSDeskBand.Wpf
 {
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
-        public virtual CSDeskBandOptions Options { get; set; } = new CSDeskBandOptions();
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
 
         //so we can get a handle
         protected ElementHost Host { get; }
-        private CSDeskBandImpl _impl;
+        private readonly CSDeskBandImpl _impl;
         
         public CSDeskBandWpf()
         {
