@@ -38,8 +38,7 @@ namespace CSDeskBand
                 }
 
                 _orientation = value;
-                var handler = TaskbarOrientationChanged;
-                handler?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
+                TaskbarOrientationChanged?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
             }
         }
 
@@ -47,8 +46,7 @@ namespace CSDeskBand
 
         private IntPtr _handle;
         private IntPtr _parentWindowHandle;
-
-        //IInputObjectSite, IOleWindow, IOleCommandTarget
+        //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget
         private object _parentSite;
         private uint _id;
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
@@ -72,7 +70,7 @@ namespace CSDeskBand
             var parent = (IOleCommandTarget) _parentSite;
             //Set pvaln to the id that was passed in setsite
             //When int is marshalled to variant, it is marshalled to VT_i4 see default marshalling for objects
-            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, 0, 0);
+            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, _id, null);
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -88,17 +86,13 @@ namespace CSDeskBand
 
         public int ShowDW([In] bool fShow)
         {
-            var handler = VisibilityChanged;
-            handler?.Invoke(this, new VisibilityChangedEventArgs { IsVisible = fShow });
-
+            VisibilityChanged?.Invoke(this, new VisibilityChangedEventArgs { IsVisible = fShow });
             return S_OK;
         }
 
         public int CloseDW([In] uint dwReserved)
         {
-            var handler = OnClose;
-            handler?.Invoke(this, null);
-
+            OnClose?.Invoke(this, null);
             return S_OK;
         }
 
@@ -213,12 +207,14 @@ namespace CSDeskBand
 
         public void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
         {
-            Marshal.ReleaseComObject(_parentSite);
+            if (_parentSite != null)
+            {
+                Marshal.ReleaseComObject(_parentSite);
+            }
 
             if (pUnkSite == null)
             {
-                var handler = OnClose;
-                handler?.Invoke(this, null);
+                OnClose?.Invoke(this, null);
                 return;
             }
 
