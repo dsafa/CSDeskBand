@@ -30,9 +30,9 @@ namespace CSDeskBand
         private Size _horizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
         private Size _maxHorizontal = new Size(NO_LIMIT, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
         private Size _minHorizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_SMALL);
-        private Size _vertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_LARGE, 200);
-        private Size _maxVertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_LARGE, NO_LIMIT);
-        private Size _minVertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_SMALL, 200);
+        private Size _vertical = new Size(TASKBAR_VERTICAL_WIDTH, 200);
+        private Size _maxVertical = new Size(TASKBAR_VERTICAL_WIDTH, NO_LIMIT);
+        private Size _minVertical = new Size(TASKBAR_VERTICAL_WIDTH, 200);
         private bool _newRow = false;
         private bool _addToFront = false;
         private bool _topRow = false;
