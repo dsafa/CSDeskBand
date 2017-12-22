@@ -17,9 +17,6 @@ namespace CSDeskBand
     {
         public static readonly int S_OK = 0;
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
-        public static readonly int TASKBAR_DEFAULT_LARGE = 40;
-        public static readonly int TASKBAR_DEFAULT_SMALL = 30;
-        public static readonly int NO_LIMIT = int.MaxValue - 1;
 
         public EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
         public EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;

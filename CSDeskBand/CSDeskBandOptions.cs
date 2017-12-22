@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using CSDeskBand.Annotations;
@@ -7,12 +8,32 @@ namespace CSDeskBand
 {
     public class CSDeskBandOptions : INotifyPropertyChanged
     {
-        private Size _horizontal = new Size(200, CSDeskBandImpl.TASKBAR_DEFAULT_LARGE);
-        private Size _maxHorizontal = new Size(CSDeskBandImpl.NO_LIMIT, CSDeskBandImpl.TASKBAR_DEFAULT_LARGE);
-        private Size _minHorizontal = new Size(200, CSDeskBandImpl.TASKBAR_DEFAULT_SMALL);
-        private Size _vertical = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_LARGE, 200);
-        private Size _maxVertical = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_LARGE, CSDeskBandImpl.NO_LIMIT);
-        private Size _minVertical = new Size(CSDeskBandImpl.TASKBAR_DEFAULT_SMALL, 200);
+        /// <summary>
+        /// Height for a default horizontal taskbar
+        /// </summary>
+        public static readonly int TASKBAR_HORIZONTAL_HEIGHT_LARGE = 40;
+
+        /// <summary>
+        /// Height for a default horizontal taskbar with small icons
+        /// </summary>
+        public static readonly int TASKBAR_HORIZONTAL_HEIGHT_SMALL = 30;
+
+        /// <summary>
+        /// Width for a default vertical taskbar. Small taskbar icons don't change the size
+        /// </summary>
+        public static readonly int TASKBAR_VERTICAL_WIDTH = 62;
+
+        /// <summary>
+        /// No limit for deskband size
+        /// </summary>
+        public static readonly int NO_LIMIT = Int32.MaxValue - 1;
+
+        private Size _horizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
+        private Size _maxHorizontal = new Size(NO_LIMIT, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
+        private Size _minHorizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_SMALL);
+        private Size _vertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_LARGE, 200);
+        private Size _maxVertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_LARGE, NO_LIMIT);
+        private Size _minVertical = new Size(TASKBAR_HORIZONTAL_HEIGHT_SMALL, 200);
         private bool _newRow = false;
         private bool _addToFront = false;
         private bool _topRow = false;
