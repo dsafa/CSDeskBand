@@ -42,12 +42,6 @@ namespace CSDeskBand
                 }
 
                 _orientation = value;
-
-                if (!_initialized)
-                {
-                    return;
-                }
-
                 var handler = TaskbarOrientationChanged;
                 handler?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
             }
@@ -58,7 +52,6 @@ namespace CSDeskBand
         private IntPtr _handle;
         private IntPtr _parentWindowHandle;
         private IInputObjectSite _site;
-        private bool _initialized = false; //initialized when getbandinfo is called
         private uint _id;
         
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
@@ -106,9 +99,10 @@ namespace CSDeskBand
         {
             _id = dwBandID;
 
+            //Sizing information is requested whenever the taskbar changes size/orientation
             if (pdbi.dwMask.HasFlag(DBIM_MINSIZE))
             {
-                if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
+                if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptMinSize.Y = Options.MinVertical.Width;
                     pdbi.ptMinSize.X = Options.MinVertical.Height;
@@ -122,7 +116,7 @@ namespace CSDeskBand
 
             if (pdbi.dwMask.HasFlag(DBIM_MAXSIZE))
             {
-                if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
+                if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptMaxSize.Y = Options.MaxVertical.Width;
                     pdbi.ptMaxSize.X = Options.MaxVertical.Height;
@@ -143,15 +137,15 @@ namespace CSDeskBand
 
             if (pdbi.dwMask.HasFlag(DBIM_ACTUAL))
             {
-                if (dwViewMode.HasFlag(DBIF_VIEWMODE_FLOATING) || dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
+                if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptActual.Y = Options.Vertical.Width;
                     pdbi.ptActual.X = Options.Vertical.Height;
                 }
                 else
                 {
-                    pdbi.ptActual.X = Options.Vertical.Width;
-                    pdbi.ptActual.Y = Options.Vertical.Height;
+                    pdbi.ptActual.X = Options.Horizontal.Width;
+                    pdbi.ptActual.Y = Options.Horizontal.Height;
                 }
             }
 
@@ -178,10 +172,12 @@ namespace CSDeskBand
                 pdbi.dwModeFlags |= Options.Sunken ? DBIMF_DEBOSSED : 0;
                 pdbi.dwModeFlags |= Options.Undeleteable ? DBIMF_UNDELETEABLE : 0;
                 pdbi.dwModeFlags |= Options.VariableHeight ? DBIMF_VARIABLEHEIGHT : 0;
+                pdbi.dwModeFlags |= Options.AddToFront ? DBIMF_ADDTOFRONT : 0;
+                pdbi.dwModeFlags |= Options.NewRow ? DBIMF_BREAK : 0;
+                pdbi.dwModeFlags |= Options.TopRow ? DBIMF_TOPALIGN : 0;
                 pdbi.dwModeFlags &= ~DBIMF_BKCOLOR;
             }
 
-            _initialized = true;
             return S_OK;
         }
 
@@ -210,6 +206,7 @@ namespace CSDeskBand
             {
                 var handler = OnClose;
                 handler?.Invoke(this, null);
+                return;
             }
 
             var oleWindow = (IOleWindow)pUnkSite;
@@ -222,7 +219,6 @@ namespace CSDeskBand
         public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
         {
             ppvSite = _site;
-
         }
 
         [ComRegisterFunction]

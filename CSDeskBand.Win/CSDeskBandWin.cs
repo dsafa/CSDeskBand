@@ -108,5 +108,22 @@ namespace CSDeskBand.Win
         {
             CSDeskBandImpl.Unregister(t);
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // CSDeskBandWin
+            // 
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Margin = new System.Windows.Forms.Padding(0);
+            this.Name = "CSDeskBandWin";
+            this.Size = new System.Drawing.Size(0, 0);
+            this.ResumeLayout(false);
+
+        }
     }
 }

@@ -62,5 +62,10 @@
   <ItemGroup>
     <None Include="Key.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CSDeskBandWin.resx">
+      <DependentUpon>CSDeskBandWin.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
