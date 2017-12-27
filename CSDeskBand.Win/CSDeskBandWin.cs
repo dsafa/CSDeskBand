@@ -13,7 +13,6 @@ namespace CSDeskBand.Win
 
         public CSDeskBandWin()
         {
-            InitializeComponent();
             _impl = new CSDeskBandImpl(Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
             _impl.OnClose += OnClose;
@@ -106,23 +105,6 @@ namespace CSDeskBand.Win
         private static void Unregister(Type t)
         {
             CSDeskBandImpl.Unregister(t);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // CSDeskBandWin
-            // 
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.Transparent;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "CSDeskBandWin";
-            this.Size = new System.Drawing.Size(0, 0);
-            this.ResumeLayout(false);
-
         }
     }
 }
