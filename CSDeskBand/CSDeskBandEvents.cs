@@ -13,9 +13,13 @@ namespace CSDeskBand
         public TaskbarOrientation Orientation { get; set; }
     }
 
-    public enum TaskbarOrientation
+    public class TaskbarSizeChangedEventArgs : EventArgs
     {
-        Vertical,
-        Horizontal,
+        public Size Size { get; set; }
+    }
+
+    public class TaskbarEdgeChangedEventArgs : EventArgs
+    {
+        public Edge Edge { get; set; }
     }
 }

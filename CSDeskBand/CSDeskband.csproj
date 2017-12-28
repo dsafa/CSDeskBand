@@ -85,6 +85,8 @@
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
     <Compile Include="ICSDeskBand.cs" />
+    <Compile Include="Interop\APPBARDATA.cs" />
+    <Compile Include="Interop\APPBARMESSAGE.cs" />
     <Compile Include="Interop\COLORREF.cs" />
     <Compile Include="Interop\COM\IDeskBand.cs" />
     <Compile Include="Interop\COM\IDeskBand2.cs" />
@@ -98,11 +100,13 @@
     <Compile Include="Interop\OLECMDTEXT.cs" />
     <Compile Include="Interop\POINT.cs" />
     <Compile Include="Interop\RECT.cs" />
+    <Compile Include="Interop\Shell32.cs" />
     <Compile Include="Interop\tagDeskBandCID.cs" />
     <Compile Include="Interop\User32.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Size.cs" />
+    <Compile Include="TaskbarInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

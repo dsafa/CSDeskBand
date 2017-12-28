@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSDeskBand.Interop
 {
-    public enum tagDESKBANDCID
+    internal enum tagDESKBANDCID
     {
         DBID_BANDINFOCHANGED = 0,
         DBID_SHOWONLY = 1,

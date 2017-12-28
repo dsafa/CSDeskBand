@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace CSDeskBand.Interop
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct OLECMDTEXT
+    internal struct OLECMDTEXT
     {
         public uint cmdtextf;
         public uint cwActual;
