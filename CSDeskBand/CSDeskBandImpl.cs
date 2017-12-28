@@ -19,30 +19,10 @@ namespace CSDeskBand
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
 
         public EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
-        public EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;
-        public EventHandler OnClose;
-
-        private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
-        public TaskbarOrientation Orientation
-        {
-            get
-            {
-                return _orientation;
-            }
-
-            private set
-            {
-                if (value == _orientation)
-                {
-                    return;
-                }
-
-                _orientation = value;
-                TaskbarOrientationChanged?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
-            }
-        }
+        public EventHandler Closed;
 
         public CSDeskBandOptions Options { get; }
+        public TaskbarInfo TaskbarInfo { get; }
 
         private IntPtr _handle;
         private IntPtr _parentWindowHandle;
@@ -58,6 +38,7 @@ namespace CSDeskBand
             _handle = handle;
             Options = options;
             Options.PropertyChanged += Options_PropertyChanged;
+            TaskbarInfo = new TaskbarInfo();
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -92,7 +73,7 @@ namespace CSDeskBand
 
         public int CloseDW([In] uint dwReserved)
         {
-            OnClose?.Invoke(this, null);
+            Closed?.Invoke(this, null);
             return S_OK;
         }
 
@@ -156,15 +137,6 @@ namespace CSDeskBand
                 }
             }
 
-            if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
-            {
-                Orientation = TaskbarOrientation.Vertical;
-            }
-            else if (dwViewMode.HasFlag(DBIF_VIEWMODE_NORMAL))
-            {
-                Orientation = TaskbarOrientation.Horizontal;
-            }
-
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
                 pdbi.wszTitle = Options.ShowTitle ? Options.Title : "";
@@ -184,6 +156,8 @@ namespace CSDeskBand
                 pdbi.dwModeFlags |= Options.TopRow ? DBIMF_TOPALIGN : 0;
                 pdbi.dwModeFlags &= ~DBIMF_BKCOLOR;
             }
+
+            TaskbarInfo.UpdateInfo();
 
             return S_OK;
         }
@@ -214,7 +188,7 @@ namespace CSDeskBand
 
             if (pUnkSite == null)
             {
-                OnClose?.Invoke(this, null);
+                Closed?.Invoke(this, null);
                 return;
             }
 

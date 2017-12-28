@@ -3,7 +3,7 @@
 namespace CSDeskBand.Interop
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct OLECMD
+    internal struct OLECMD
     {
         public uint cmdID;
         public uint cmdf;

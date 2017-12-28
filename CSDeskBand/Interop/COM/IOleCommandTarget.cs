@@ -7,7 +7,7 @@ namespace CSDeskBand.Interop.COM
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("b722bccb-4e68-101b-a2bc-00aa00404770")]
-    public interface IOleCommandTarget
+    internal interface IOleCommandTarget
     {
         [PreserveSig]
         void QueryStatus(ref Guid pguidCmdGroup, uint cCmds, [MarshalAs(UnmanagedType.LPArray), In, Out] OLECMD[] prgCmds, [In, Out] ref OLECMDTEXT pCmdText);

@@ -9,7 +9,8 @@ namespace CSDeskBand.Wpf
 {
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
-        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        protected TaskbarInfo TaskbarInfo { get; }
 
         //so we can get a handle
         protected ElementHost Host { get; }
@@ -26,11 +27,17 @@ namespace CSDeskBand.Wpf
 
             _impl = new CSDeskBandImpl(Host.Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
+            TaskbarInfo = _impl.TaskbarInfo;
         }
 
-        protected virtual void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
         {
-            Visibility = visibilityChangedEventArgs.IsVisible ? Visibility.Visible : Visibility.Hidden;
+            VisibilityChanged(visibilityChangedEventArgs.IsVisible);
+        }
+
+        protected virtual void VisibilityChanged(bool visible)
+        {
+            Visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
 
         public int GetWindow(out IntPtr phwnd)

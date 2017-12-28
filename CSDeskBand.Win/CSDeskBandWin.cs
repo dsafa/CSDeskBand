@@ -7,7 +7,8 @@ namespace CSDeskBand.Win
 {
     public class CSDeskBandWin: UserControl, ICSDeskBand
     {
-        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        protected TaskbarInfo TaskbarInfo { get; }
 
         private readonly CSDeskBandImpl _impl;
 
@@ -15,22 +16,28 @@ namespace CSDeskBand.Win
         {
             _impl = new CSDeskBandImpl(Handle, Options);
             _impl.VisibilityChanged += VisibilityChanged;
-            _impl.OnClose += OnClose;
-            _impl.TaskbarOrientationChanged += TaskbarOrientationChanged;
+            _impl.Closed += OnClose;
+            TaskbarInfo = _impl.TaskbarInfo;
         }
 
-        protected virtual void TaskbarOrientationChanged(object sender, TaskbarOrientationChangedEventArgs taskbarOrientationChangedEventArgs)
+        private void OnClose(object sender, EventArgs eventArgs)
         {
+            OnClose();
         }
 
-        protected virtual void OnClose(object sender, EventArgs eventArgs)
+        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        {
+            VisibilityChanged(visibilityChangedEventArgs.IsVisible);
+        }
+
+        protected virtual void OnClose()
         {
             Dispose(true);
         }
 
-        protected virtual void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        protected virtual void VisibilityChanged(bool visible)
         {
-            if (visibilityChangedEventArgs.IsVisible)
+            if (visible)
             {
                 Show();
             }
