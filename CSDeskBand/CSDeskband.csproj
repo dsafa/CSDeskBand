@@ -87,7 +87,9 @@
     <Compile Include="ICSDeskBand.cs" />
     <Compile Include="Interop\APPBARDATA.cs" />
     <Compile Include="Interop\APPBARMESSAGE.cs" />
+    <Compile Include="Interop\BANDSITEINFO.cs" />
     <Compile Include="Interop\COLORREF.cs" />
+    <Compile Include="Interop\COM\IBandSite.cs" />
     <Compile Include="Interop\COM\IDeskBand.cs" />
     <Compile Include="Interop\COM\IDeskBand2.cs" />
     <Compile Include="Interop\COM\IDockingWindow.cs" />
