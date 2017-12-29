@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Win32;
 using CSDeskBand.Interop;
 using CSDeskBand.Interop.COM;
+using CSDeskBand.Logging;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIM;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIMF;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIF;
@@ -32,9 +33,11 @@ namespace CSDeskBand
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
         ///Command group id for deskband
         private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
+        private ILog _logger;
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
+            _logger = LogProvider.For<CSDeskBandImpl>();
             _handle = handle;
             Options = options;
             Options.PropertyChanged += Options_PropertyChanged;
@@ -47,6 +50,7 @@ namespace CSDeskBand
             {
                 return;
             }
+            _logger.Debug("Deskband options have changed");
 
             var parent = (IOleCommandTarget) _parentSite;
             //Set pvaln to the id that was passed in setsite
@@ -90,6 +94,7 @@ namespace CSDeskBand
             //Sizing information is requested whenever the taskbar changes size/orientation
             if (pdbi.dwMask.HasFlag(DBIM_MINSIZE))
             {
+                _logger.Debug("Deskband minsize requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptMinSize.Y = Options.MinVertical.Width;
@@ -104,6 +109,7 @@ namespace CSDeskBand
 
             if (pdbi.dwMask.HasFlag(DBIM_MAXSIZE))
             {
+                _logger.Debug("Deskband maxsize requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptMaxSize.Y = Options.MaxVertical.Width;
@@ -119,12 +125,14 @@ namespace CSDeskBand
             // x member is ignored
             if (pdbi.dwMask.HasFlag(DBIM_INTEGRAL))
             {
+                _logger.Debug("Deskband integral requested");
                 pdbi.ptIntegral.Y = Options.Increment;
                 pdbi.ptIntegral.X = 0;
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_ACTUAL))
             {
+                _logger.Debug("Deskband actual size requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptActual.Y = Options.Vertical.Width;
@@ -139,6 +147,7 @@ namespace CSDeskBand
 
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
+                _logger.Debug("Deskband tile requested");
                 pdbi.wszTitle = Options.ShowTitle ? Options.Title : "";
             }
 
@@ -188,6 +197,7 @@ namespace CSDeskBand
 
             if (pUnkSite == null)
             {
+                _logger.Debug("Closing deskband");
                 Closed?.Invoke(this, null);
                 return;
             }

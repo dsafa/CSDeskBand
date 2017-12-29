@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CSDeskBand.Interop;
 using System.Runtime.InteropServices;
+using CSDeskBand.Logging;
 
 namespace CSDeskBand
 {
@@ -33,6 +34,7 @@ namespace CSDeskBand
 
             private set
             {
+                _logger.Debug($"Taskbar orientation: {Enum.GetName(typeof(TaskbarOrientation), value)}");
                 if (value == _orientation)
                 {
                     return;
@@ -52,6 +54,7 @@ namespace CSDeskBand
 
             private set
             {
+                _logger.Debug($"Taskbar edge: {Enum.GetName(typeof(TaskbarOrientation), value)}");
                 if (value == _edge)
                 {
                     return;
@@ -71,6 +74,7 @@ namespace CSDeskBand
 
             private set
             {
+                _logger.Debug($"Taskbar Size: width - {value.Width} height - {value.Height}");
                 if (value.Equals(_size))
                 {
                     return;
@@ -88,14 +92,18 @@ namespace CSDeskBand
         private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
         private Edge _edge = Edge.Bottom;
         private Size _size;
+        private ILog _logger;
 
         internal TaskbarInfo()
         {
+            _logger = LogProvider.For<TaskbarInfo>();
             UpdateInfo();
         }
 
         internal void UpdateInfo()
         {
+            _logger.Debug("Getting taskbar information");
+
             APPBARDATA data = new APPBARDATA();
             data.hWnd = IntPtr.Zero;
             data.cbSize = Marshal.SizeOf(typeof(APPBARDATA));
