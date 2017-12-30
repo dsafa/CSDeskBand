@@ -14,7 +14,7 @@ namespace CSDeskBand
     /// <summary>
     /// Default implementation for icsdeskband
     /// </summary>
-    public class CSDeskBandImpl : ICSDeskBand
+    internal class CSDeskBandImpl : ICSDeskBand
     {
         public static readonly int S_OK = 0;
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
@@ -25,7 +25,7 @@ namespace CSDeskBand
         public CSDeskBandOptions Options { get; }
         public TaskbarInfo TaskbarInfo { get; }
 
-        private IntPtr _handle;
+        private readonly IntPtr _handle;
         private IntPtr _parentWindowHandle;
         //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget
         private object _parentSite;
@@ -33,11 +33,11 @@ namespace CSDeskBand
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
         ///Command group id for deskband
         private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
-        private ILog _logger;
+        private readonly ILog _logger;
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
-            _logger = LogProvider.For<CSDeskBandImpl>();
+            _logger = LogProvider.GetCurrentClassLogger();
             _handle = handle;
             Options = options;
             Options.PropertyChanged += Options_PropertyChanged;

@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using CSDeskBand.Interop;
+using CSDeskBand.Logging;
 
 namespace CSDeskBand.Win
 {
@@ -11,13 +12,23 @@ namespace CSDeskBand.Win
         protected TaskbarInfo TaskbarInfo { get; }
 
         private readonly CSDeskBandImpl _impl;
+        private readonly ILog _logger;
 
         public CSDeskBandWin()
         {
-            _impl = new CSDeskBandImpl(Handle, Options);
-            _impl.VisibilityChanged += VisibilityChanged;
-            _impl.Closed += OnClose;
-            TaskbarInfo = _impl.TaskbarInfo;
+            _logger = LogProvider.GetCurrentClassLogger();
+            try
+            {
+                _impl = new CSDeskBandImpl(Handle, Options);
+                _impl.VisibilityChanged += VisibilityChanged;
+                _impl.Closed += OnClose;
+                TaskbarInfo = _impl.TaskbarInfo;
+            }
+            catch (Exception e)
+            {
+                _logger.DebugException("Initialization Error", e);
+                throw;
+            }
         }
 
         private void OnClose(object sender, EventArgs eventArgs)

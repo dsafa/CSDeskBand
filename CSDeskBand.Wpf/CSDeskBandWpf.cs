@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using CSDeskBand.Interop;
+using CSDeskBand.Logging;
 
 namespace CSDeskBand.Wpf
 {
@@ -15,19 +16,29 @@ namespace CSDeskBand.Wpf
         //so we can get a handle
         protected ElementHost Host { get; }
         private readonly CSDeskBandImpl _impl;
-        
+        private readonly ILog _logger;
+
         public CSDeskBandWpf()
         {
-            Host = new ElementHost
+            _logger = LogProvider.GetCurrentClassLogger();
+            try
             {
-                Child = this,
-                AutoSize = true,
-                BackColorTransparent = true
-            };
+                Host = new ElementHost
+                {
+                    Child = this,
+                    AutoSize = true,
+                    BackColorTransparent = true
+                };
 
-            _impl = new CSDeskBandImpl(Host.Handle, Options);
-            _impl.VisibilityChanged += VisibilityChanged;
-            TaskbarInfo = _impl.TaskbarInfo;
+                _impl = new CSDeskBandImpl(Host.Handle, Options);
+                _impl.VisibilityChanged += VisibilityChanged;
+                TaskbarInfo = _impl.TaskbarInfo;
+            }
+            catch (Exception e)
+            {
+                _logger.DebugException("Initialization error", e);
+                throw;
+            }
         }
 
         private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
