@@ -92,7 +92,7 @@ namespace CSDeskBand
         private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
         private Edge _edge = Edge.Bottom;
         private Size _size;
-        private ILog _logger;
+        private readonly ILog _logger;
 
         internal TaskbarInfo()
         {
