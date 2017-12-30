@@ -19,8 +19,8 @@ namespace CSDeskBand
         public static readonly int S_OK = 0;
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
 
-        public EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
-        public EventHandler Closed;
+        public event EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
+        public event EventHandler Closed;
 
         public CSDeskBandOptions Options { get; }
         public TaskbarInfo TaskbarInfo { get; }
@@ -54,7 +54,7 @@ namespace CSDeskBand
 
             var parent = (IOleCommandTarget) _parentSite;
             //Set pvaln to the id that was passed in setsite
-            //When int is marshalled to variant, it is marshalled to VT_i4 see default marshalling for objects
+            //When int is marshalled to variant, it is marshalled to VT_i4. See default marshalling for objects
             parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, _id, null);
         }
 
@@ -217,28 +217,42 @@ namespace CSDeskBand
         [ComRegisterFunction]
         public static void Register(Type t)
         {
-            string guid = t.GUID.ToString("B");
-            RegistryKey rkClass = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
-            rkClass.SetValue(null, GetToolbarName(t));
+            try
+            {
+                string guid = t.GUID.ToString("B");
+                RegistryKey rkClass = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
+                rkClass.SetValue(null, GetToolbarName(t));
 
-            RegistryKey rkCat = rkClass.CreateSubKey("Implemented Categories");
-            rkCat.CreateSubKey(CATID_DESKBAND.ToString("B"));
+                RegistryKey rkCat = rkClass.CreateSubKey("Implemented Categories");
+                rkCat.CreateSubKey(CATID_DESKBAND.ToString("B"));
 
-            Console.WriteLine($"Succesfully registered deskband {GetToolbarName(t)} - GUID: {guid}");
+                Console.WriteLine($"Succesfully registered deskband {GetToolbarName(t)} - GUID: {guid}");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Failed to register deskband {GetToolbarName(t)} - {e}");
+            }
         }
 
         [ComUnregisterFunction]
         public static void Unregister(Type t)
         {
-            string guid = t.GUID.ToString("B");
-            Registry.ClassesRoot.CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);
+            try
+            {
+                string guid = t.GUID.ToString("B");
+                Registry.ClassesRoot.CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);
 
-            Console.WriteLine($"Successfully unregistered deskband {GetToolbarName(t)} - GUID: {guid}");
+                Console.WriteLine($"Successfully unregistered deskband {GetToolbarName(t)} - GUID: {guid}");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Failed to unregister deskband {GetToolbarName(t)} - {e}");
+            }
         }
 
         private static string GetToolbarName(Type t)
         {
-            var registrationInfo = (CSDeskBandRegistrationAttribute[])t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
+            var registrationInfo = (CSDeskBandRegistrationAttribute[]) t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
             return registrationInfo.FirstOrDefault()?.Name ?? t.Name;
         }
     }

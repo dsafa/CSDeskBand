@@ -10,29 +10,29 @@ namespace CSDeskBand
         /// <summary>
         /// Height for a default horizontal taskbar
         /// </summary>
-        public static readonly int TASKBAR_HORIZONTAL_HEIGHT_LARGE = 40;
+        public static readonly int TaskbarHorizontalHeightLarge = 40;
 
         /// <summary>
         /// Height for a default horizontal taskbar with small icons
         /// </summary>
-        public static readonly int TASKBAR_HORIZONTAL_HEIGHT_SMALL = 30;
+        public static readonly int TaskbarHorizontalHeightSmall = 30;
 
         /// <summary>
         /// Width for a default vertical taskbar. Small taskbar icons don't change the size
         /// </summary>
-        public static readonly int TASKBAR_VERTICAL_WIDTH = 62;
+        public static readonly int TaskbarVerticalWidth = 62;
 
         /// <summary>
         /// No limit for deskband size
         /// </summary>
-        public static readonly int NO_LIMIT = Int32.MaxValue - 1;
+        public static readonly int NoLimit = -1;
 
-        private Size _horizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
-        private Size _maxHorizontal = new Size(NO_LIMIT, TASKBAR_HORIZONTAL_HEIGHT_LARGE);
-        private Size _minHorizontal = new Size(200, TASKBAR_HORIZONTAL_HEIGHT_SMALL);
-        private Size _vertical = new Size(TASKBAR_VERTICAL_WIDTH, 200);
-        private Size _maxVertical = new Size(TASKBAR_VERTICAL_WIDTH, NO_LIMIT);
-        private Size _minVertical = new Size(TASKBAR_VERTICAL_WIDTH, 200);
+        private Size _horizontal = new Size(200, TaskbarHorizontalHeightLarge);
+        private Size _maxHorizontal = new Size(NoLimit, 200);
+        private Size _minHorizontal = new Size(200, TaskbarHorizontalHeightSmall);
+        private Size _vertical = new Size(TaskbarVerticalWidth, 200);
+        private Size _maxVertical = new Size(TaskbarVerticalWidth, NoLimit);
+        private Size _minVertical = new Size(TaskbarVerticalWidth, 200);
         private bool _newRow = false;
         private bool _addToFront = false;
         private bool _topRow = false;
@@ -51,7 +51,7 @@ namespace CSDeskBand
         /// </summary>
         public bool VariableHeight
         {
-            get { return _variableHeight; }
+            get => _variableHeight;
             set
             {
                 if (value == _variableHeight) return;
@@ -68,7 +68,7 @@ namespace CSDeskBand
         /// </example>
         public int Increment
         {
-            get { return _increment; }
+            get => _increment;
             set
             {
                 if (value == _increment) return;
@@ -82,7 +82,7 @@ namespace CSDeskBand
         /// </summary>
         public bool Sunken
         {
-            get { return _sunken; }
+            get => _sunken;
             set
             {
                 if (value == _sunken) return;
@@ -96,7 +96,7 @@ namespace CSDeskBand
         /// </summary>
         public bool Fixed
         {
-            get { return _fixed; }
+            get => _fixed;
             set
             {
                 if (value == _fixed) return;
@@ -110,7 +110,7 @@ namespace CSDeskBand
         /// </summary>
         public bool Undeleteable
         {
-            get { return _undeleteable; }
+            get => _undeleteable;
             set
             {
                 if (value == _undeleteable) return;
@@ -124,7 +124,7 @@ namespace CSDeskBand
         /// </summary>
         public bool AlwaysShowGripper
         {
-            get { return _alwaysShowGripper; }
+            get => _alwaysShowGripper;
             set
             {
                 if (value == _alwaysShowGripper) return;
@@ -138,7 +138,7 @@ namespace CSDeskBand
         /// </summary>
         public bool NoMargins
         {
-            get { return _noMargins; }
+            get => _noMargins;
             set
             {
                 if (value == _noMargins) return;
@@ -152,7 +152,7 @@ namespace CSDeskBand
         /// </summary>
         public bool ShowTitle
         {
-            get { return _showTitle; }
+            get => _showTitle;
             set
             {
                 if (value == _showTitle) return;
@@ -166,7 +166,7 @@ namespace CSDeskBand
         /// </summary>
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 if (value == _title) return;
@@ -180,7 +180,7 @@ namespace CSDeskBand
         /// </summary>
         public bool TopRow
         {
-            get { return _topRow; }
+            get => _topRow;
             set
             {
                 if (value == _topRow) return;
@@ -194,7 +194,7 @@ namespace CSDeskBand
         /// </summary>
         public bool AddToFront
         {
-            get { return _addToFront; }
+            get => _addToFront;
             set
             {
                 if (value == _addToFront) return;
@@ -208,7 +208,7 @@ namespace CSDeskBand
         /// </summary>
         public bool NewRow
         {
-            get { return _newRow; }
+            get => _newRow;
             set
             {
                 if (value == _newRow) return;
@@ -222,7 +222,7 @@ namespace CSDeskBand
         /// </summary>
         public Size MinVertical
         {
-            get { return _minVertical; }
+            get => _minVertical;
             set
             {
                 if (value.Equals(_minVertical)) return;
@@ -236,7 +236,7 @@ namespace CSDeskBand
         /// </summary>
         public Size MaxVertical
         {
-            get { return _maxVertical; }
+            get => _maxVertical;
             set
             {
                 if (value.Equals(_maxVertical)) return;
@@ -250,7 +250,7 @@ namespace CSDeskBand
         /// </summary>
         public Size Vertical
         {
-            get { return _vertical; }
+            get => _vertical;
             set
             {
                 if (value.Equals(_vertical)) return;
@@ -264,7 +264,7 @@ namespace CSDeskBand
         /// </summary>
         public Size MinHorizontal
         {
-            get { return _minHorizontal; }
+            get => _minHorizontal;
             set
             {
                 if (value.Equals(_minHorizontal)) return;
@@ -278,7 +278,7 @@ namespace CSDeskBand
         /// </summary>
         public Size MaxHorizontal
         {
-            get { return _maxHorizontal; }
+            get => _maxHorizontal;
             set
             {
                 if (value.Equals(_maxHorizontal)) return;
@@ -292,7 +292,7 @@ namespace CSDeskBand
         /// </summary>
         public Size Horizontal
         {
-            get { return _horizontal; }
+            get => _horizontal;
             set
             {
                 if (value.Equals(_horizontal)) return;
