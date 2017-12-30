@@ -6,6 +6,6 @@ namespace CSDeskBand.Interop
     internal class Shell32
     {
         [DllImport("shell32.dll")]
-        public static extern IntPtr SHAppBarMessage(uint dwMessage, [In] ref APPBARDATA pData);
+        public static extern IntPtr SHAppBarMessage(APPBARMESSAGE dwMessage, [In] ref APPBARDATA pData);
     }
 }

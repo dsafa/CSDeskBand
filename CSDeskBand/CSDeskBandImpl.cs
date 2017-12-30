@@ -27,13 +27,11 @@ namespace CSDeskBand
 
         private readonly IntPtr _handle;
         private IntPtr _parentWindowHandle;
-        //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget
-        private object _parentSite;
+        private object _parentSite; //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
         private uint _id;
-        private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
-        ///Command group id for deskband
-        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
+        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
         private readonly ILog _logger;
+        private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
@@ -53,8 +51,8 @@ namespace CSDeskBand
             _logger.Debug("Deskband options have changed");
 
             var parent = (IOleCommandTarget) _parentSite;
-            //Set pvaln to the id that was passed in setsite
-            //When int is marshalled to variant, it is marshalled to VT_i4. See default marshalling for objects
+            //Set pvaln to the id that was passed in SetSite
+            //When int is marshalled to variant, it is marshalled as VT_i4. See default marshalling for objects
             parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, _id, null);
         }
 
@@ -163,7 +161,7 @@ namespace CSDeskBand
                 pdbi.dwModeFlags |= Options.AddToFront ? DBIMF_ADDTOFRONT : 0;
                 pdbi.dwModeFlags |= Options.NewRow ? DBIMF_BREAK : 0;
                 pdbi.dwModeFlags |= Options.TopRow ? DBIMF_TOPALIGN : 0;
-                pdbi.dwModeFlags &= ~DBIMF_BKCOLOR;
+                pdbi.dwModeFlags &= ~DBIMF_BKCOLOR; //Don't use background color
             }
 
             TaskbarInfo.UpdateInfo();
@@ -195,6 +193,7 @@ namespace CSDeskBand
                 Marshal.ReleaseComObject(_parentSite);
             }
 
+            //pUnkSite null means deskband was closed
             if (pUnkSite == null)
             {
                 _logger.Debug("Closing deskband");
