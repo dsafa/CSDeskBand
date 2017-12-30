@@ -18,7 +18,7 @@ namespace CSDeskBand
         public static readonly int TaskbarHorizontalHeightSmall = 30;
 
         /// <summary>
-        /// Width for a default vertical taskbar. Small taskbar icons don't change the size
+        /// Width for a default vertical taskbar. There is no small vertical taskbar
         /// </summary>
         public static readonly int TaskbarVerticalWidth = 62;
 
