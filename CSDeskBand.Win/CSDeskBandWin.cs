@@ -6,6 +6,11 @@ using CSDeskBand.Logging;
 
 namespace CSDeskBand.Win
 {
+    /// <summary>
+    /// Winforms deskband. Your deskband should inherit this class.
+    /// Your deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
+    /// Look at Sample.Win for an example
+    /// </summary>
     public class CSDeskBandWin: UserControl, ICSDeskBand
     {
         protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
