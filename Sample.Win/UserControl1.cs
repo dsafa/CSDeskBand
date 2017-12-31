@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using CSDeskBand.Win;
 using CSDeskBand;
 using System.Runtime.InteropServices;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace Sample.Win
 {
@@ -27,14 +30,51 @@ namespace Sample.Win
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
         private const uint WINEVENT_OUTOFCONTEXT = 0;
 
+        private IEnumerable<CSDeskBandMenuItem> ContextMenuItems
+        {
+            get
+            {
+                var _1 = new CSDeskBandMenuAction("1")
+                {
+
+                };
+                var _2 = new CSDeskBandMenuAction("2")
+                {
+
+                };
+                var _4 = new CSDeskBandMenuAction("4");
+                _4.Clicked += (sender, args) => { _4.Checked = true; };
+                var _3 = new CSDeskBandMenu("3")
+                {
+                    Items = { _4 }
+                };
+
+                return new CSDeskBandMenuItem[] {_1, _2, _3};
+            }
+        }
+
         public UserControl1()
         {
+            var config = new LoggingConfiguration();
+
+            var fileTarget = new FileTarget();
+            config.AddTarget("file", fileTarget);
+            string path = System.Environment.GetEnvironmentVariable("TEMP");
+            if (!path.EndsWith("\\")) path += "\\";
+            fileTarget.FileName = path + "templog.txt";
+            fileTarget.Layout = "${logger} - ${message}";
+
+            var rule2 = new LoggingRule("*", LogLevel.Debug, fileTarget);
+            config.LoggingRules.Add(rule2);
+            LogManager.Configuration = config;
 
             InitializeComponent();
             Options.Horizontal.Width = Options.MinHorizontal.Width = 300;
             UpdateLabel();
             _delegate = CallBack;
             _hookId = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, _delegate, 0, 0, WINEVENT_OUTOFCONTEXT);
+
+            Options.ContextMenuItems = ContextMenuItems;
         }
 
         protected override void OnClose()

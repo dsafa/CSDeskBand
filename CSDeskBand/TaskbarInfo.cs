@@ -94,10 +94,10 @@ namespace CSDeskBand
             APPBARDATA data = new APPBARDATA
             {
                 hWnd = IntPtr.Zero,
-                cbSize = Marshal.SizeOf(typeof(APPBARDATA)) //Need to set size here. There were issues making it a static field of APPBARDATA.
+                cbSize = Marshal.SizeOf<APPBARDATA>()
             };
             var res = Shell32.SHAppBarMessage(APPBARMESSAGE.ABM_GETTASKBARPOS, ref data);
-            if (Convert.ToBoolean((int)res))
+            if (!Convert.ToBoolean((int)res))
             {
                 _logger.Warn("Calling SHAppBarMessage failed");
             }

@@ -83,14 +83,23 @@
   <ItemGroup>
     <Compile Include="CSDeskBandEvents.cs" />
     <Compile Include="CSDeskBandImpl.cs" />
+    <Compile Include="CSDeskBandMenu.cs" />
+    <Compile Include="CSDeskBandMenuAction.cs" />
+    <Compile Include="CSDeskBandMenuItem.cs" />
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
+    <Compile Include="Interop\CMINVOKECOMMANDINFO.cs" />
+    <Compile Include="Interop\COM\IContextMenu2.cs" />
+    <Compile Include="Interop\COM\IContextMenu3.cs" />
+    <Compile Include="Interop\HRESULT.cs" />
     <Compile Include="ICSDeskBand.cs" />
     <Compile Include="Interop\APPBARDATA.cs" />
     <Compile Include="Interop\APPBARMESSAGE.cs" />
     <Compile Include="Interop\BANDSITEINFO.cs" />
+    <Compile Include="Interop\CMINVOKECOMMANDINFOEX.cs" />
     <Compile Include="Interop\COLORREF.cs" />
     <Compile Include="Interop\COM\IBandSite.cs" />
+    <Compile Include="Interop\COM\IContextMenu.cs" />
     <Compile Include="Interop\COM\IDeskBand.cs" />
     <Compile Include="Interop\COM\IDeskBand2.cs" />
     <Compile Include="Interop\COM\IDockingWindow.cs" />
@@ -99,9 +108,11 @@
     <Compile Include="Interop\COM\IOleCommandTarget.cs" />
     <Compile Include="Interop\COM\IOleWindow.cs" />
     <Compile Include="Interop\DESKBANDINFO.cs" />
+    <Compile Include="Interop\MENUITEMINFO.cs" />
     <Compile Include="Interop\OLECMD.cs" />
     <Compile Include="Interop\OLECMDTEXT.cs" />
     <Compile Include="Interop\POINT.cs" />
+    <Compile Include="Interop\QueryContextMenuFlags.cs" />
     <Compile Include="Interop\RECT.cs" />
     <Compile Include="Interop\Shell32.cs" />
     <Compile Include="Interop\tagDeskBandCID.cs" />

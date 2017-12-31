@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Linq;
 using Microsoft.Win32;
@@ -16,9 +17,6 @@ namespace CSDeskBand
     /// </summary>
     internal class CSDeskBandImpl : ICSDeskBand
     {
-        public static readonly int S_OK = 0;
-        public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
-
         public event EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
         public event EventHandler Closed;
 
@@ -32,6 +30,8 @@ namespace CSDeskBand
         private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
         private readonly ILog _logger;
         private static readonly Guid CATID_DESKBAND = new Guid("00021492-0000-0000-C000-000000000046");
+        private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions;
+        private uint _cmdIdOffset = 0;
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
@@ -40,6 +40,7 @@ namespace CSDeskBand
             Options = options;
             Options.PropertyChanged += Options_PropertyChanged;
             TaskbarInfo = new TaskbarInfo();
+            _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -59,30 +60,30 @@ namespace CSDeskBand
         public int GetWindow(out IntPtr phwnd)
         {
             phwnd = _handle;
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int ContextSensitiveHelp(bool fEnterMode)
         {
-            return E_NOTIMPL;
+            return HRESULT.E_NOTIMPL;
         }
 
         public int ShowDW([In] bool fShow)
         {
             VisibilityChanged?.Invoke(this, new VisibilityChangedEventArgs { IsVisible = fShow });
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int CloseDW([In] uint dwReserved)
         {
             Closed?.Invoke(this, null);
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved)
         {
             //must return notimpl
-            return E_NOTIMPL;
+            return HRESULT.E_NOTIMPL;
         }
 
         public int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)
@@ -166,24 +167,24 @@ namespace CSDeskBand
 
             TaskbarInfo.UpdateInfo();
 
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int CanRenderComposited(out bool pfCanRenderComposited)
         {
             pfCanRenderComposited = true;
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int SetCompositionState(bool fCompositionEnabled)
         {
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public int GetCompositionState(out bool pfCompositionEnabled)
         {
             pfCompositionEnabled = true;
-            return S_OK;
+            return HRESULT.S_OK;
         }
 
         public void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
@@ -254,5 +255,80 @@ namespace CSDeskBand
             var registrationInfo = (CSDeskBandRegistrationAttribute[]) t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
             return registrationInfo.FirstOrDefault()?.Name ?? t.Name;
         }
+
+        public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        {
+            _logger.Debug($"Was queried for context menu - index: {indexMenu} cmd first: {idCmdFirst}, cmd last: {idCmdLast}, flags: {uFlags}");
+            if (uFlags.HasFlag(QueryContextMenuFlags.CMF_DEFAULTONLY))
+            {
+                return HRESULT.MakeHResult((uint) HRESULT.S_OK, 0, 0);
+            }
+
+            _cmdIdOffset = idCmdFirst;
+            foreach (var item in Options.ContextMenuItems)
+            {
+                item.AddToMenu(hMenu, indexMenu++, ref idCmdFirst, _contextMenuActions);
+            }
+
+            return HRESULT.MakeHResult((uint)HRESULT.S_OK, 0, idCmdFirst + 1); //#id of last command + 1
+        }
+
+        public int InvokeCommand(IntPtr pici)
+        {
+            _logger.Debug("Invoking context menu action");
+
+            var commandInfo = Marshal.PtrToStructure<CMINVOKECOMMANDINFO>(pici);
+            bool isUnicode = false;
+            bool isExtended = false;
+            IntPtr verbPtr = commandInfo.lpVerb;
+
+            if (commandInfo.cbSize == Marshal.SizeOf<CMINVOKECOMMANDINFOEX>())
+            {
+                isExtended = true;
+
+                var extended = Marshal.PtrToStructure<CMINVOKECOMMANDINFOEX>(pici);
+                if (extended.fMask.HasFlag(CMINVOKECOMMANDINFOEX.CMIC.CMIC_MASK_UNICODE))
+                {
+                    isUnicode = true;
+                    verbPtr = extended.lpVerbW;
+                }
+            }
+
+            if (User32.HiWord(commandInfo.lpVerb.ToInt32()) != 0)
+            {
+                //TODO verbs
+                return HRESULT.E_FAIL;
+            }
+
+            var cmdIndex = User32.LoWord(verbPtr.ToInt32());
+
+            CSDeskBandMenuAction action;
+            if (!_contextMenuActions.TryGetValue((uint)cmdIndex + _cmdIdOffset, out action))
+            {
+                return HRESULT.E_FAIL;
+            }
+
+            action.DoAction();
+            return HRESULT.S_OK;
+        }
+
+        public int GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        {
+            pcszName = "";
+            return HRESULT.E_NOTIMPL;
+        }
+
+        public int HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            IntPtr i;
+            return HandleMenuMsg2(uMsg, wParam, lParam, out i);
+        }
+
+        public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
+        {
+            plResult = IntPtr.Zero;
+            return HRESULT.S_OK;
+        }
+
     }
 }

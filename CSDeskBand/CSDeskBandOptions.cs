@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CSDeskBand.Annotations;
@@ -45,6 +46,7 @@ namespace CSDeskBand
         private bool _sunken = false;
         private int _increment = 1;
         private bool _variableHeight = true;
+        private IEnumerable<CSDeskBandMenuItem> _contextMenuItems = new List<CSDeskBandMenuItem>();
 
         /// <summary>
         /// The deskband will use up as much space as possible following the contraints set by max and min size
@@ -303,6 +305,21 @@ namespace CSDeskBand
                 if (value.Equals(_horizontal)) return;
                 _horizontal = value;
                 _horizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
+                OnPropertyChanged();
+            }
+        }
+
+
+        /// <summary>
+        /// Context Menu
+        /// </summary>
+        public IEnumerable<CSDeskBandMenuItem> ContextMenuItems
+        {
+            get => _contextMenuItems;
+            set
+            {
+                if (Equals(value, _contextMenuItems)) return;
+                _contextMenuItems = value;
                 OnPropertyChanged();
             }
         }
