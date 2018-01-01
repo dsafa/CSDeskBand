@@ -7,8 +7,8 @@ using CSDeskBand.Logging;
 namespace CSDeskBand.Win
 {
     /// <summary>
-    /// Winforms deskband. Your deskband should inherit this class.
-    /// Your deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
+    /// Winforms deskband. The deskband should inherit this class.
+    /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
     /// Look at Sample.Win for an example
     /// </summary>
     public class CSDeskBandWin: UserControl, ICSDeskBand
@@ -28,11 +28,25 @@ namespace CSDeskBand.Win
                 _impl.VisibilityChanged += VisibilityChanged;
                 _impl.Closed += OnClose;
                 TaskbarInfo = _impl.TaskbarInfo;
+
+                SizeChanged += CSDeskBandWin_SizeChanged;
             }
             catch (Exception e)
             {
                 _logger.DebugException("Initialization Error", e);
                 throw;
+            }
+        }
+
+        private void CSDeskBandWin_SizeChanged(object sender, EventArgs e)
+        {
+            if (TaskbarInfo.Orientation == TaskbarOrientation.Horizontal)
+            {
+                Options.Horizontal = Size;
+            }
+            else
+            {
+                Options.Vertical = Size;
             }
         }
 
