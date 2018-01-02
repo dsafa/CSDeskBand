@@ -27,12 +27,12 @@ namespace CSDeskBand
         /// </summary>
         public static readonly int NoLimit = -1;
 
-        private Size _horizontal = new Size(200, TaskbarHorizontalHeightLarge);
-        private Size _maxHorizontal = new Size(NoLimit, 200);
-        private Size _minHorizontal = new Size(200, TaskbarHorizontalHeightSmall);
-        private Size _vertical = new Size(TaskbarVerticalWidth, 200);
-        private Size _maxVertical = new Size(TaskbarVerticalWidth, NoLimit);
-        private Size _minVertical = new Size(TaskbarVerticalWidth, 200);
+        private Size _horizontal;
+        private Size _maxHorizontal;
+        private Size _minHorizontal;
+        private Size _vertical;
+        private Size _maxVertical;
+        private Size _minVertical;
         private bool _newRow = false;
         private bool _addToFront = false;
         private bool _topRow = false;
@@ -227,6 +227,7 @@ namespace CSDeskBand
             {
                 if (value.Equals(_minVertical)) return;
                 _minVertical = value;
+                _minVertical.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -241,6 +242,7 @@ namespace CSDeskBand
             {
                 if (value.Equals(_maxVertical)) return;
                 _maxVertical = value;
+                _maxVertical.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -255,6 +257,7 @@ namespace CSDeskBand
             {
                 if (value.Equals(_vertical)) return;
                 _vertical = value;
+                _vertical.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -269,6 +272,7 @@ namespace CSDeskBand
             {
                 if (value.Equals(_minHorizontal)) return;
                 _minHorizontal = value;
+                _minHorizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -283,6 +287,7 @@ namespace CSDeskBand
             {
                 if (value.Equals(_maxHorizontal)) return;
                 _maxHorizontal = value;
+                _maxHorizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -297,8 +302,21 @@ namespace CSDeskBand
             {
                 if (value.Equals(_horizontal)) return;
                 _horizontal = value;
+                _horizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
+        }
+
+        public CSDeskBandOptions()
+        {
+            //initialize in constructor to hook up property change events
+            Horizontal = new Size(200, TaskbarHorizontalHeightLarge);
+            MaxHorizontal = new Size(NoLimit, NoLimit);
+            MinHorizontal = new Size(NoLimit, NoLimit);
+
+            Vertical = new Size(TaskbarVerticalWidth, 200);
+            MaxVertical = new Size(NoLimit, NoLimit);
+            MinVertical = new Size(NoLimit, NoLimit);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

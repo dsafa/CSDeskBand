@@ -10,8 +10,8 @@ namespace CSDeskBand.Wpf
 {
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
-        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
-        protected TaskbarInfo TaskbarInfo { get; }
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        public TaskbarInfo TaskbarInfo { get; }
 
         //so we can get a handle
         protected ElementHost Host { get; }
@@ -33,11 +33,25 @@ namespace CSDeskBand.Wpf
                 _impl = new CSDeskBandImpl(Host.Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
                 TaskbarInfo = _impl.TaskbarInfo;
+
+                SizeChanged += CSDeskBandWpf_SizeChanged;
             }
             catch (Exception e)
             {
                 _logger.DebugException("Initialization error", e);
                 throw;
+            }
+        }
+
+        private void CSDeskBandWpf_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (TaskbarInfo.Orientation == TaskbarOrientation.Horizontal)
+            {
+                Options.Horizontal = new System.Windows.Size(ActualWidth, ActualHeight);
+            }
+            else
+            {
+                Options.Vertical = new System.Windows.Size(ActualWidth, ActualHeight);
             }
         }
 

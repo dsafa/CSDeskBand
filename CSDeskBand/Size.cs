@@ -1,11 +1,36 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using CSDeskBand.Annotations;
 
 namespace CSDeskBand
 {
-    public class Size
+    public class Size : INotifyPropertyChanged
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        private int _width;
+        private int _height;
+
+        public int Width
+        {
+            get => _width;
+            set
+            {
+                if (value == _width) return;
+                _width = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int Height
+        {
+            get => _height;
+            set
+            {
+                if (value == _height) return;
+                _height = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Size(int width, int height)
         {
@@ -31,6 +56,14 @@ namespace CSDeskBand
         public static implicit operator System.Drawing.Size(Size size)
         {
             return new System.Drawing.Size(size.Width, size.Height);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
