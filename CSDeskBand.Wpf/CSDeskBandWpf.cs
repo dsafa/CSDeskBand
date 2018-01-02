@@ -10,8 +10,8 @@ namespace CSDeskBand.Wpf
 {
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
-        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
-        protected TaskbarInfo TaskbarInfo { get; }
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+        public TaskbarInfo TaskbarInfo { get; }
 
         //so we can get a handle
         protected ElementHost Host { get; }
