@@ -38,3 +38,6 @@ regasm /codebase Sample.Win.dll
 
 ## Examples
 There are examples included for Winforms and WPF in Sample.Win and Sample.Wpf
+
+### Compatibility
+Tested on Windows 10 x64
