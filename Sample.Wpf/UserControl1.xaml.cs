@@ -22,6 +22,9 @@ using CSDeskBand.Annotations;
 
 namespace Sample.Wpf
 {
+    /// <summary>
+    /// Example WPF deskband. Shows taskbar info capabilities and context menus
+    /// </summary>
     [ComVisible(true)]
     [Guid("89BF6B36-A0B0-4C95-A666-87A55C226986")]
     [CSDeskBandRegistration(Name = "Sample WPF Deskband")]
@@ -76,6 +79,25 @@ namespace Sample.Wpf
             }
         }
 
+        private IEnumerable<CSDeskBandMenuItem> ContextMenuItems
+        {
+            get
+            {
+                var action = new CSDeskBandMenuAction("Action - Toggle submenu");
+                var separator = new CSDeskBandMenuSeparator();
+                var submenuAction = new CSDeskBandMenuAction("Submenu Action - Toggle checkmark");
+                var submenu = new CSDeskBandMenu("Submenu")
+                {
+                    Items = { submenuAction }
+                };
+
+                action.Clicked += (sender, args) => submenu.Enabled = !submenu.Enabled;
+                submenuAction.Clicked += (sender, args) => submenuAction.Checked = !submenuAction.Checked;
+
+                return new CSDeskBandMenuItem[] { action, separator, submenu };
+            }
+        }
+
         public UserControl1()
         {
             InitializeComponent();
@@ -95,6 +117,8 @@ namespace Sample.Wpf
             TaskbarOrientation = TaskbarInfo.Orientation == CSDeskBand.TaskbarOrientation.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
             TaskbarWidth = TaskbarInfo.Size.Width;
             TaskbarHeight = TaskbarInfo.Size.Height;
+
+            Options.ContextMenuItems = ContextMenuItems;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

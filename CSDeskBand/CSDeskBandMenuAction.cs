@@ -1,17 +1,15 @@
-﻿using System;
+﻿using CSDeskBand.Interop;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using CSDeskBand.Interop;
-using CSDeskBand.Logging;
 
 namespace CSDeskBand
 {
     public class CSDeskBandMenuAction : CSDeskBandMenuItem
     {
         public bool Checked { get; set; } = false;
+        public bool Enabled { get; set; } = true;
+        public string Text { get; set; }
         public event EventHandler Clicked;
 
         private MENUITEMINFO _menuiteminfo;
@@ -20,8 +18,6 @@ namespace CSDeskBand
         {
             Text = text;
         }
-
-        internal override uint ItemCount { get; } = 1;
 
         internal void DoAction()
         {

@@ -1,17 +1,15 @@
-﻿using System;
+﻿using CSDeskBand.Interop;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using CSDeskBand.Interop;
-using CSDeskBand.Logging;
 
 namespace CSDeskBand
 {
     public class CSDeskBandMenu : CSDeskBandMenuItem
     {
         public List<CSDeskBandMenuItem> Items { get; }
+        public bool Enabled { get; set; } = true;
+        public string Text { get; set; }
 
         private IntPtr _menu;
         private MENUITEMINFO _menuiteminfo;
@@ -35,15 +33,10 @@ namespace CSDeskBand
             ClearMenu();
         }
 
-        internal override uint ItemCount
-        {
-            get => Items.Aggregate(0u, (total, menuItem) => total + menuItem.ItemCount) + 1;
-        }
-
         internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, CSDeskBandMenuAction> callbacks)
         {
-            //Create a submenu and add the items to it
             ClearMenu();
+
             _menu = User32.CreatePopupMenu();
             uint index = 0;
             foreach (var item in Items)
@@ -54,14 +47,14 @@ namespace CSDeskBand
             _menuiteminfo = new MENUITEMINFO()
             {
                 cbSize = Marshal.SizeOf<MENUITEMINFO>(),
-                fMask = MENUITEMINFO.MIIM.MIIM_SUBMENU | MENUITEMINFO.MIIM.MIIM_STRING,
+                fMask = MENUITEMINFO.MIIM.MIIM_SUBMENU | MENUITEMINFO.MIIM.MIIM_STRING | MENUITEMINFO.MIIM.MIIM_STATE,
                 fType = MENUITEMINFO.MFT.MFT_MENUBREAK | MENUITEMINFO.MFT.MFT_STRING,
+                fState = Enabled ? MENUITEMINFO.MFS.MFS_ENABLED : MENUITEMINFO.MFS.MFS_DISABLED,
                 dwTypeData = Text,
                 cch = (uint)Text.Length,
                 hSubMenu = _menu,
             };
 
-            //Add submenu to menu
             User32.InsertMenuItem(menu, pos, true, ref _menuiteminfo);
         }
 
