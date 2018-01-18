@@ -14,7 +14,7 @@ namespace CSDeskBand.Wpf
         public TaskbarInfo TaskbarInfo { get; }
 
         //so we can get a handle
-        protected ElementHost Host { get; }
+        private ElementHost Host { get; }
         private readonly CSDeskBandImpl _impl;
         private readonly ILog _logger;
 
@@ -130,6 +130,31 @@ namespace CSDeskBand.Wpf
         private static void Unregister(Type t)
         {
             CSDeskBandImpl.Unregister(t);
+        }
+
+        public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        {
+            return _impl.QueryContextMenu(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
+        }
+
+        public int InvokeCommand(IntPtr pici)
+        {
+            return _impl.InvokeCommand(pici);
+        }
+
+        public int GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        {
+            return _impl.GetCommandString(ref idcmd, uflags, ref pwReserved, out pcszName, cchMax);
+        }
+
+        public int HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            return _impl.HandleMenuMsg(uMsg, wParam, lParam);
+        }
+
+        public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
+        {
+            return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
         }
     }
 }

@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using CSDeskBand.Win;
 using CSDeskBand;
 using System.Runtime.InteropServices;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace Sample.Win
 {
@@ -29,7 +32,6 @@ namespace Sample.Win
 
         public UserControl1()
         {
-
             InitializeComponent();
             Options.Horizontal.Width = Options.MinHorizontal.Width = 300;
             UpdateLabel();

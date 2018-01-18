@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using CSDeskBand.Interop;
@@ -142,6 +143,31 @@ namespace CSDeskBand.Win
         private static void Unregister(Type t)
         {
             CSDeskBandImpl.Unregister(t);
+        }
+
+        public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        {
+            return _impl.QueryContextMenu(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
+        }
+
+        public int InvokeCommand(IntPtr pici)
+        {
+            return _impl.InvokeCommand(pici);
+        }
+
+        public int GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        {
+            return _impl.GetCommandString(ref idcmd, uflags, ref pwReserved, out pcszName, cchMax);
+        }
+
+        public int HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            return _impl.HandleMenuMsg(uMsg, wParam, lParam);
+        }
+
+        public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
+        {
+            return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
         }
     }
 }
