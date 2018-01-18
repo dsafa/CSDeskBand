@@ -126,7 +126,7 @@ namespace CSDeskBand
             {
                 _logger.Debug("Deskband integral requested");
                 pdbi.ptIntegral.Y = Options.Increment;
-                pdbi.ptIntegral.X = 0;
+                pdbi.ptIntegral.X = 1;
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_ACTUAL))
@@ -147,7 +147,10 @@ namespace CSDeskBand
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
                 _logger.Debug("Deskband tile requested");
-                pdbi.wszTitle = Options.ShowTitle ? Options.Title : "";
+                pdbi.wszTitle = Options.Title;
+
+                if (!Options.ShowTitle)
+                    pdbi.dwMask &= ~DBIM_TITLE;
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_MODEFLAGS))
