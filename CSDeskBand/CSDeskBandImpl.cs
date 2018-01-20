@@ -126,7 +126,7 @@ namespace CSDeskBand
             {
                 _logger.Debug("Deskband integral requested");
                 pdbi.ptIntegral.Y = Options.Increment;
-                pdbi.ptIntegral.X = 1;
+                pdbi.ptIntegral.X = Options.Increment;
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_ACTUAL))
@@ -146,7 +146,7 @@ namespace CSDeskBand
 
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
-                _logger.Debug("Deskband tile requested");
+                _logger.Debug("Deskband title requested");
                 pdbi.wszTitle = Options.Title;
 
                 if (!Options.ShowTitle)
@@ -223,7 +223,7 @@ namespace CSDeskBand
             try
             {
                 string guid = t.GUID.ToString("B");
-                RegistryKey rkClass = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
+                RegistryKey rkClass = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32).CreateSubKey($@"CLSID\{guid}");
                 rkClass.SetValue(null, GetToolbarName(t));
 
                 RegistryKey rkCat = rkClass.CreateSubKey("Implemented Categories");
@@ -243,7 +243,7 @@ namespace CSDeskBand
             try
             {
                 string guid = t.GUID.ToString("B");
-                Registry.ClassesRoot.CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);
+                RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32).CreateSubKey(@"CLSID").DeleteSubKeyTree(guid);
 
                 Console.WriteLine($"Successfully unregistered deskband {GetToolbarName(t)} - GUID: {guid}");
             }

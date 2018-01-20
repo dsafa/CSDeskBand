@@ -107,7 +107,6 @@ namespace CSDeskBand.Wpf
 
         public int GetCompositionState(out bool pfCompositionEnabled)
         {
-            pfCompositionEnabled = false;
             return _impl.GetCompositionState(out pfCompositionEnabled);
         }
 
