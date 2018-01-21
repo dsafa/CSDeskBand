@@ -170,5 +170,31 @@ namespace CSDeskBand.Win
         {
             return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
         }
+
+        public int GetClassID(out Guid pClassID)
+        {
+            pClassID = GetType().GUID;
+            return HRESULT.S_OK;
+        }
+
+        public int GetSizeMax(out ulong pcbSize)
+        {
+            return _impl.GetSizeMax(out pcbSize);
+        }
+
+        public int IsDirty()
+        {
+            return _impl.IsDirty();
+        }
+
+        public int Load(ref object pStm)
+        {
+            return _impl.Load(ref pStm);
+        }
+
+        public int Save(ref object pStm, bool fClearDirty)
+        {
+            return _impl.Save(ref pStm, fClearDirty);
+        }
     }
 }

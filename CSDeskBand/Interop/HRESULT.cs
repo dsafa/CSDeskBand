@@ -3,6 +3,7 @@
     internal class HRESULT
     {
         public static readonly int S_OK = 0;
+        public static readonly int S_FALSE = 1;
         public static readonly int E_NOTIMPL = unchecked((int)0x80004001);
         public static readonly int E_FAIL = unchecked((int)0x80004005);
 
