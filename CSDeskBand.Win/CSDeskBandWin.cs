@@ -25,6 +25,7 @@ namespace CSDeskBand.Win
             _logger = LogProvider.GetCurrentClassLogger();
             try
             {
+                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
                 _impl = new CSDeskBandImpl(Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
                 _impl.Closed += OnClose;
@@ -168,6 +169,32 @@ namespace CSDeskBand.Win
         public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
         {
             return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
+        }
+
+        public int GetClassID(out Guid pClassID)
+        {
+            pClassID = GetType().GUID;
+            return HRESULT.S_OK;
+        }
+
+        public int GetSizeMax(out ulong pcbSize)
+        {
+            return _impl.GetSizeMax(out pcbSize);
+        }
+
+        public int IsDirty()
+        {
+            return _impl.IsDirty();
+        }
+
+        public int Load(ref object pStm)
+        {
+            return _impl.Load(ref pStm);
+        }
+
+        public int Save(ref object pStm, bool fClearDirty)
+        {
+            return _impl.Save(ref pStm, fClearDirty);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace CSDeskBand
     /// <summary>
     /// Deskband Interface
     /// </summary>
-    public interface ICSDeskBand : IDeskBand2, IObjectWithSite, IContextMenu3
+    public interface ICSDeskBand : IDeskBand2, IObjectWithSite, IContextMenu3, IPersistStream
     {
     }
 }

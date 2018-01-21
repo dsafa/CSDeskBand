@@ -10,6 +10,6 @@ namespace CSDeskBand.Interop.COM
     public interface IInputObjectSite
     {
         [PreserveSig]
-        Int32 OnFocusChangeIS([MarshalAs(UnmanagedType.IUnknown)] Object punkObj, Int32 fSetFocus);
+        Int32 OnFocusChangeIS([MarshalAs(UnmanagedType.IUnknown)] object punkObj, Int32 fSetFocus);
     }
 }
