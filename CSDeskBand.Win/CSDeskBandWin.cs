@@ -25,6 +25,7 @@ namespace CSDeskBand.Win
             _logger = LogProvider.GetCurrentClassLogger();
             try
             {
+                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
                 _impl = new CSDeskBandImpl(Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
                 _impl.Closed += OnClose;

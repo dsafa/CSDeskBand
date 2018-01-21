@@ -147,7 +147,11 @@ namespace CSDeskBand
             if (pdbi.dwMask.HasFlag(DBIM_TITLE))
             {
                 _logger.Debug("Deskband tile requested");
-                pdbi.wszTitle = Options.ShowTitle ? Options.Title : "";
+                pdbi.wszTitle = Options.Title;
+                if (!Options.ShowTitle)
+                {
+                    pdbi.dwMask &= ~DBIM_TITLE;
+                }
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_MODEFLAGS))
@@ -250,7 +254,7 @@ namespace CSDeskBand
             }
         }
 
-        private static string GetToolbarName(Type t)
+        internal static string GetToolbarName(Type t)
         {
             var registrationInfo = (CSDeskBandRegistrationAttribute[]) t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
             return registrationInfo.FirstOrDefault()?.Name ?? t.Name;

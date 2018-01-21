@@ -23,6 +23,7 @@ namespace CSDeskBand.Wpf
             _logger = LogProvider.GetCurrentClassLogger();
             try
             {
+                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
                 Host = new ElementHost
                 {
                     Child = this,
