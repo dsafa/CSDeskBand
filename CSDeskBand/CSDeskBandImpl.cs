@@ -125,7 +125,7 @@ namespace CSDeskBand
             {
                 _logger.Debug("Deskband integral requested");
                 pdbi.ptIntegral.Y = Options.Increment;
-                pdbi.ptIntegral.X = 0;
+                pdbi.ptIntegral.X = Options.Increment;
             }
 
             if (pdbi.dwMask.HasFlag(DBIM_ACTUAL))
