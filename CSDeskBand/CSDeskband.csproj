@@ -89,7 +89,9 @@
     <Compile Include="CSDeskBandMenuSeparator.cs" />
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
+    <Compile Include="Interop\CATEGORYINFO.cs" />
     <Compile Include="Interop\CMINVOKECOMMANDINFO.cs" />
+    <Compile Include="Interop\COM\ICatRegister.cs" />
     <Compile Include="Interop\COM\IContextMenu2.cs" />
     <Compile Include="Interop\COM\IContextMenu3.cs" />
     <Compile Include="Interop\COM\IPersist.cs" />
