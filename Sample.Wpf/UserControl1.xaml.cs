@@ -79,7 +79,7 @@ namespace Sample.Wpf
             }
         }
 
-        private IEnumerable<CSDeskBandMenuItem> ContextMenuItems
+        private List<CSDeskBandMenuItem> ContextMenuItems
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Sample.Wpf
                 action.Clicked += (sender, args) => submenu.Enabled = !submenu.Enabled;
                 submenuAction.Clicked += (sender, args) => submenuAction.Checked = !submenuAction.Checked;
 
-                return new CSDeskBandMenuItem[] { action, separator, submenu };
+                return new List<CSDeskBandMenuItem>() {action, separator, submenu};
             }
         }
 

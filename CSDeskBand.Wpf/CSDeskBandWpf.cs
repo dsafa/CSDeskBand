@@ -23,6 +23,7 @@ namespace CSDeskBand.Wpf
             _logger = LogProvider.GetCurrentClassLogger();
             try
             {
+                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
                 Host = new ElementHost
                 {
                     Child = this,
@@ -63,6 +64,11 @@ namespace CSDeskBand.Wpf
         protected virtual void VisibilityChanged(bool visible)
         {
             Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        protected void CloseDeskBand()
+        {
+            _impl.CloseDeskBand();
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -155,6 +161,32 @@ namespace CSDeskBand.Wpf
         public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
         {
             return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
+        }
+
+        public int GetClassID(out Guid pClassID)
+        {
+            pClassID = GetType().GUID;
+            return HRESULT.S_OK;
+        }
+
+        public int GetSizeMax(out ulong pcbSize)
+        {
+            return _impl.GetSizeMax(out pcbSize);
+        }
+
+        public int IsDirty()
+        {
+            return _impl.IsDirty();
+        }
+
+        public int Load(IntPtr pStm)
+        {
+            return _impl.Load(pStm);
+        }
+
+        public int Save(IntPtr pStm, bool fClearDirty)
+        {
+            return _impl.Save(pStm, fClearDirty);
         }
     }
 }
