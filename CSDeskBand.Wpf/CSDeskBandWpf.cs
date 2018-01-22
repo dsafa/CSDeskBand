@@ -179,14 +179,14 @@ namespace CSDeskBand.Wpf
             return _impl.IsDirty();
         }
 
-        public int Load(ref object pStm)
+        public int Load(IntPtr pStm)
         {
-            return _impl.Load(ref pStm);
+            return _impl.Load(pStm);
         }
 
-        public int Save(ref object pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
-            return _impl.Save(ref pStm, fClearDirty);
+            return _impl.Save(pStm, fClearDirty);
         }
     }
 }

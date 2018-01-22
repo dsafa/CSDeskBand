@@ -355,12 +355,12 @@ namespace CSDeskBand
             return HRESULT.S_FALSE;
         }
 
-        public int Load(ref object pStm)
+        public int Load(IntPtr pStm)
         {
             return HRESULT.S_OK;
         }
 
-        public int Save(ref object pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return HRESULT.S_OK;
         }
