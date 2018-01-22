@@ -66,6 +66,11 @@ namespace CSDeskBand.Wpf
             Visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
 
+        protected void CloseDeskBand()
+        {
+            _impl.CloseDeskBand();
+        }
+
         public int GetWindow(out IntPtr phwnd)
         {
             return _impl.GetWindow(out phwnd);

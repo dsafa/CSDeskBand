@@ -79,6 +79,11 @@ namespace CSDeskBand.Win
             }
         }
 
+        protected void CloseDeskBand()
+        {
+            _impl.CloseDeskBand();
+        }
+
         public int GetWindow(out IntPtr phwnd)
         {
             return _impl.GetWindow(out phwnd);

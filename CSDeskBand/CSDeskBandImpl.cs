@@ -364,5 +364,11 @@ namespace CSDeskBand
         {
             return HRESULT.S_OK;
         }
+
+        public void CloseDeskBand()
+        {
+            var bandSite = _parentSite as IBandSite;
+            bandSite.RemoveBand(_id);
+        }
     }
 }
