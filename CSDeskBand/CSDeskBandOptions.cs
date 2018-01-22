@@ -46,7 +46,7 @@ namespace CSDeskBand
         private bool _sunken = false;
         private int _increment = 1;
         private bool _variableHeight = true;
-        private IEnumerable<CSDeskBandMenuItem> _contextMenuItems = new List<CSDeskBandMenuItem>();
+        private List<CSDeskBandMenuItem> _contextMenuItems = new List<CSDeskBandMenuItem>();
 
         /// <summary>
         /// The deskband will use up as much space as possible following the contraints set by max and min size
@@ -313,7 +313,7 @@ namespace CSDeskBand
         /// <summary>
         /// Context Menu
         /// </summary>
-        public IEnumerable<CSDeskBandMenuItem> ContextMenuItems
+        public List<CSDeskBandMenuItem> ContextMenuItems
         {
             get => _contextMenuItems;
             set
