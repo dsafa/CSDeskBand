@@ -75,6 +75,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -87,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSDeskBandWpf.cs" />
+    <Compile Include="CSDeskBandWpfHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

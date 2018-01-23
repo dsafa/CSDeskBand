@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.Integration;
 using CSDeskBand.Interop;
 using CSDeskBand.Logging;
 
@@ -13,8 +12,7 @@ namespace CSDeskBand.Wpf
         public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
         public TaskbarInfo TaskbarInfo { get; }
 
-        //so we can get a handle
-        private ElementHost Host { get; }
+        private readonly CSDeskBandWpfHost _host;
         private readonly CSDeskBandImpl _impl;
         private readonly ILog _logger;
 
@@ -24,14 +22,8 @@ namespace CSDeskBand.Wpf
             try
             {
                 Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
-                Host = new ElementHost
-                {
-                    Child = this,
-                    AutoSize = true,
-                    BackColorTransparent = true
-                };
-
-                _impl = new CSDeskBandImpl(Host.Handle, Options);
+                _host = new CSDeskBandWpfHost(this);
+                _impl = new CSDeskBandImpl(_host.Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
                 TaskbarInfo = _impl.TaskbarInfo;
 
