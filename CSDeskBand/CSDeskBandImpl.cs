@@ -4,7 +4,7 @@ using CSDeskBand.Logging;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIF;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIM;
@@ -21,25 +21,23 @@ namespace CSDeskBand
         public event EventHandler Closed;
 
         public CSDeskBandOptions Options { get; }
-        public TaskbarInfo TaskbarInfo { get; }
+        public TaskbarInfo TaskbarInfo { get; } = new TaskbarInfo();
 
         private readonly IntPtr _handle;
         private IntPtr _parentWindowHandle;
         private object _parentSite; //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
         private uint _id;
-        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
-        private readonly ILog _logger;
-        private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions;
         private uint _cmdIdOffset = 0;
+        private bool _isDirty = false;
+        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
+        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {
-            _logger = LogProvider.GetCurrentClassLogger();
             _handle = handle;
             Options = options;
             Options.PropertyChanged += Options_PropertyChanged;
-            TaskbarInfo = new TaskbarInfo();
-            _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -261,8 +259,7 @@ namespace CSDeskBand
 
         internal static string GetToolbarName(Type t)
         {
-            var registrationInfo = (CSDeskBandRegistrationAttribute[]) t.GetCustomAttributes(typeof(CSDeskBandRegistrationAttribute), true);
-            return registrationInfo.FirstOrDefault()?.Name ?? t.Name;
+            return t.GetCustomAttribute<CSDeskBandRegistrationAttribute>(true)?.Name ?? t.Name;
         }
 
         public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
@@ -347,27 +344,28 @@ namespace CSDeskBand
         public int GetSizeMax(out ulong pcbSize)
         {
             pcbSize = 0;
-            return HRESULT.S_OK;
+            return HRESULT.E_NOTIMPL;
         }
 
         public int IsDirty()
         {
-            return HRESULT.S_FALSE;
+            return _isDirty ? HRESULT.S_OK : HRESULT.S_FALSE;
         }
 
-        public int Load(IntPtr pStm)
+        public int Load(object pStm)
         {
             return HRESULT.S_OK;
         }
 
-        public int Save(IntPtr pStm, bool fClearDirty)
+        public int Save(object pStm, bool fClearDirty)
         {
+            _isDirty = !fClearDirty;
             return HRESULT.S_OK;
         }
 
         public void CloseDeskBand()
         {
-            var bandSite = _parentSite as IBandSite;
+            var bandSite = (IBandSite) _parentSite;
             bandSite.RemoveBand(_id);
         }
     }

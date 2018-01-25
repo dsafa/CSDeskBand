@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// A context menu item that can be clicked and invoke and action
+    /// </summary>
     public class CSDeskBandMenuAction : CSDeskBandMenuItem
     {
         public bool Checked { get; set; } = false;

@@ -7,7 +7,7 @@ namespace CSDeskBand
 {
     public class CSDeskBandMenu : CSDeskBandMenuItem
     {
-        public List<CSDeskBandMenuItem> Items { get; }
+        public List<CSDeskBandMenuItem> Items { get; } = new List<CSDeskBandMenuItem>();
         public bool Enabled { get; set; } = true;
         public string Text { get; set; }
 
@@ -18,11 +18,7 @@ namespace CSDeskBand
         public CSDeskBandMenu(string text, IEnumerable<CSDeskBandMenuItem> items)
         {
             Text = text;
-            if (items == null)
-            {
-                Items = new List<CSDeskBandMenuItem>();
-            }
-            else
+            if (items != null)
             {
                 Items.AddRange(items);
             }

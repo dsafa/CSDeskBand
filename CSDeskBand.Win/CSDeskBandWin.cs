@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using CSDeskBand.Interop;
@@ -17,21 +18,25 @@ namespace CSDeskBand.Win
         protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
         protected TaskbarInfo TaskbarInfo { get; }
 
+        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private readonly CSDeskBandImpl _impl;
-        private readonly ILog _logger;
+        private readonly Guid _deskbandGuid;
 
         public CSDeskBandWin()
         {
-            _logger = LogProvider.GetCurrentClassLogger();
             try
             {
                 Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
+
                 _impl = new CSDeskBandImpl(Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
                 _impl.Closed += OnClose;
-                TaskbarInfo = _impl.TaskbarInfo;
 
+                TaskbarInfo = _impl.TaskbarInfo;
                 SizeChanged += CSDeskBandWin_SizeChanged;
+
+                //Empty guid is a workaround for winforms designer becuase there will be no guid attribute
+                _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             }
             catch (Exception e)
             {
@@ -178,7 +183,7 @@ namespace CSDeskBand.Win
 
         public int GetClassID(out Guid pClassID)
         {
-            pClassID = GetType().GUID;
+            pClassID = _deskbandGuid;
             return HRESULT.S_OK;
         }
 
@@ -192,12 +197,12 @@ namespace CSDeskBand.Win
             return _impl.IsDirty();
         }
 
-        public int Load(IntPtr pStm)
+        public new int Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(IntPtr pStm, bool fClearDirty)
+        public int Save(object pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }

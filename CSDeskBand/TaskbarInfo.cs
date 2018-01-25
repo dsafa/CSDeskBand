@@ -76,14 +76,13 @@ namespace CSDeskBand
         public event EventHandler<TaskbarEdgeChangedEventArgs> TaskbarEdgeChanged;
         public event EventHandler<TaskbarSizeChangedEventArgs> TaskbarSizeChanged;
 
+        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
         private Edge _edge = Edge.Bottom;
         private Size _size;
-        private readonly ILog _logger;
 
         internal TaskbarInfo()
         {
-            _logger = LogProvider.GetCurrentClassLogger();
             UpdateInfo();
         }
 

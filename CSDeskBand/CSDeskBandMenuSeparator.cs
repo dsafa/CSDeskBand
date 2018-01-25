@@ -8,6 +8,9 @@ using CSDeskBand.Interop;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// A context menu seperator
+    /// </summary>
     public class CSDeskBandMenuSeparator : CSDeskBandMenuItem
     {
         private MENUITEMINFO _menuiteminfo;

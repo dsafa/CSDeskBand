@@ -22,9 +22,9 @@ namespace CSDeskBand.Interop.COM
         int IsDirty();
 
         [PreserveSig]
-        int Load([MarshalAs(UnmanagedType.IUnknown)] IntPtr pStm);
+        int Load([In, MarshalAs(UnmanagedType.IUnknown)] object pStm);
 
         [PreserveSig]
-        int Save([MarshalAs(UnmanagedType.IUnknown)] IntPtr pStm, bool fClearDirty);
+        int Save([In, MarshalAs(UnmanagedType.IUnknown)] object pStm, bool fClearDirty);
     }
 }

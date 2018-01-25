@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,22 +13,25 @@ namespace CSDeskBand.Wpf
         public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
         public TaskbarInfo TaskbarInfo { get; }
 
+        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private readonly CSDeskBandWpfHost _host;
         private readonly CSDeskBandImpl _impl;
-        private readonly ILog _logger;
+        private readonly Guid _deskbandGuid;
 
         public CSDeskBandWpf()
         {
-            _logger = LogProvider.GetCurrentClassLogger();
             try
             {
                 Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
+
                 _host = new CSDeskBandWpfHost(this);
                 _impl = new CSDeskBandImpl(_host.Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
-                TaskbarInfo = _impl.TaskbarInfo;
 
+                TaskbarInfo = _impl.TaskbarInfo;
                 SizeChanged += CSDeskBandWpf_SizeChanged;
+
+                _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true).Value);
             }
             catch (Exception e)
             {
@@ -157,7 +161,7 @@ namespace CSDeskBand.Wpf
 
         public int GetClassID(out Guid pClassID)
         {
-            pClassID = GetType().GUID;
+            pClassID = _deskbandGuid;
             return HRESULT.S_OK;
         }
 
@@ -171,12 +175,12 @@ namespace CSDeskBand.Wpf
             return _impl.IsDirty();
         }
 
-        public int Load(IntPtr pStm)
+        public int Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(IntPtr pStm, bool fClearDirty)
+        public int Save(object pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }

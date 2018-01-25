@@ -6,6 +6,9 @@ using CSDeskBand.Annotations;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// Options for the deskband
+    /// </summary>
     public class CSDeskBandOptions : INotifyPropertyChanged
     {
         /// <summary>
