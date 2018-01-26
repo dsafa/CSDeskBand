@@ -28,7 +28,7 @@ namespace CSDeskBand
         private object _parentSite; //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
         private uint _id;
         private uint _cmdIdOffset = 0;
-        private bool _isDirty = false;
+        private bool _isDirty = true;
         private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
@@ -367,6 +367,21 @@ namespace CSDeskBand
         {
             var bandSite = (IBandSite) _parentSite;
             bandSite.RemoveBand(_id);
+        }
+
+        public void UIActivateIO(int fActivate, ref MSG msg)
+        {
+            //TODO
+        }
+
+        public int HasFocusIO()
+        {
+            return HRESULT.E_NOTIMPL;
+        }
+
+        public int TranslateAcceleratorIO(ref MSG msg)
+        {
+            return HRESULT.E_NOTIMPL;
         }
     }
 }

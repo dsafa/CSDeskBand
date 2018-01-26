@@ -184,5 +184,20 @@ namespace CSDeskBand.Wpf
         {
             return _impl.Save(pStm, fClearDirty);
         }
+
+        public void UIActivateIO(int fActivate, ref MSG msg)
+        {
+            _impl.UIActivateIO(fActivate, ref msg);
+        }
+
+        public int HasFocusIO()
+        {
+            return _impl.HasFocusIO();
+        }
+
+        public int TranslateAcceleratorIO(ref MSG msg)
+        {
+            return _impl.TranslateAcceleratorIO(ref msg);
+        }
     }
 }

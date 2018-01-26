@@ -94,6 +94,7 @@
     <Compile Include="Interop\COM\ICatRegister.cs" />
     <Compile Include="Interop\COM\IContextMenu2.cs" />
     <Compile Include="Interop\COM\IContextMenu3.cs" />
+    <Compile Include="Interop\COM\IInputObject.cs" />
     <Compile Include="Interop\COM\IPersist.cs" />
     <Compile Include="Interop\COM\IPersistStream.cs" />
     <Compile Include="Interop\HRESULT.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Interop\COM\IOleWindow.cs" />
     <Compile Include="Interop\DESKBANDINFO.cs" />
     <Compile Include="Interop\MENUITEMINFO.cs" />
+    <Compile Include="Interop\MSG.cs" />
     <Compile Include="Interop\OLECMD.cs" />
     <Compile Include="Interop\OLECMDTEXT.cs" />
     <Compile Include="Interop\POINT.cs" />
