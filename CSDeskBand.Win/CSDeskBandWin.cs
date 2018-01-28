@@ -35,7 +35,7 @@ namespace CSDeskBand.Win
                 TaskbarInfo = _impl.TaskbarInfo;
                 SizeChanged += CSDeskBandWin_SizeChanged;
 
-                //Empty guid is a workaround for winforms designer becuase there will be no guid attribute
+                //Empty guid is a workaround for winforms designer because there will be no guid attribute
                 _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             }
             catch (Exception e)
@@ -67,10 +67,7 @@ namespace CSDeskBand.Win
             VisibilityChanged(visibilityChangedEventArgs.IsVisible);
         }
 
-        protected virtual void OnClose()
-        {
-            Dispose(true);
-        }
+        protected virtual void OnClose() {}
 
         protected virtual void VisibilityChanged(bool visible)
         {

@@ -27,6 +27,7 @@ namespace CSDeskBand.Wpf
                 _host = new CSDeskBandWpfHost(this);
                 _impl = new CSDeskBandImpl(_host.Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
+                _impl.Closed += OnClose;
 
                 TaskbarInfo = _impl.TaskbarInfo;
                 SizeChanged += CSDeskBandWpf_SizeChanged;
@@ -52,16 +53,32 @@ namespace CSDeskBand.Wpf
             }
         }
 
+        private void OnClose(object sender, EventArgs eventArgs)
+        {
+            OnClose();
+        }
+
         private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
         {
             VisibilityChanged(visibilityChangedEventArgs.IsVisible);
         }
 
+        /// <summary>
+        /// Deskband is being closed
+        /// </summary>
+        protected virtual void OnClose() {}
+
+        /// <summary>
+        /// Deskband visibility has changed
+        /// </summary>
         protected virtual void VisibilityChanged(bool visible)
         {
             Visibility = visible ? Visibility.Visible : Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Close the deskband
+        /// </summary>
         protected void CloseDeskBand()
         {
             _impl.CloseDeskBand();

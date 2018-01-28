@@ -1,9 +1,13 @@
-# CS DeskBand - WIP
-A Library to create DeskBands on windows using C#. The DeskBands can be created using Winforms or WPF
+# CS DeskBand
+A Library to create [DeskBands](https://msdn.microsoft.com/en-us/library/windows/desktop/cc144099(v=vs.85).aspx) on windows using C#. Deskbands are toolbars that are docked on the taskbar and provide additional functionality to an otherwise unused space.
+
+CSDeskBand makes it easy to create a deskband using Winforms or WPF.
 
 ## Screenshots
-![Example 1](images/ex1.png)  
-![Example 2](images/ex2.png)  
+![Example 1](images/ex1.png)
+
+![Example 2](images/ex2.png)
+
 _Images taken from the sample projects_
 
 ## Usage
@@ -35,9 +39,19 @@ cd Sample.Win\bin\Debug
 
 regasm /codebase Sample.Win.dll
 ```
+The `/codebase` switch will add the path of the dll into the registry entry.
+
+Alternatively, register the assemblies into the Global Assembly Cache.
+```
+gacutil -i CSDeskBand.dll
+gacutil -i CSDeskBand.Win.dll
+gacutil -i Sample.Win.dll
+regasm Sample.Win.dll
+```
+_Note that GAC installation requires the assemblies to be [Strong-Named](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)_
 
 ## Examples
-There are examples included for Winforms and WPF in Sample.Win and Sample.Wpf
+There are examples included for Winforms and WPF in the Sample.Win and Sample.Wpf projects
 
 ### Compatibility
 Tested on Windows 10 x64
