@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.0.0-rc1</version>
+    <title>CSDeskBand</title>
+    <authors>Brandon Chong</authors>
+    <owners>dsafa</owners>
+    <licenseUrl>https://raw.githubusercontent.com/dsafa/CSDeskBand/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/dsafa/CSDeskBand</projectUrl>
+    <description>Base interfaces and classes for Deskbands</description>
+    <copyright>Copyright 2018</copyright>
+    <tags>Deskband</tags>
+  </metadata>
+</package>

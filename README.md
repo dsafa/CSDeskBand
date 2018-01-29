@@ -12,6 +12,11 @@ _Images taken from the sample projects_
 
 ## Usage
 
+### Installation
+Nuget packages are available here:
+- [CSDeskBand.Win](https://www.nuget.org/packages/CSDeskBand.Win)
+- [CSDeskBand.Wpf](https://www.nuget.org/packages/CSDeskBand.Wpf)
+
 Use `CSDeskBandWin` for winforms or `CSDeskBandWpf` for wpf
 - For a winforms usercontrol, inherit the `CSDeskBandWin` base class. _See Sample.Win_
 - For a wpf usercontol, Set `CSdeskBandWpf` as the root element in the XAML. _See Sample.Wpf_
