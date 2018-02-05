@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.0-rc1</version>
+    <version>1.0.0</version>
     <title>CSDeskBand</title>
     <authors>Brandon Chong</authors>
     <owners>dsafa</owners>
