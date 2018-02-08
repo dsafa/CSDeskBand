@@ -55,6 +55,8 @@ regasm Sample.Win.dll
 ```
 _Note that GAC installation requires the assemblies to be [Strong-Named](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)_
 
+Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more details.
+
 ## Examples
 There are examples included for Winforms and WPF in the Sample.Win and Sample.Wpf projects
 
