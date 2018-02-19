@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using CSDeskBand.Interop;
 using CSDeskBand.Logging;
 
@@ -12,6 +13,22 @@ namespace CSDeskBand.Wpf
     {
         public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
         public TaskbarInfo TaskbarInfo { get; }
+
+        public bool TransparencyEnabled
+        {
+            get => _host.AllowTransparency;
+            set => _host.AllowTransparency = value;
+        }
+
+        public Color TransparencyColorKey
+        {
+            get => _host.TransparencyKey.ToColor();
+            set
+            {
+                _host.TransparencyKey = value.ToColor();
+                _host.BackColor = value.ToColor();
+            }
+        }
 
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private readonly CSDeskBandWpfHost _host;

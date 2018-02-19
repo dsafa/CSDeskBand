@@ -13,6 +13,7 @@ namespace CSDeskBand.Wpf
             FormBorderStyle = FormBorderStyle.None;
             AllowTransparency = true;
             TransparencyKey = Color.Black;
+            BackColor = Color.Black;
 
             _host = new ElementHost
             {
@@ -23,11 +24,6 @@ namespace CSDeskBand.Wpf
             };
 
             Controls.Add(_host);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            //no op
         }
     }
 }

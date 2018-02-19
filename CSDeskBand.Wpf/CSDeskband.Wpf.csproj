@@ -87,6 +87,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorExtensions.cs" />
     <Compile Include="CSDeskBandWpf.cs" />
     <Compile Include="CSDeskBandWpfHost.cs">
       <SubType>Form</SubType>
