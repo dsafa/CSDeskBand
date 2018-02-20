@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -41,15 +42,23 @@ namespace CSDeskBand.Wpf
             {
                 Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
 
-                _host = new CSDeskBandWpfHost(this);
-                _impl = new CSDeskBandImpl(_host.Handle, Options);
+                if (DesignerProperties.GetIsInDesignMode(this))
+                {
+                    _impl = new CSDeskBandImpl(IntPtr.Zero, Options);
+                }
+                else
+                {
+                    _host = new CSDeskBandWpfHost(this);
+                    _impl = new CSDeskBandImpl(_host.Handle, Options);
+                }
+
                 _impl.VisibilityChanged += VisibilityChanged;
                 _impl.Closed += OnClose;
 
                 TaskbarInfo = _impl.TaskbarInfo;
                 SizeChanged += CSDeskBandWpf_SizeChanged;
 
-                _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true).Value);
+                _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             }
             catch (Exception e)
             {
