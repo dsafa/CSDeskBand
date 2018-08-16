@@ -49,11 +49,11 @@ namespace CSDeskBand.Win
         {
             if (TaskbarInfo.Orientation == TaskbarOrientation.Horizontal)
             {
-                Options.Horizontal = Size;
+                Options.HorizontalSize = Size;
             }
             else
             {
-                Options.Vertical = Size;
+                Options.VerticalSize = Size;
             }
         }
 

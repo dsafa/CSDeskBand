@@ -71,11 +71,11 @@ namespace CSDeskBand.Wpf
         {
             if (TaskbarInfo.Orientation == TaskbarOrientation.Horizontal)
             {
-                Options.Horizontal = new System.Windows.Size(ActualWidth, ActualHeight);
+                Options.HorizontalSize = new System.Windows.Size(ActualWidth, ActualHeight);
             }
             else
             {
-                Options.Vertical = new System.Windows.Size(ActualWidth, ActualHeight);
+                Options.VerticalSize = new System.Windows.Size(ActualWidth, ActualHeight);
             }
         }
 

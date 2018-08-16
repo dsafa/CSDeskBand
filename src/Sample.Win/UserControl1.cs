@@ -33,7 +33,7 @@ namespace Sample.Win
         public UserControl1()
         {
             InitializeComponent();
-            Options.Horizontal.Width = Options.MinHorizontal.Width = 300;
+            Options.HorizontalSize.Width = Options.MinHorizontalSize.Width = 300;
             UpdateLabel();
             _delegate = CallBack;
             _hookId = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, _delegate, 0, 0, WINEVENT_OUTOFCONTEXT);

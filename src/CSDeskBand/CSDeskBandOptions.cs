@@ -31,12 +31,12 @@ namespace CSDeskBand
         /// </summary>
         public static readonly int NoLimit = -1;
 
-        private Size _horizontal;
-        private Size _maxHorizontal;
-        private Size _minHorizontal;
-        private Size _vertical;
-        private Size _maxVertical;
-        private Size _minVertical;
+        private Size _horizontalSize;
+        private int _maxHorizontalHeight;
+        private Size _minHorizontalSize;
+        private Size _verticalSize;
+        private int _maxVerticalWidth;
+        private Size _minVerticalSize;
         private bool _newRow = false;
         private bool _addToFront = false;
         private bool _topRow = false;
@@ -223,91 +223,101 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Min Size veritcally
+        /// Mininum <see cref="Size"/> of the deskband in the vertical orientation.
         /// </summary>
-        public Size MinVertical
+        /// <seealso cref="TaskbarOrientation"/>
+        public Size MinVerticalSize
         {
-            get => _minVertical;
+            get => _minVerticalSize;
             set
             {
-                if (value.Equals(_minVertical)) return;
-                _minVertical = value;
-                _minVertical.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_minVerticalSize)) return;
+                _minVerticalSize = value;
+                _minVerticalSize.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Max size vertically. int.MaxValue - 1 for no limit
+        /// Maximum width of the deskband in the vertical orientation
         /// </summary>
-        public Size MaxVertical
+        /// <remarks>
+        /// The maximum height will have to be addressed in your code as there is no limit to the height of the deskband when vertical
+        /// </remarks>
+        /// <seealso cref="TaskbarOrientation"/>
+        public int MaxVerticalWidth
         {
-            get => _maxVertical;
+            get => _maxVerticalWidth;
             set
             {
-                if (value.Equals(_maxVertical)) return;
-                _maxVertical = value;
-                _maxVertical.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_maxVerticalWidth)) return;
+                _maxVerticalWidth = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Ideal size vertically. Not guaranteed to be this size.
+        /// Ideal <see cref="Size"/> of the deskband in the vertical orientation. There is no guarantee that the deskband will be this size
         /// </summary>
-        public Size Vertical
+        /// <seealso cref="TaskbarOrientation"/>
+        public Size VerticalSize
         {
-            get => _vertical;
+            get => _verticalSize;
             set
             {
-                if (value.Equals(_vertical)) return;
-                _vertical = value;
-                _vertical.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_verticalSize)) return;
+                _verticalSize = value;
+                _verticalSize.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Min size horizontal
+        /// Minimum <see cref="Size"/> of the deskband in the horizontal orientation
         /// </summary>
-        public Size MinHorizontal
+        /// <seealso cref="TaskbarOrientation"/>
+        public Size MinHorizontalSize
         {
-            get => _minHorizontal;
+            get => _minHorizontalSize;
             set
             {
-                if (value.Equals(_minHorizontal)) return;
-                _minHorizontal = value;
-                _minHorizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_minHorizontalSize)) return;
+                _minHorizontalSize = value;
+                _minHorizontalSize.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Max size horizontal
+        /// Maximum height of the deskband in the horizontal orientation
         /// </summary>
-        public Size MaxHorizontal
+        /// <remarks>
+        /// The maximum width will have to be addressed in your code as there is no limit to the width of the deskband when horizontal
+        /// </remarks>
+        /// <seealso cref="TaskbarOrientation"/>
+        public int MaxHorizontalHeight
         {
-            get => _maxHorizontal;
+            get => _maxHorizontalHeight;
             set
             {
-                if (value.Equals(_maxHorizontal)) return;
-                _maxHorizontal = value;
-                _maxHorizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_maxHorizontalHeight)) return;
+                _maxHorizontalHeight = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Ideal size horizontally. Not guaranteed to be this size.
+        /// Ideal <see cref="Size"/> of the deskband in the horizontal orientation. There is no guarantee that the deskband will be this size
         /// </summary>
-        public Size Horizontal
+        /// <seealso cref="TaskbarOrientation"/>
+        public Size HorizontalSize
         {
-            get => _horizontal;
+            get => _horizontalSize;
             set
             {
-                if (value.Equals(_horizontal)) return;
-                _horizontal = value;
-                _horizontal.PropertyChanged += (sender, args) => OnPropertyChanged();
+                if (value.Equals(_horizontalSize)) return;
+                _horizontalSize = value;
+                _horizontalSize.PropertyChanged += (sender, args) => OnPropertyChanged();
                 OnPropertyChanged();
             }
         }
@@ -330,13 +340,13 @@ namespace CSDeskBand
         public CSDeskBandOptions()
         {
             //initialize in constructor to hook up property change events
-            Horizontal = new Size(200, TaskbarHorizontalHeightLarge);
-            MaxHorizontal = new Size(NoLimit, NoLimit);
-            MinHorizontal = new Size(NoLimit, NoLimit);
+            HorizontalSize = new Size(200, TaskbarHorizontalHeightLarge);
+            MaxHorizontalHeight = NoLimit;
+            MinHorizontalSize = new Size(NoLimit, NoLimit);
 
-            Vertical = new Size(TaskbarVerticalWidth, 200);
-            MaxVertical = new Size(NoLimit, NoLimit);
-            MinVertical = new Size(NoLimit, NoLimit);
+            VerticalSize = new Size(TaskbarVerticalWidth, 200);
+            MaxVerticalWidth = NoLimit;
+            MinVerticalSize = new Size(NoLimit, NoLimit);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
