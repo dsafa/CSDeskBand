@@ -93,13 +93,13 @@ namespace CSDeskBand
                 _logger.Debug("Deskband minsize requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptMinSize.Y = Options.MinVertical.Width;
-                    pdbi.ptMinSize.X = Options.MinVertical.Height;
+                    pdbi.ptMinSize.Y = Options.MinVerticalSize.Width;
+                    pdbi.ptMinSize.X = Options.MinVerticalSize.Height;
                 }
                 else
                 {
-                    pdbi.ptMinSize.X = Options.MinHorizontal.Width;
-                    pdbi.ptMinSize.Y = Options.MinHorizontal.Height;
+                    pdbi.ptMinSize.X = Options.MinHorizontalSize.Width;
+                    pdbi.ptMinSize.Y = Options.MinHorizontalSize.Height;
                 }
             }
 
@@ -108,13 +108,13 @@ namespace CSDeskBand
                 _logger.Debug("Deskband maxsize requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptMaxSize.Y = Options.MaxVertical.Width;
-                    pdbi.ptMaxSize.X = Options.MaxVertical.Height;
+                    pdbi.ptMaxSize.Y = Options.MaxVerticalWidth;
+                    pdbi.ptMaxSize.X = 0;
                 }
                 else
                 {
-                    pdbi.ptMaxSize.X = Options.MaxHorizontal.Width;
-                    pdbi.ptMaxSize.Y = Options.MaxHorizontal.Height;
+                    pdbi.ptMaxSize.X = 0;
+                    pdbi.ptMaxSize.Y = Options.MaxHorizontalHeight;
                 }
             }
 
@@ -131,13 +131,13 @@ namespace CSDeskBand
                 _logger.Debug("Deskband actual size requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
-                    pdbi.ptActual.Y = Options.Vertical.Width;
-                    pdbi.ptActual.X = Options.Vertical.Height;
+                    pdbi.ptActual.Y = Options.VerticalSize.Width;
+                    pdbi.ptActual.X = Options.VerticalSize.Height;
                 }
                 else
                 {
-                    pdbi.ptActual.X = Options.Horizontal.Width;
-                    pdbi.ptActual.Y = Options.Horizontal.Height;
+                    pdbi.ptActual.X = Options.HorizontalSize.Width;
+                    pdbi.ptActual.Y = Options.HorizontalSize.Height;
                 }
             }
 

@@ -101,9 +101,9 @@ namespace Sample.Wpf
         public UserControl1()
         {
             InitializeComponent();
-            Options.MinHorizontal.Width = 500;
-            Options.MinVertical.Width = 130;
-            Options.MinVertical.Height = 200;
+            Options.MinHorizontalSize.Width = 500;
+            Options.MinVerticalSize.Width = 130;
+            Options.MinVerticalSize.Height = 200;
 
             TaskbarInfo.TaskbarEdgeChanged += (sender, args) => TaskbarEdge = args.Edge;
             TaskbarInfo.TaskbarOrientationChanged += (sender, args) => TaskbarOrientation = args.Orientation == CSDeskBand.TaskbarOrientation.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
