@@ -5,11 +5,17 @@ using CSDeskBand.Annotations;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// Size class that is used so winforms or wpf is not used.
+    /// </summary>
     public sealed class Size : INotifyPropertyChanged
     {
         private int _width;
         private int _height;
 
+        /// <summary>
+        /// The width component of the size.
+        /// </summary>
         public int Width
         {
             get => _width;
@@ -21,6 +27,9 @@ namespace CSDeskBand
             }
         }
 
+        /// <summary>
+        /// The height component of the size.
+        /// </summary>
         public int Height
         {
             get => _height;

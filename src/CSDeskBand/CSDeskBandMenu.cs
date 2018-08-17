@@ -5,10 +5,31 @@ using System.Runtime.InteropServices;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// A sub menu item that can contain other <see cref="CSDeskBandMenuItem"/>.
+    /// </summary>
     public sealed class CSDeskBandMenu : CSDeskBandMenuItem
     {
+        /// <summary>
+        /// List of <see cref="CSDeskBandMenuItem"/> that this contains.
+        /// </summary>
         public List<CSDeskBandMenuItem> Items { get; } = new List<CSDeskBandMenuItem>();
+
+        /// <summary>
+        /// Determines if the menu item is enabled.
+        /// </summary>
+        /// <value>
+        /// True if the menu item can be interacted with. False to disable interactions.
+        /// The default value is true;
+        /// </value>
         public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// The text shown in the menu item.
+        /// </summary>
+        /// <value>
+        /// The text that will be displayed for this menu item.
+        /// </value>
         public string Text { get; set; }
 
         private IntPtr _menu;

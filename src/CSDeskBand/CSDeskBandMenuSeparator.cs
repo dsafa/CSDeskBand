@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace CSDeskBand
 {
     /// <summary>
-    /// A context menu seperator
+    /// A context menu seperator.
     /// </summary>
     public sealed class CSDeskBandMenuSeparator : CSDeskBandMenuItem
     {
