@@ -8,6 +8,7 @@ namespace CSDeskBand
     /// </summary>
     public abstract class CSDeskBandMenuItem
     {
+        // This is used instead of an interface so that the methods can be kept internal
         internal abstract void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, CSDeskBandMenuAction> callbacks);
     }
 }

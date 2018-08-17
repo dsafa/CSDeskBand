@@ -25,11 +25,11 @@ namespace CSDeskBand
 
         private readonly IntPtr _handle;
         private IntPtr _parentWindowHandle;
-        private object _parentSite; //Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
+        private object _parentSite; // Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
         private uint _id;
-        private uint _cmdIdOffset = 0;
+        private uint _menutStartId = 0;
         private bool _isDirty = true;
-        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); //Command group id for deskband. Used for IOleCommandTarge.Exec
+        private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); // Command group id for deskband. Used for IOleCommandTarge.Exec
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
         private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
 
@@ -49,8 +49,8 @@ namespace CSDeskBand
             _logger.Debug("Deskband options have changed");
 
             var parent = (IOleCommandTarget) _parentSite;
-            //Set pvaln to the id that was passed in SetSite
-            //When int is marshalled to variant, it is marshalled as VT_i4. See default marshalling for objects
+            // Set pvaln to the id that was passed in SetSite
+            // When int is marshalled to variant, it is marshalled as VT_i4. See default marshalling for objects
             parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, _id, null);
         }
 
@@ -87,7 +87,7 @@ namespace CSDeskBand
         {
             _id = dwBandID;
 
-            //Sizing information is requested whenever the taskbar changes size/orientation
+            // Sizing information is requested whenever the taskbar changes size/orientation
             if (pdbi.dwMask.HasFlag(DBIM_MINSIZE))
             {
                 _logger.Debug("Deskband minsize requested");
@@ -103,9 +103,10 @@ namespace CSDeskBand
                 }
             }
 
+            // X is ignored
             if (pdbi.dwMask.HasFlag(DBIM_MAXSIZE))
             {
-                _logger.Debug("Deskband maxsize requested");
+                _logger.Debug("Deskband maxheight requested");
                 if (dwViewMode.HasFlag(DBIF_VIEWMODE_VERTICAL))
                 {
                     pdbi.ptMaxSize.Y = Options.MaxVerticalWidth;
@@ -121,7 +122,7 @@ namespace CSDeskBand
             // x member is ignored
             if (pdbi.dwMask.HasFlag(DBIM_INTEGRAL))
             {
-                _logger.Debug("Deskband integral requested");
+                _logger.Debug("Deskband height increment requested");
                 pdbi.ptIntegral.Y = Options.HeightIncrement;
                 pdbi.ptIntegral.X = 0;
             }
@@ -211,7 +212,7 @@ namespace CSDeskBand
         [ComRegisterFunction]
         public static void Register(Type t)
         {
-            string guid = t.GUID.ToString("B");
+            var guid = t.GUID.ToString("B");
             try
             {
                 var registryKey = Registry.ClassesRoot.CreateSubKey($@"CLSID\{guid}");
@@ -232,7 +233,7 @@ namespace CSDeskBand
         [ComUnregisterFunction]
         public static void Unregister(Type t)
         {
-            string guid = t.GUID.ToString("B");
+            var guid = t.GUID.ToString("B");
             try
             {
                 Registry.ClassesRoot.OpenSubKey(@"CLSID", true)?.DeleteSubKeyTree(guid);
@@ -263,13 +264,13 @@ namespace CSDeskBand
                 return HRESULT.MakeHResult((uint) HRESULT.S_OK, 0, 0);
             }
 
-            _cmdIdOffset = idCmdFirst;
+            _menutStartId = idCmdFirst;
             foreach (var item in Options.ContextMenuItems)
             {
                 item.AddToMenu(hMenu, indexMenu++, ref idCmdFirst, _contextMenuActions);
             }
 
-            return HRESULT.MakeHResult((uint)HRESULT.S_OK, 0, idCmdFirst + 1); //#id of last command + 1
+            return HRESULT.MakeHResult((uint)HRESULT.S_OK, 0, idCmdFirst + 1); // #id of last command + 1
         }
 
         public int InvokeCommand(IntPtr pici)
@@ -277,9 +278,9 @@ namespace CSDeskBand
             _logger.Debug("Invoking context menu action");
 
             var commandInfo = Marshal.PtrToStructure<CMINVOKECOMMANDINFO>(pici);
-            bool isUnicode = false;
-            bool isExtended = false;
-            IntPtr verbPtr = commandInfo.lpVerb;
+            var isUnicode = false;
+            var isExtended = false;
+            var verbPtr = commandInfo.lpVerb;
 
             if (commandInfo.cbSize == Marshal.SizeOf<CMINVOKECOMMANDINFOEX>())
             {
@@ -301,8 +302,7 @@ namespace CSDeskBand
 
             var cmdIndex = User32.LoWord(verbPtr.ToInt32());
 
-            CSDeskBandMenuAction action;
-            if (!_contextMenuActions.TryGetValue((uint)cmdIndex + _cmdIdOffset, out action))
+            if (!_contextMenuActions.TryGetValue((uint)cmdIndex + _menutStartId, out var action))
             {
                 return HRESULT.E_FAIL;
             }
@@ -319,8 +319,7 @@ namespace CSDeskBand
 
         public int HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            IntPtr i;
-            return HandleMenuMsg2(uMsg, wParam, lParam, out i);
+            return HandleMenuMsg2(uMsg, wParam, lParam, out var i);
         }
 
         public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
