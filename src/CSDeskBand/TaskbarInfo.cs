@@ -10,7 +10,13 @@ namespace CSDeskBand
     /// </summary>
     public enum TaskbarOrientation
     {
+        /// <summary>
+        /// Vertical if the taskbar is either on top or bottom.
+        /// </summary>
         Vertical,
+        /// <summary>
+        /// Horizontal if the taskbar is either on the left or right.
+        /// </summary>
         Horizontal,
     }
 
@@ -19,9 +25,21 @@ namespace CSDeskBand
     /// </summary>
     public enum Edge : uint
     {
+        /// <summary>
+        /// Taskbar is on the left edge.
+        /// </summary>
         Left,
+        /// <summary>
+        /// Taskbar is on the top edge.
+        /// </summary>
         Top,
+        /// <summary>
+        /// Taskbar is on the right edge.
+        /// </summary>
         Right,
+        /// <summary>
+        /// Taskbar is on the bottom edge.
+        /// </summary>
         Bottom,
     }
 

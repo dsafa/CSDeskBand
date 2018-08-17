@@ -280,6 +280,9 @@ namespace CSDeskBand
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CSDeskBandOptions"/>.
+        /// </summary>
         public CSDeskBandOptions()
         {
             //initialize in constructor to hook up property change events
@@ -292,6 +295,9 @@ namespace CSDeskBand
             MinVerticalSize = new Size(NoLimit, NoLimit);
         }
 
+        /// <summary>
+        /// Occurs when a property has change.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

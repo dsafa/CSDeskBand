@@ -30,6 +30,9 @@ namespace CSDeskBand.Win
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CSDeskBandWin"/>.
+        /// </summary>
         public CSDeskBandWin()
         {
             try

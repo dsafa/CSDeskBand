@@ -1,4 +1,4 @@
-﻿using System;
+﻿#pragma warning disable 1591
 using System.Runtime.InteropServices;
 
 namespace CSDeskBand.Interop.COM

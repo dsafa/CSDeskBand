@@ -35,7 +35,17 @@ namespace CSDeskBand.ContextMenu
         private IntPtr _menu;
         private MENUITEMINFO _menuiteminfo;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DeskBandMenu"/> with a display text.
+        /// </summary>
+        /// <param name="text">The text displayed for this item in a menu.</param>
         public DeskBandMenu(string text) : this(text, null) { }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="DeskBandMenu"/> with a display text and a list of submenu items.
+        /// </summary>
+        /// <param name="text">The text displayed for this item in a menu.</param>
+        /// <param name="items">A <see cref="List{T}"/> of <see cref="DeskBandMenuItem"/> that will appear in this submenu.</param>
         public DeskBandMenu(string text, IEnumerable<DeskBandMenuItem> items)
         {
             Text = text;
@@ -45,6 +55,9 @@ namespace CSDeskBand.ContextMenu
             }
         }
 
+        /// <summary>
+        /// Frees up resoruces associated with the menu
+        /// </summary>
         ~DeskBandMenu()
         {
             ClearMenu();

@@ -56,6 +56,9 @@ namespace CSDeskBand.Wpf
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CSDeskBandWpf"/>.
+        /// </summary>
         public CSDeskBandWpf()
         {
             try
