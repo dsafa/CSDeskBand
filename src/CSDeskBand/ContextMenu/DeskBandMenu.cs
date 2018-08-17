@@ -50,7 +50,7 @@ namespace CSDeskBand.ContextMenu
             ClearMenu();
         }
 
-        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, DeskBandMenuAction> callbacks)
+        internal override void AddToMenu(IntPtr menu, uint itemPosition, ref uint itemId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             ClearMenu();
 
@@ -58,7 +58,7 @@ namespace CSDeskBand.ContextMenu
             uint index = 0;
             foreach (var item in Items)
             {
-                item.AddToMenu(_menu, index++, ref firstCmdId, callbacks);
+                item.AddToMenu(_menu, index++, ref itemId, callbacks);
             }
 
             _menuiteminfo = new MENUITEMINFO()
@@ -72,7 +72,7 @@ namespace CSDeskBand.ContextMenu
                 hSubMenu = _menu,
             };
 
-            User32.InsertMenuItem(menu, pos, true, ref _menuiteminfo);
+            User32.InsertMenuItem(menu, itemPosition, true, ref _menuiteminfo);
         }
 
         private void ClearMenu()
