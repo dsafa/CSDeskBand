@@ -1,18 +1,18 @@
-﻿using CSDeskBand.Interop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using CSDeskBand.Interop;
 
-namespace CSDeskBand
+namespace CSDeskBand.ContextMenu
 {
     /// <summary>
     /// A context menu seperator.
     /// </summary>
-    public sealed class CSDeskBandMenuSeparator : CSDeskBandMenuItem
+    public sealed class DeskBandMenuSeparator : DeskBandMenuItem
     {
         private MENUITEMINFO _menuiteminfo;
 
-        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, CSDeskBandMenuAction> callbacks)
+        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             _menuiteminfo = new MENUITEMINFO()
             {

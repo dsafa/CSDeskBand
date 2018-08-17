@@ -19,6 +19,7 @@ using CSDeskBand.Wpf;
 using System.Runtime.InteropServices;
 using CSDeskBand;
 using CSDeskBand.Annotations;
+using CSDeskBand.ContextMenu;
 
 namespace Sample.Wpf
 {
@@ -79,14 +80,14 @@ namespace Sample.Wpf
             }
         }
 
-        private List<CSDeskBandMenuItem> ContextMenuItems
+        private List<DeskBandMenuItem> ContextMenuItems
         {
             get
             {
-                var action = new CSDeskBandMenuAction("Action - Toggle submenu");
-                var separator = new CSDeskBandMenuSeparator();
-                var submenuAction = new CSDeskBandMenuAction("Submenu Action - Toggle checkmark");
-                var submenu = new CSDeskBandMenu("Submenu")
+                var action = new DeskBandMenuAction("Action - Toggle submenu");
+                var separator = new DeskBandMenuSeparator();
+                var submenuAction = new DeskBandMenuAction("Submenu Action - Toggle checkmark");
+                var submenu = new DeskBandMenu("Submenu")
                 {
                     Items = { submenuAction }
                 };
@@ -94,7 +95,7 @@ namespace Sample.Wpf
                 action.Clicked += (sender, args) => submenu.Enabled = !submenu.Enabled;
                 submenuAction.Clicked += (sender, args) => submenuAction.Checked = !submenuAction.Checked;
 
-                return new List<CSDeskBandMenuItem>() {action, separator, submenu};
+                return new List<DeskBandMenuItem>() {action, separator, submenu};
             }
         }
 

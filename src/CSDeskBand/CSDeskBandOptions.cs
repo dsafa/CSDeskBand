@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CSDeskBand.Annotations;
+using CSDeskBand.ContextMenu;
 
 namespace CSDeskBand
 {
@@ -43,7 +44,7 @@ namespace CSDeskBand
         private bool _isFixed = true;
         private int _heightIncrement = 1;
         private bool _heightCanChange = true;
-        private List<CSDeskBandMenuItem> _contextMenuItems = new List<CSDeskBandMenuItem>();
+        private List<DeskBandMenuItem> _contextMenuItems = new List<DeskBandMenuItem>();
 
         /// <summary>
         /// Determines if the height of the horizontal deskband is allowed to change. For a deskband in the vertical orientation, it will be the width.
@@ -260,15 +261,15 @@ namespace CSDeskBand
 
 
         /// <summary>
-        /// The list of <see cref="CSDeskBandMenuItem"/> the comprise the deskbands context menu.
+        /// The list of <see cref="DeskBandMenuItem"/> the comprise the deskbands context menu.
         /// </summary>
         /// <value>
-        /// A list of <see cref="CSDeskBandMenuItem"/> for the context menu. An empty list indicates no context menu.
+        /// A list of <see cref="DeskBandMenuItem"/> for the context menu. An empty list indicates no context menu.
         /// </value>
         /// <remarks>
         /// These context menu items are in addition of the default ones that windows provides.
         /// </remarks>
-        public List<CSDeskBandMenuItem> ContextMenuItems
+        public List<DeskBandMenuItem> ContextMenuItems
         {
             get => _contextMenuItems;
             set
