@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Diagnostics.SymbolStore;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using CSDeskBand;
 using CSDeskBand.Win;
-using CSDeskBand;
+using System;
 using System.Runtime.InteropServices;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
+using System.Text;
 
 namespace Sample.Win
 {
