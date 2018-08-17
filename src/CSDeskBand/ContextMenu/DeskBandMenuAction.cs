@@ -53,7 +53,7 @@ namespace CSDeskBand.ContextMenu
             Clicked?.Invoke(this, EventArgs.Empty);
         }
 
-        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, DeskBandMenuAction> callbacks)
+        internal override void AddToMenu(IntPtr menu, uint itemPosition, ref uint itemId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             _menuiteminfo = new MENUITEMINFO()
             {
@@ -62,7 +62,7 @@ namespace CSDeskBand.ContextMenu
                 fType = MENUITEMINFO.MFT.MFT_STRING,
                 dwTypeData = Text,
                 cch = (uint)Text.Length,
-                wID = firstCmdId++,
+                wID = itemId++,
             };
 
             _menuiteminfo.fState |= Enabled ? MENUITEMINFO.MFS.MFS_ENABLED : MENUITEMINFO.MFS.MFS_DISABLED;
@@ -70,7 +70,7 @@ namespace CSDeskBand.ContextMenu
 
             callbacks[_menuiteminfo.wID] = this;
 
-            User32.InsertMenuItem(menu, pos, true, ref _menuiteminfo);
+            User32.InsertMenuItem(menu, itemPosition, true, ref _menuiteminfo);
         }
     }
 }
