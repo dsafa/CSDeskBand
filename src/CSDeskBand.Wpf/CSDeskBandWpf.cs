@@ -10,17 +10,37 @@ using CSDeskBand.Logging;
 
 namespace CSDeskBand.Wpf
 {
+    /// <summary>
+    /// Wpf implementation of <see cref="ICSDeskBand"/>. The deskband should inherit this class.
+    /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
+    /// </summary>
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
+        /// <summary>
+        /// Options for this deskband.
+        /// </summary>
+        /// <seealso cref="CSDeskBandOptions"/>
         public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+
+        /// <summary>
+        /// Get the current taskbar information.
+        /// </summary>
+        /// <seealso cref="TaskbarInfo"/>
         public TaskbarInfo TaskbarInfo { get; }
 
+        /// <summary>
+        /// Determines if transparency is enabled. Note this is color key transparency.
+        /// Use <see cref="TransparencyColorKey"/> so set the color key.
+        /// </summary>
         public bool TransparencyEnabled
         {
             get => _host.AllowTransparency;
             set => _host.AllowTransparency = value;
         }
 
+        /// <summary>
+        /// Color to be used for transparency.
+        /// </summary>
         public Color TransparencyColorKey
         {
             get => _host.TransparencyKey.ToColor();
@@ -90,12 +110,12 @@ namespace CSDeskBand.Wpf
         }
 
         /// <summary>
-        /// Deskband is being closed
+        /// Method is called when deskband is being closed.
         /// </summary>
         protected virtual void OnClose() {}
 
         /// <summary>
-        /// Deskband visibility has changed
+        /// Method is called when deskband visibility has changed.
         /// </summary>
         protected virtual void VisibilityChanged(bool visible)
         {
@@ -103,7 +123,7 @@ namespace CSDeskBand.Wpf
         }
 
         /// <summary>
-        /// Close the deskband
+        /// Close the deskband.
         /// </summary>
         protected void CloseDeskBand()
         {

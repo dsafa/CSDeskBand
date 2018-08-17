@@ -9,13 +9,21 @@ using CSDeskBand.Logging;
 namespace CSDeskBand.Win
 {
     /// <summary>
-    /// Winforms deskband. The deskband should inherit this class.
+    /// Winforms implementation of <see cref="ICSDeskBand"/>. The deskband should inherit this class.
     /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
-    /// Look at Sample.Win for an example
     /// </summary>
     public class CSDeskBandWin: UserControl, ICSDeskBand
     {
+        /// <summary>
+        /// Options for this deskband.
+        /// </summary>
+        /// <seealso cref="CSDeskBandOptions"/>
         protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+
+        /// <summary>
+        /// Get the current taskbar information.
+        /// </summary>
+        /// <seealso cref="TaskbarInfo"/>
         protected TaskbarInfo TaskbarInfo { get; }
 
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
@@ -67,8 +75,14 @@ namespace CSDeskBand.Win
             VisibilityChanged(visibilityChangedEventArgs.IsVisible);
         }
 
+        /// <summary>
+        /// Method is called when deskband is being closed.
+        /// </summary>
         protected virtual void OnClose() {}
 
+        /// <summary>
+        /// Method is called when deskband visibility has changed.
+        /// </summary>
         protected virtual void VisibilityChanged(bool visible)
         {
             if (visible)
@@ -81,6 +95,9 @@ namespace CSDeskBand.Win
             }
         }
 
+        /// <summary>
+        /// Close the deskband.
+        /// </summary>
         protected void CloseDeskBand()
         {
             _impl.CloseDeskBand();
