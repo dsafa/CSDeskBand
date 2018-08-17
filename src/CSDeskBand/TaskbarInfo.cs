@@ -22,7 +22,7 @@ namespace CSDeskBand
     /// <summary>
     /// Provides information about the main taskbar
     /// </summary>
-    public class TaskbarInfo
+    public sealed class TaskbarInfo
     {
         public TaskbarOrientation Orientation
         {

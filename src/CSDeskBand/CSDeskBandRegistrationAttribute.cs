@@ -3,7 +3,7 @@
 namespace CSDeskBand
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class CSDeskBandRegistrationAttribute : Attribute
+    public sealed class CSDeskBandRegistrationAttribute : Attribute
     {
         /// <summary>
         /// Name of the deskband in the toolbar menu

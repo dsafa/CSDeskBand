@@ -1,17 +1,14 @@
-﻿using System;
+﻿using CSDeskBand.Interop;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using CSDeskBand.Interop;
 
 namespace CSDeskBand
 {
     /// <summary>
     /// A context menu seperator
     /// </summary>
-    public class CSDeskBandMenuSeparator : CSDeskBandMenuItem
+    public sealed class CSDeskBandMenuSeparator : CSDeskBandMenuItem
     {
         private MENUITEMINFO _menuiteminfo;
 

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace CSDeskBand
 {
-    public class CSDeskBandMenu : CSDeskBandMenuItem
+    public sealed class CSDeskBandMenu : CSDeskBandMenuItem
     {
         public List<CSDeskBandMenuItem> Items { get; } = new List<CSDeskBandMenuItem>();
         public bool Enabled { get; set; } = true;

@@ -15,7 +15,7 @@ namespace CSDeskBand
     /// <summary>
     /// Default implementation for icsdeskband
     /// </summary>
-    internal class CSDeskBandImpl : ICSDeskBand
+    internal sealed class CSDeskBandImpl : ICSDeskBand
     {
         public event EventHandler<VisibilityChangedEventArgs> VisibilityChanged;
         public event EventHandler Closed;
