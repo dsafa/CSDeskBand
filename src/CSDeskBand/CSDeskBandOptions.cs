@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CSDeskBand.Annotations;
@@ -9,7 +8,7 @@ namespace CSDeskBand
     /// <summary>
     /// Options to configure the deskband
     /// </summary>
-    public class CSDeskBandOptions : INotifyPropertyChanged
+    public sealed class CSDeskBandOptions : INotifyPropertyChanged
     {
         /// <summary>
         /// Height for a default horizontal taskbar
@@ -295,7 +294,7 @@ namespace CSDeskBand
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

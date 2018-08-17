@@ -5,7 +5,7 @@ using CSDeskBand.Annotations;
 
 namespace CSDeskBand
 {
-    public class Size : INotifyPropertyChanged
+    public sealed class Size : INotifyPropertyChanged
     {
         private int _width;
         private int _height;
@@ -61,7 +61,7 @@ namespace CSDeskBand
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -8,7 +8,7 @@ namespace CSDeskBand
     /// <summary>
     /// A context menu item that can be clicked and invoke and action
     /// </summary>
-    public class CSDeskBandMenuAction : CSDeskBandMenuItem
+    public sealed class CSDeskBandMenuAction : CSDeskBandMenuItem
     {
         public bool Checked { get; set; } = false;
         public bool Enabled { get; set; } = true;
