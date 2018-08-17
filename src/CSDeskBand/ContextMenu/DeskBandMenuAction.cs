@@ -43,6 +43,10 @@ namespace CSDeskBand.ContextMenu
 
         private MENUITEMINFO _menuiteminfo;
 
+        /// <summary>
+        /// Initializes an instance of <see cref="DeskBandMenuAction"/> with its display text.
+        /// </summary>
+        /// <param name="text">The text that is shown for this item in a menu.</param>
         public DeskBandMenuAction(string text)
         {
             Text = text;

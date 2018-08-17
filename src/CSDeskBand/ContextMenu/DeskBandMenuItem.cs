@@ -15,7 +15,7 @@ namespace CSDeskBand.ContextMenu
         /// <param name="menu">The menu to add items to</param>
         /// <param name="itemPosition">The position of the item to insert into the menu. Id should be incremented if item is inserted</param>
         /// <param name="itemId">Unique id of the menu item</param>
-        /// <param name="callbacks">Dictionary of callbacks assigned to <see cref="itemId"/></param>
+        /// <param name="callbacks">Dictionary of callbacks assigned to a <paramref name="itemId"/></param>
         internal abstract void AddToMenu(IntPtr menu, uint itemPosition, ref uint itemId, Dictionary<uint, DeskBandMenuAction> callbacks);
     }
 }
