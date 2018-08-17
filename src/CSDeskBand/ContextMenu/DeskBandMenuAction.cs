@@ -1,14 +1,14 @@
-﻿using CSDeskBand.Interop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using CSDeskBand.Interop;
 
-namespace CSDeskBand
+namespace CSDeskBand.ContextMenu
 {
     /// <summary>
     /// A context menu item that can be clicked.
     /// </summary>
-    public sealed class CSDeskBandMenuAction : CSDeskBandMenuItem
+    public sealed class DeskBandMenuAction : DeskBandMenuItem
     {
         /// <summary>
         /// Determines if there is a checkmark next to the menu item.
@@ -43,7 +43,7 @@ namespace CSDeskBand
 
         private MENUITEMINFO _menuiteminfo;
 
-        public CSDeskBandMenuAction(string text)
+        public DeskBandMenuAction(string text)
         {
             Text = text;
         }
@@ -53,7 +53,7 @@ namespace CSDeskBand
             Clicked?.Invoke(this, EventArgs.Empty);
         }
 
-        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, CSDeskBandMenuAction> callbacks)
+        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             _menuiteminfo = new MENUITEMINFO()
             {

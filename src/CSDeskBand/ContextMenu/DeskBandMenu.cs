@@ -1,19 +1,19 @@
-﻿using CSDeskBand.Interop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using CSDeskBand.Interop;
 
-namespace CSDeskBand
+namespace CSDeskBand.ContextMenu
 {
     /// <summary>
-    /// A sub menu item that can contain other <see cref="CSDeskBandMenuItem"/>.
+    /// A sub menu item that can contain other <see cref="DeskBandMenuItem"/>.
     /// </summary>
-    public sealed class CSDeskBandMenu : CSDeskBandMenuItem
+    public sealed class DeskBandMenu : DeskBandMenuItem
     {
         /// <summary>
-        /// List of <see cref="CSDeskBandMenuItem"/> that this contains.
+        /// List of <see cref="DeskBandMenuItem"/> that this contains.
         /// </summary>
-        public List<CSDeskBandMenuItem> Items { get; } = new List<CSDeskBandMenuItem>();
+        public List<DeskBandMenuItem> Items { get; } = new List<DeskBandMenuItem>();
 
         /// <summary>
         /// Determines if the menu item is enabled.
@@ -35,8 +35,8 @@ namespace CSDeskBand
         private IntPtr _menu;
         private MENUITEMINFO _menuiteminfo;
 
-        public CSDeskBandMenu(string text) : this(text, null) { }
-        public CSDeskBandMenu(string text, IEnumerable<CSDeskBandMenuItem> items)
+        public DeskBandMenu(string text) : this(text, null) { }
+        public DeskBandMenu(string text, IEnumerable<DeskBandMenuItem> items)
         {
             Text = text;
             if (items != null)
@@ -45,12 +45,12 @@ namespace CSDeskBand
             }
         }
 
-        ~CSDeskBandMenu()
+        ~DeskBandMenu()
         {
             ClearMenu();
         }
 
-        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, CSDeskBandMenuAction> callbacks)
+        internal override void AddToMenu(IntPtr menu, uint pos, ref uint firstCmdId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             ClearMenu();
 

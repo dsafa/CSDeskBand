@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CSDeskBand.ContextMenu;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIF;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIM;
 using static CSDeskBand.Interop.DESKBANDINFO.DBIMF;
@@ -31,7 +32,7 @@ namespace CSDeskBand
         private bool _isDirty = true;
         private Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC"); // Command group id for deskband. Used for IOleCommandTarge.Exec
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
-        private readonly Dictionary<uint, CSDeskBandMenuAction> _contextMenuActions = new Dictionary<uint, CSDeskBandMenuAction>();
+        private readonly Dictionary<uint, DeskBandMenuAction> _contextMenuActions = new Dictionary<uint, DeskBandMenuAction>();
 
         public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
         {

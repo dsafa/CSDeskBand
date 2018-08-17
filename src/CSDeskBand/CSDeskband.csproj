@@ -83,10 +83,10 @@
   <ItemGroup>
     <Compile Include="CSDeskBandEvents.cs" />
     <Compile Include="CSDeskBandImpl.cs" />
-    <Compile Include="CSDeskBandMenu.cs" />
-    <Compile Include="CSDeskBandMenuAction.cs" />
-    <Compile Include="CSDeskBandMenuItem.cs" />
-    <Compile Include="CSDeskBandMenuSeparator.cs" />
+    <Compile Include="ContextMenu\DeskBandMenu.cs" />
+    <Compile Include="ContextMenu\DeskBandMenuAction.cs" />
+    <Compile Include="ContextMenu\DeskBandMenuItem.cs" />
+    <Compile Include="ContextMenu\DeskBandMenuSeparator.cs" />
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
     <Compile Include="Interop\CATEGORYINFO.cs" />
