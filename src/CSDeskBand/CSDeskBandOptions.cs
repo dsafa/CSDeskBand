@@ -7,7 +7,7 @@ using CSDeskBand.Annotations;
 namespace CSDeskBand
 {
     /// <summary>
-    /// Options for the deskband
+    /// Options to configure the deskband
     /// </summary>
     public class CSDeskBandOptions : INotifyPropertyChanged
     {
@@ -27,8 +27,10 @@ namespace CSDeskBand
         public static readonly int TaskbarVerticalWidth = 62;
 
         /// <summary>
-        /// No limit for deskband size
+        /// Value that represents no limit for deskband size
         /// </summary>
+        /// <seealso cref="MaxHorizontalHeight"/>
+        /// <seealso cref="MaxVerticalWidth"/>
         public static readonly int NoLimit = -1;
 
         private Size _horizontalSize;
@@ -37,124 +39,79 @@ namespace CSDeskBand
         private Size _verticalSize;
         private int _maxVerticalWidth;
         private Size _minVerticalSize;
-        private bool _newRow = false;
-        private bool _addToFront = false;
-        private bool _topRow = false;
         private string _title = "";
         private bool _showTitle = false;
-        private bool _noMargins = true;
-        private bool _alwaysShowGripper = false;
-        private bool _undeleteable = false;
-        private bool _fixed = false;
-        private bool _sunken = false;
-        private int _increment = 1;
-        private bool _variableHeight = true;
+        private bool _isFixed = true;
+        private int _heightIncrement = 1;
+        private bool _heightCanChange = true;
         private List<CSDeskBandMenuItem> _contextMenuItems = new List<CSDeskBandMenuItem>();
 
         /// <summary>
-        /// The deskband will use up as much space as possible following the contraints set by max and min size
+        /// Determines if the height of the horizontal deskband is allowed to change. For a deskband in the vertical orientation, it will be the width.
+        /// Works alongside with the property <see cref="HeightIncrement"/>.
         /// </summary>
-        public bool VariableHeight
+        /// <value>
+        /// True if the height / width of the deskband can be changed. False to prevent changes.
+        /// The default value is true.
+        /// </value>
+        public bool HeightCanChange
         {
-            get => _variableHeight;
+            get => _heightCanChange;
             set
             {
-                if (value == _variableHeight) return;
-                _variableHeight = value;
+                if (value == _heightCanChange) return;
+                _heightCanChange = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Height step size when deskband is being resized. The deskband will only be resized to multiples of this value
+        /// Height step size of a horizontal deskband when it is being resized. For a deskband in the vertical orientation, it will be the step size of the width.
+        /// The deskband will only be resized to multiples of this value.
         /// </summary>
         /// <example>
-        /// If increment is 50, then the height of the deskband can only be 50, 100 ...
+        /// If increment is 50, then the height of the deskband can only be resized to 50, 100 ...
         /// </example>
-        public int Increment
+        /// <value>
+        /// The step size for resizing. This value is only used if <see cref="HeightCanChange"/> is true. If the value is less than 0, the height / width can be any size.
+        /// The default value is 1.
+        /// </value>
+        public int HeightIncrement
         {
-            get => _increment;
+            get => _heightIncrement;
             set
             {
-                if (value == _increment) return;
-                _increment = value;
+                if (value == _heightIncrement) return;
+                _heightIncrement = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Gives the deskband a sunken appearance
+        /// Determines if the deskband has a fixed position and size, and if the gripper is shown.
         /// </summary>
-        public bool Sunken
+        /// <value>
+        /// True if the deskband is fixed. False if the deskband can be adjusted.
+        /// The default value is false.
+        /// </value>
+        public bool IsFixed
         {
-            get => _sunken;
+            get => _isFixed;
             set
             {
-                if (value == _sunken) return;
-                _sunken = value;
+                if (value == _isFixed) return;
+                _isFixed = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// If the deskband is fixed, the gripper is not shown when taskbar is editable
+        /// Determines whether <see cref="Title"/> is shown next to the deskband
         /// </summary>
-        public bool Fixed
-        {
-            get => _fixed;
-            set
-            {
-                if (value == _fixed) return;
-                _fixed = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Deskband cannot be removed
-        /// </summary>
-        public bool Undeleteable
-        {
-            get => _undeleteable;
-            set
-            {
-                if (value == _undeleteable) return;
-                _undeleteable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Always show gripper even when taskbar isnt editable
-        /// </summary>
-        public bool AlwaysShowGripper
-        {
-            get => _alwaysShowGripper;
-            set
-            {
-                if (value == _alwaysShowGripper) return;
-                _alwaysShowGripper = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// The deskband does not display margins
-        /// </summary>
-        public bool NoMargins
-        {
-            get => _noMargins;
-            set
-            {
-                if (value == _noMargins) return;
-                _noMargins = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// If true, <see cref="Title"/> is shown next to the deskband
-        /// </summary>
+        /// <value>
+        /// True if the title should be shown. False if the title is hidden.
+        /// The default value is false.
+        /// </value>
         public bool ShowTitle
         {
             get => _showTitle;
@@ -167,65 +124,30 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Title of the deskband
+        /// The title of the deskband. This will be shown if <see cref="ShowTitle"/> is true
         /// </summary>
+        /// <value>
+        /// The title to display. If the title is null, it will be converted to an empty string.
+        /// The default value is an empty string.
+        /// </value>
         public string Title
         {
             get => _title;
             set
             {
                 if (value == _title) return;
-                _title = value;
+                _title = value ?? "";
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Band will be displayed in the top row
-        /// </summary>
-        public bool TopRow
-        {
-            get => _topRow;
-            set
-            {
-                if (value == _topRow) return;
-                _topRow = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Band will be added to the front
-        /// </summary>
-        public bool AddToFront
-        {
-            get => _addToFront;
-            set
-            {
-                if (value == _addToFront) return;
-                _addToFront = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Band will be displayed in a new row
-        /// </summary>
-        public bool NewRow
-        {
-            get => _newRow;
-            set
-            {
-                if (value == _newRow) return;
-                _newRow = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Mininum <see cref="Size"/> of the deskband in the vertical orientation.
+        /// Minimum <see cref="Size"/> of the deskband in the vertical orientation.
         /// </summary>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is <see cref="NoLimit"/> for the width and height.
+        /// </value>
         public Size MinVerticalSize
         {
             get => _minVerticalSize;
@@ -242,9 +164,12 @@ namespace CSDeskBand
         /// Maximum width of the deskband in the vertical orientation
         /// </summary>
         /// <remarks>
-        /// The maximum height will have to be addressed in your code as there is no limit to the height of the deskband when vertical
+        /// The maximum height will have to be addressed in your code as there is no limit to the height of the deskband when vertical.
         /// </remarks>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is <see cref="NoLimit"/>.
+        /// </value>
         public int MaxVerticalWidth
         {
             get => _maxVerticalWidth;
@@ -257,9 +182,12 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Ideal <see cref="Size"/> of the deskband in the vertical orientation. There is no guarantee that the deskband will be this size
+        /// Ideal <see cref="Size"/> of the deskband in the vertical orientation. There is no guarantee that the deskband will be this size.
         /// </summary>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is <see cref="TaskbarVerticalWidth"/> for the width and 200 for the height.
+        /// </value>
         public Size VerticalSize
         {
             get => _verticalSize;
@@ -273,9 +201,12 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Minimum <see cref="Size"/> of the deskband in the horizontal orientation
+        /// Minimum <see cref="Size"/> of the deskband in the horizontal orientation.
         /// </summary>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is <see cref="NoLimit"/>.
+        /// </value>
         public Size MinHorizontalSize
         {
             get => _minHorizontalSize;
@@ -289,12 +220,15 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Maximum height of the deskband in the horizontal orientation
+        /// Maximum height of the deskband in the horizontal orientation.
         /// </summary>
         /// <remarks>
-        /// The maximum width will have to be addressed in your code as there is no limit to the width of the deskband when horizontal
+        /// The maximum width will have to be addressed in your code as there is no limit to the width of the deskband when horizontal.
         /// </remarks>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is <see cref="NoLimit"/>.
+        /// </value>
         public int MaxHorizontalHeight
         {
             get => _maxHorizontalHeight;
@@ -307,9 +241,12 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Ideal <see cref="Size"/> of the deskband in the horizontal orientation. There is no guarantee that the deskband will be this size
+        /// Ideal <see cref="Size"/> of the deskband in the horizontal orientation. There is no guarantee that the deskband will be this size.
         /// </summary>
         /// <seealso cref="TaskbarOrientation"/>
+        /// <value>
+        /// The default value is 200 for the width and <see cref="TaskbarHorizontalHeightLarge"/> for the height.
+        /// </value>
         public Size HorizontalSize
         {
             get => _horizontalSize;
@@ -324,8 +261,14 @@ namespace CSDeskBand
 
 
         /// <summary>
-        /// Context Menu
+        /// The list of <see cref="CSDeskBandMenuItem"/> the comprise the deskbands context menu.
         /// </summary>
+        /// <value>
+        /// A list of <see cref="CSDeskBandMenuItem"/> for the context menu. An empty list indicates no context menu.
+        /// </value>
+        /// <remarks>
+        /// These context menu items are in addition of the default ones that windows provides.
+        /// </remarks>
         public List<CSDeskBandMenuItem> ContextMenuItems
         {
             get => _contextMenuItems;

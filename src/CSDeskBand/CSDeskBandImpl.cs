@@ -122,7 +122,7 @@ namespace CSDeskBand
             if (pdbi.dwMask.HasFlag(DBIM_INTEGRAL))
             {
                 _logger.Debug("Deskband integral requested");
-                pdbi.ptIntegral.Y = Options.Increment;
+                pdbi.ptIntegral.Y = Options.HeightIncrement;
                 pdbi.ptIntegral.X = 0;
             }
 
@@ -154,15 +154,8 @@ namespace CSDeskBand
             if (pdbi.dwMask.HasFlag(DBIM_MODEFLAGS))
             {
                 pdbi.dwModeFlags = DBIMF_NORMAL;
-                pdbi.dwModeFlags |= Options.AlwaysShowGripper ? DBIMF_ALWAYSGRIPPER : 0;
-                pdbi.dwModeFlags |= Options.Fixed ? DBIMF_FIXED | DBIMF_NOGRIPPER : 0;
-                pdbi.dwModeFlags |= Options.NoMargins ? DBIMF_NOMARGINS : 0;
-                pdbi.dwModeFlags |= Options.Sunken ? DBIMF_DEBOSSED : 0;
-                pdbi.dwModeFlags |= Options.Undeleteable ? DBIMF_UNDELETEABLE : 0;
-                pdbi.dwModeFlags |= Options.VariableHeight ? DBIMF_VARIABLEHEIGHT : 0;
-                pdbi.dwModeFlags |= Options.AddToFront ? DBIMF_ADDTOFRONT : 0;
-                pdbi.dwModeFlags |= Options.NewRow ? DBIMF_BREAK : 0;
-                pdbi.dwModeFlags |= Options.TopRow ? DBIMF_TOPALIGN : 0;
+                pdbi.dwModeFlags |= Options.IsFixed ? DBIMF_FIXED | DBIMF_NOGRIPPER : 0;
+                pdbi.dwModeFlags |= Options.HeightCanChange ? DBIMF_VARIABLEHEIGHT : 0;
                 pdbi.dwModeFlags &= ~DBIMF_BKCOLOR; //Don't use background color
             }
 
