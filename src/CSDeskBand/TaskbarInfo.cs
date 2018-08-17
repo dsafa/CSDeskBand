@@ -5,12 +5,18 @@ using CSDeskBand.Logging;
 
 namespace CSDeskBand
 {
+    /// <summary>
+    /// The orientation of the taskbar.
+    /// </summary>
     public enum TaskbarOrientation
     {
         Vertical,
         Horizontal,
     }
 
+    /// <summary>
+    /// The edge where the taskbar is located.
+    /// </summary>
     public enum Edge : uint
     {
         Left,
@@ -20,10 +26,16 @@ namespace CSDeskBand
     }
 
     /// <summary>
-    /// Provides information about the main taskbar
+    /// Provides information about the main taskbar.
     /// </summary>
     public sealed class TaskbarInfo
     {
+        /// <summary>
+        /// Get the current <see cref="TaskbarOrientation"/> of the main taskbar.
+        /// </summary>
+        /// <value>
+        /// The current orientation.
+        /// </value>
         public TaskbarOrientation Orientation
         {
             get => _orientation;
@@ -40,6 +52,12 @@ namespace CSDeskBand
             }
         }
 
+        /// <summary>
+        /// Get the current <see cref="CSDeskBand.Edge"/> of the main taskbar.
+        /// </summary>
+        /// <value>
+        /// The current edge.
+        /// </value>
         public Edge Edge
         {
             get => _edge;
@@ -56,6 +74,12 @@ namespace CSDeskBand
             }
         }
 
+        /// <summary>
+        /// Get the current <see cref="CSDeskBand.Size"/> of the main taskbar.
+        /// </summary>
+        /// <value>
+        /// The current size.
+        /// </value>
         public Size Size
         {
             get => _size;
@@ -72,8 +96,19 @@ namespace CSDeskBand
             }
         }
 
+        /// <summary>
+        /// Occurs when the orientation of the main taskbar is changed.
+        /// </summary>
         public event EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;
+
+        /// <summary>
+        /// Occurs when the edge of the main taskbar is changed.
+        /// </summary>
         public event EventHandler<TaskbarEdgeChangedEventArgs> TaskbarEdgeChanged;
+
+        /// <summary>
+        /// Occurs when the size of the taskbar is changed.
+        /// </summary>
         public event EventHandler<TaskbarSizeChangedEventArgs> TaskbarSizeChanged;
 
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
