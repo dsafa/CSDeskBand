@@ -17,6 +17,7 @@ Nuget packages are available here:
 - [CSDeskBand.Win](https://www.nuget.org/packages/CSDeskBand.Win)
 - [CSDeskBand.Wpf](https://www.nuget.org/packages/CSDeskBand.Wpf)
 
+### Usage
 Use `CSDeskBandWin` for winforms or `CSDeskBandWpf` for wpf
 - For a winforms usercontrol, inherit the `CSDeskBandWin` base class. _See Sample.Win_
 - For a wpf usercontol, Set `CSdeskBandWpf` as the root element in the XAML. _See Sample.Wpf_
@@ -36,9 +37,14 @@ public partial class UserControl1 : CSDeskBandWin
 ...
 ```
 
-#### Deskband Installation
+Now you are ready to start working on it like a normal user control.
+
+**Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more details.**
+**Patch notes will be in the [release](https://github.com/dsafa/CSDeskBand/releases) page**
+
+### Deskband Installation
 You need to start an elevated command prompt and be able to use `regasm.exe`
-An easy way to do this is use the Developer Command Prompt for Visual Studio. Make sure that you use the correct version of regasm that matches your platform.
+An easy way to do this is use the Developer Command Prompt for Visual Studio. Make sure that you use the correct version of regasm that matches your platform (x86/x64).
 ```
 cd Sample.Win\bin\Debug
 
@@ -54,8 +60,6 @@ gacutil -i Sample.Win.dll
 regasm Sample.Win.dll
 ```
 _Note that GAC installation requires the assemblies to be [Strong-Named](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)_
-
-Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more details.
 
 ## Examples
 There are examples included for Winforms and WPF in the Sample.Win and Sample.Wpf projects
