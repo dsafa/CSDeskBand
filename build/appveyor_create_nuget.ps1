@@ -37,15 +37,15 @@ foreach ($tag in $tags) {
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 if ($core_version) {
     Write-Host "Building CSDeskband" $core_version
-    & nuget pack $scriptDir/../CSDeskband/CSDeskband.csproj -Properties Configuration=Release -Version $core_version -OutputDirectory $scriptDir
+    & nuget pack $scriptDir/../src/CSDeskband/CSDeskband.csproj -Properties Configuration=Release -Version $core_version -OutputDirectory $scriptDir
 }
 
 if ($win_version) {
     Write-Host "Building CSDeskband.win" $win_version
-    & nuget pack $scriptDir/../CSDeskband.Win/CSDeskband.Win.csproj -Properties Configuration=Release -Version $win_version -OutputDirectory $scriptDir
+    & nuget pack $scriptDir/../src/CSDeskband.Win/CSDeskband.Win.csproj -Properties Configuration=Release -Version $win_version -OutputDirectory $scriptDir
 }
 
 if ($wpf_version) {
     Write-Host "Building CSDeskband.wpf" $wpf_version
-    & nuget pack $scriptDir/../CSDeskband.Wpf/CSDeskband.Wpf.csproj -Properties Configuration=Release -Version $wpf_version -OutputDirectory $scriptDir
+    & nuget pack $scriptDir/../src/CSDeskband.Wpf/CSDeskband.Wpf.csproj -Properties Configuration=Release -Version $wpf_version -OutputDirectory $scriptDir
 }
