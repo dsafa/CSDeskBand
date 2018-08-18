@@ -41,7 +41,7 @@ namespace CSDeskBand
         private Size _minVerticalSize;
         private string _title = "";
         private bool _showTitle = false;
-        private bool _isFixed = true;
+        private bool _isFixed = false;
         private int _heightIncrement = 1;
         private bool _heightCanChange = true;
         private List<DeskBandMenuItem> _contextMenuItems = new List<DeskBandMenuItem>();
