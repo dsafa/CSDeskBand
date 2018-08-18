@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using CSDeskBand.Interop;
+﻿using CSDeskBand.Interop;
+using CSDeskBand.Interop.COM;
 using CSDeskBand.Logging;
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace CSDeskBand.Win
 {
@@ -106,61 +106,6 @@ namespace CSDeskBand.Win
             _impl.CloseDeskBand();
         }
 
-        public int GetWindow(out IntPtr phwnd)
-        {
-            return _impl.GetWindow(out phwnd);
-        }
-
-        public int ContextSensitiveHelp(bool fEnterMode)
-        {
-            return _impl.ContextSensitiveHelp(fEnterMode);
-        }
-
-        public int ShowDW([In] bool fShow)
-        {
-            return _impl.ShowDW(fShow);
-        }
-
-        public int CloseDW([In] uint dwReserved)
-        {
-            return _impl.CloseDW(dwReserved);
-        }
-
-        public int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved)
-        {
-            return _impl.ResizeBorderDW(prcBorder, punkToolbarSite, fReserved);
-        }
-
-        public int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)
-        {
-            return _impl.GetBandInfo(dwBandID, dwViewMode, ref pdbi);
-        }
-
-        public int CanRenderComposited(out bool pfCanRenderComposited)
-        {
-            return _impl.CanRenderComposited(out pfCanRenderComposited);
-        }
-
-        public int SetCompositionState(bool fCompositionEnabled)
-        {
-            return _impl.SetCompositionState(fCompositionEnabled);
-        }
-
-        public int GetCompositionState(out bool pfCompositionEnabled)
-        {
-            return _impl.GetCompositionState(out pfCompositionEnabled);
-        }
-
-        public void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
-        {
-            _impl.SetSite(pUnkSite);
-        }
-
-        public void GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite)
-        {
-            _impl.GetSite(ref riid, out ppvSite);
-        }
-
         [ComRegisterFunction]
         private static void Register(Type t)
         {
@@ -173,68 +118,229 @@ namespace CSDeskBand.Win
             CSDeskBandImpl.Unregister(t);
         }
 
-        public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        int IDeskBand2.ShowDW(bool fShow)
+        {
+            return _impl.ShowDW(fShow);
+        }
+
+        int IDeskBand2.CloseDW(uint dwReserved)
+        {
+            return _impl.CloseDW(dwReserved);
+        }
+
+        int IDeskBand2.ResizeBorderDW(RECT prcBorder, IntPtr punkToolbarSite, bool fReserved)
+        {
+            return _impl.ResizeBorderDW(prcBorder, punkToolbarSite, fReserved);
+        }
+
+        int IDeskBand2.GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)
+        {
+            return _impl.GetBandInfo(dwBandID, dwViewMode, ref pdbi);
+        }
+
+        int IDeskBand2.CanRenderComposited(out bool pfCanRenderComposited)
+        {
+            return _impl.CanRenderComposited(out pfCanRenderComposited);
+        }
+
+        int IDeskBand2.SetCompositionState(bool fCompositionEnabled)
+        {
+            return _impl.SetCompositionState(fCompositionEnabled);
+        }
+
+        int IDeskBand2.GetCompositionState(out bool pfCompositionEnabled)
+        {
+            return _impl.GetCompositionState(out pfCompositionEnabled);
+        }
+
+        int IDeskBand2.GetWindow(out IntPtr phwnd)
+        {
+            return _impl.GetWindow(out phwnd);
+        }
+
+        int IDeskBand2.ContextSensitiveHelp(bool fEnterMode)
+        {
+            return _impl.ContextSensitiveHelp(fEnterMode);
+        }
+
+        int IDeskBand.GetWindow(out IntPtr phwnd)
+        {
+            return _impl.GetWindow(out phwnd);
+        }
+
+        int IDeskBand.ContextSensitiveHelp(bool fEnterMode)
+        {
+            return _impl.ContextSensitiveHelp(fEnterMode);
+        }
+
+        int IDeskBand.ShowDW(bool fShow)
+        {
+            return _impl.ShowDW(fShow);
+        }
+
+        int IDeskBand.CloseDW(uint dwReserved)
+        {
+            return _impl.CloseDW(dwReserved);
+        }
+
+        int IDeskBand.ResizeBorderDW(RECT prcBorder, IntPtr punkToolbarSite, bool fReserved)
+        {
+            return _impl.ResizeBorderDW(prcBorder, punkToolbarSite, fReserved);
+        }
+
+        int IDeskBand.GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi)
+        {
+            return _impl.GetBandInfo(dwBandID, dwViewMode, ref pdbi);
+        }
+
+        int IDockingWindow.GetWindow(out IntPtr phwnd)
+        {
+            return _impl.GetWindow(out phwnd);
+        }
+
+        int IDockingWindow.ContextSensitiveHelp(bool fEnterMode)
+        {
+            return _impl.ContextSensitiveHelp(fEnterMode);
+        }
+
+        int IDockingWindow.ShowDW(bool fShow)
+        {
+            return _impl.ShowDW(fShow);
+        }
+
+        int IDockingWindow.CloseDW(uint dwReserved)
+        {
+            return _impl.CloseDW(dwReserved);
+        }
+
+        int IDockingWindow.ResizeBorderDW(RECT prcBorder, IntPtr punkToolbarSite, bool fReserved)
+        {
+            return _impl.ResizeBorderDW(prcBorder, punkToolbarSite, fReserved);
+        }
+
+        int IOleWindow.GetWindow(out IntPtr phwnd)
+        {
+            return _impl.GetWindow(out phwnd);
+        }
+
+        int IOleWindow.ContextSensitiveHelp(bool fEnterMode)
+        {
+            return _impl.ContextSensitiveHelp(fEnterMode);
+        }
+
+        void IObjectWithSite.SetSite(object pUnkSite)
+        {
+            _impl.SetSite(pUnkSite);
+        }
+
+        void IObjectWithSite.GetSite(ref Guid riid, out object ppvSite)
+        {
+            _impl.GetSite(ref riid, out ppvSite);
+        }
+
+        int IContextMenu3.QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
         {
             return _impl.QueryContextMenu(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
         }
 
-        public int InvokeCommand(IntPtr pici)
+        int IContextMenu3.InvokeCommand(IntPtr pici)
         {
             return _impl.InvokeCommand(pici);
         }
 
-        public int GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        int IContextMenu3.GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
         {
             return _impl.GetCommandString(ref idcmd, uflags, ref pwReserved, out pcszName, cchMax);
         }
 
-        public int HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        int IContextMenu3.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
             return _impl.HandleMenuMsg(uMsg, wParam, lParam);
         }
 
-        public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
+        int IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr plResult)
         {
             return _impl.HandleMenuMsg2(uMsg, wParam, lParam, out plResult);
         }
 
-        public int GetClassID(out Guid pClassID)
+        int IContextMenu2.QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        {
+            return _impl.QueryContextMenu(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
+        }
+
+        int IContextMenu2.InvokeCommand(IntPtr pici)
+        {
+            return _impl.InvokeCommand(pici);
+        }
+
+        int IContextMenu2.GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        {
+            return _impl.GetCommandString(ref idcmd, uflags, ref pwReserved, out pcszName, cchMax);
+        }
+
+        int IContextMenu2.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            return _impl.HandleMenuMsg(uMsg, wParam, lParam);
+        }
+
+        int IContextMenu.QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
+        {
+            return _impl.QueryContextMenu(hMenu, indexMenu, idCmdFirst, idCmdLast, uFlags);
+        }
+
+        int IContextMenu.InvokeCommand(IntPtr pici)
+        {
+            return _impl.InvokeCommand(pici);
+        }
+
+        int IContextMenu.GetCommandString(ref uint idcmd, uint uflags, ref uint pwReserved, out string pcszName, uint cchMax)
+        {
+            return _impl.GetCommandString(ref idcmd, uflags, ref pwReserved, out pcszName, cchMax);
+        }
+
+        int IPersistStream.GetClassID(out Guid pClassID)
         {
             pClassID = _deskbandGuid;
             return HRESULT.S_OK;
         }
 
-        public int GetSizeMax(out ulong pcbSize)
+        int IPersistStream.GetSizeMax(out ulong pcbSize)
         {
             return _impl.GetSizeMax(out pcbSize);
         }
 
-        public int IsDirty()
+        int IPersistStream.IsDirty()
         {
             return _impl.IsDirty();
         }
 
-        public new int Load(object pStm)
+        int IPersistStream.Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(object pStm, bool fClearDirty)
+        int IPersistStream.Save(object pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }
 
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        int IPersist.GetClassID(out Guid pClassID)
+        {
+            pClassID = _deskbandGuid;
+            return HRESULT.S_OK;
+        }
+
+        void IInputObject.UIActivateIO(int fActivate, ref MSG msg)
         {
             _impl.UIActivateIO(fActivate, ref msg);
         }
 
-        public int HasFocusIO()
+        int IInputObject.HasFocusIO()
         {
             return _impl.HasFocusIO();
         }
 
-        public int TranslateAcceleratorIO(ref MSG msg)
+        int IInputObject.TranslateAcceleratorIO(ref MSG msg)
         {
             return _impl.TranslateAcceleratorIO(ref msg);
         }
