@@ -52,7 +52,7 @@ namespace CSDeskBand
             var parent = (IOleCommandTarget) _parentSite;
             // Set pvaln to the id that was passed in SetSite
             // When int is marshalled to variant, it is marshalled as VT_i4. See default marshalling for objects
-            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, _id, null);
+            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, IntPtr.Zero, IntPtr.Zero);
         }
 
         public int GetWindow(out IntPtr phwnd)
