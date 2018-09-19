@@ -244,7 +244,10 @@ namespace CSDeskBand
                                 {
                                     Console.WriteLine($"Error while trying to show deskband.");
                                 }
-                                csdeskband.DeskBandRegistrationChanged();
+                                if(csdeskband.DeskBandRegistrationChanged() == HRESULT.S_OK)
+                                {
+                                    Console.WriteLine($"The deskband was Succesfully shown with taskbar.{Environment.NewLine}You may see the alert notice box from explorer call.");
+                                }
                             }
                         }
                     }
@@ -258,7 +261,6 @@ namespace CSDeskBand
                         {
                             Marshal.ReleaseComObject(csdeskband);
                         }
-                        Console.WriteLine($"The deskband was Succesfully shown with taskbar.{Environment.NewLine}You may see the alert notice box from explorer call.");
                     }
                 }
             }
