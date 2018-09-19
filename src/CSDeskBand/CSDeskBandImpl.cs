@@ -226,22 +226,21 @@ namespace CSDeskBand
 
                 if (GetToolbarRequestToShow(t))
                 {
+                    Console.WriteLine($"Request to show deskband.");
+                    ///https://www.pinvoke.net/default.aspx/Interfaces.ITrayDeskband
                     ITrayDeskband csdeskband = null;
                     try
                     {
                         Type trayDeskbandType = System.Type.GetTypeFromCLSID(new Guid("E6442437-6C68-4f52-94DD-2CFED267EFB9"));
                         Guid deskbandGuid = t.GUID;
-
                         csdeskband = (ITrayDeskband)Activator.CreateInstance(trayDeskbandType);
                         if (csdeskband != null)
                         {
                             csdeskband.DeskBandRegistrationChanged();
 
-                            if (csdeskband.IsDeskBandShown(ref deskbandGuid) == 1)
+                            if (csdeskband.IsDeskBandShown(ref deskbandGuid) == HRESULT.S_FALSE)
                             {
-                                int hr = csdeskband.ShowDeskBand(ref deskbandGuid);
-
-                                if (hr != 0)
+                                if (csdeskband.ShowDeskBand(ref deskbandGuid) != HRESULT.S_OK)
                                 {
                                     Console.WriteLine($"Error while trying to show deskband.");
                                 }
@@ -256,7 +255,10 @@ namespace CSDeskBand
                     finally
                     {
                         if (csdeskband != null && Marshal.IsComObject(csdeskband))
+                        {
                             Marshal.ReleaseComObject(csdeskband);
+                        }
+                        Console.WriteLine($"The deskband was Succesfully shown with taskbar.{Environment.NewLine}You may see the alert notice box from explorer call.");
                     }
                 }
             }
