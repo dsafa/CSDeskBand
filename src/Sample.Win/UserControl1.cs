@@ -11,7 +11,7 @@ namespace Sample.Win
     /// </summary>
     [ComVisible(true)]
     [Guid("5731FC61-8530-404C-86C1-86CCB8738D06")]
-    [CSDeskBandRegistration(Name = "Sample Winforms Deskband")]
+    [CSDeskBandRegistration(Name = "Sample Winforms Deskband", ShowDeskBand = true)]
     public partial class UserControl1 : CSDeskBandWin
     {
         private readonly WinEventDelegate _delegate;

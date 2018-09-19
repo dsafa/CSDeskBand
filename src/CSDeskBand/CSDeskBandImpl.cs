@@ -49,10 +49,10 @@ namespace CSDeskBand
             }
             _logger.Debug("Deskband options have changed");
 
-            var parent = (IOleCommandTarget) _parentSite;
+            var parent = (IOleCommandTarget)_parentSite;
             // Set pvaln to the id that was passed in SetSite
             // When int is marshalled to variant, it is marshalled as VT_i4. See default marshalling for objects
-            parent.Exec(ref CGID_DeskBand, (uint) tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, IntPtr.Zero, IntPtr.Zero);
+            parent.Exec(ref CGID_DeskBand, (uint)tagDESKBANDCID.DBID_BANDINFOCHANGED, 0, IntPtr.Zero, IntPtr.Zero);
         }
 
         public int GetWindow(out IntPtr phwnd)
@@ -223,6 +223,42 @@ namespace CSDeskBand
                 subKey.CreateSubKey(ComponentCategoryManager.CATID_DESKBAND.ToString("B"));
 
                 Console.WriteLine($"Succesfully registered deskband `{GetToolbarName(t)}` - GUID: {guid}");
+
+                if (GetToolbarRequestToShow(t))
+                {
+                    ITrayDeskband csdeskband = null;
+                    try
+                    {
+                        Type trayDeskbandType = System.Type.GetTypeFromCLSID(new Guid("E6442437-6C68-4f52-94DD-2CFED267EFB9"));
+                        Guid deskbandGuid = t.GUID;
+
+                        csdeskband = (ITrayDeskband)Activator.CreateInstance(trayDeskbandType);
+                        if (csdeskband != null)
+                        {
+                            csdeskband.DeskBandRegistrationChanged();
+
+                            if (csdeskband.IsDeskBandShown(ref deskbandGuid) == 1)
+                            {
+                                int hr = csdeskband.ShowDeskBand(ref deskbandGuid);
+
+                                if (hr != 0)
+                                {
+                                    Console.WriteLine($"Error while trying to show deskband.");
+                                }
+                                csdeskband.DeskBandRegistrationChanged();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error while trying to show deskband: {e.ToString()}");
+                    }
+                    finally
+                    {
+                        if (csdeskband != null && Marshal.IsComObject(csdeskband))
+                            Marshal.ReleaseComObject(csdeskband);
+                    }
+                }
             }
             catch (Exception)
             {
@@ -257,12 +293,17 @@ namespace CSDeskBand
             return t.GetCustomAttribute<CSDeskBandRegistrationAttribute>(true)?.Name ?? t.Name;
         }
 
+        internal static bool GetToolbarRequestToShow(Type t)
+        {
+            return t.GetCustomAttribute<CSDeskBandRegistrationAttribute>(true)?.ShowDeskBand ?? false;
+        }
+
         public int QueryContextMenu(IntPtr hMenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuFlags uFlags)
         {
             _logger.Debug($"Was queried for context menu - index: {indexMenu} cmd first: {idCmdFirst}, cmd last: {idCmdLast}, flags: {uFlags}");
             if (uFlags.HasFlag(QueryContextMenuFlags.CMF_DEFAULTONLY))
             {
-                return HRESULT.MakeHResult((uint) HRESULT.S_OK, 0, 0);
+                return HRESULT.MakeHResult((uint)HRESULT.S_OK, 0, 0);
             }
 
             _menutStartId = idCmdFirst;
@@ -358,7 +399,7 @@ namespace CSDeskBand
 
         public void CloseDeskBand()
         {
-            var bandSite = (IBandSite) _parentSite;
+            var bandSite = (IBandSite)_parentSite;
             bandSite.RemoveBand(_id);
         }
 

@@ -97,6 +97,7 @@
     <Compile Include="Interop\COM\IInputObject.cs" />
     <Compile Include="Interop\COM\IPersist.cs" />
     <Compile Include="Interop\COM\IPersistStream.cs" />
+    <Compile Include="Interop\COM\ITrayDeskband.cs" />
     <Compile Include="Interop\HRESULT.cs" />
     <Compile Include="ICSDeskBand.cs" />
     <Compile Include="Interop\APPBARDATA.cs" />
