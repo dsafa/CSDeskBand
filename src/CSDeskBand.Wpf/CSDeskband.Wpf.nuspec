@@ -12,7 +12,7 @@
     <copyright>Copyright 2018</copyright>
     <tags>Deskband</tags>
     <dependencies>
-      <dependency id="CSDeskBand" version="2.0.1" />
+      <dependency id="CSDeskBand" version="2.1.0" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="PresentationFramework"/>
