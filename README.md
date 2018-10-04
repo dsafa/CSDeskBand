@@ -22,7 +22,10 @@ Use `CSDeskBandWin` for winforms or `CSDeskBandWpf` for wpf
 - For a winforms usercontrol, inherit the `CSDeskBandWin` base class. _See Sample.Win_
 - For a wpf usercontol, Set `CSdeskBandWpf` as the root element in the XAML. _See Sample.Wpf_
 
-Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class
+Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class.
+The `CSDeskBandRegistration` attribute allows you to configure:
+- Name : The name of the deskband shown in the toolbars menu
+- ShowDeskBand : True if the deskband should be shown automatically after registration
 
 
 ```C#
@@ -31,7 +34,7 @@ using CSDeskBand;
 
 [ComVisible(true)]
 [Guid("5731FC61-8530-404C-86C1-86CCB8738D06")]
-[CSDeskBandRegistration(Name = "Sample Winforms Deskband")]
+[CSDeskBandRegistration(Name = "Sample Winforms Deskband", ShowDeskBand = True)]
 public partial class UserControl1 : CSDeskBandWin
 {
 ...
@@ -43,8 +46,7 @@ Now you are ready to start working on it like a normal user control.
 **Patch notes will be in the [release](https://github.com/dsafa/CSDeskBand/releases) page**
 
 ### Deskband Installation
-You need to start an elevated command prompt and be able to use `regasm.exe`
-An easy way to do this is use the Developer Command Prompt for Visual Studio. Make sure that you use the correct version of regasm that matches your platform (x86/x64).
+You need to start an elevated command prompt and be able to use `regasm.exe`. Make sure that you use the correct version of regasm that matches your platform (x86/x64).
 ```
 cd Sample.Win\bin\Debug
 
@@ -61,8 +63,10 @@ regasm Sample.Win.dll
 ```
 _Note that GAC installation requires the assemblies to be [Strong-Named](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)_
 
+Here is an [example .bat file](./tools/install-example.bat) for installing a deskband.
+
 ## Examples
-There are examples included for Winforms and WPF in the Sample.Win and Sample.Wpf projects
+There are example deskbands included for Winforms and WPF in the [Sample.Win](https://github.com/dsafa/CSDeskBand/tree/master/src/Sample.Win) and [Sample.Wpf](https://github.com/dsafa/CSDeskBand/tree/master/src/Sample.Wpf) projects.
 
 ### Compatibility
 Tested on Windows 10 x64
