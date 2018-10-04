@@ -15,7 +15,7 @@ namespace Sample.Wpf
     /// </summary>
     [ComVisible(true)]
     [Guid("89BF6B36-A0B0-4C95-A666-87A55C226986")]
-    [CSDeskBandRegistration(Name = "Sample WPF Deskband")]
+    [CSDeskBandRegistration(Name = "Sample WPF Deskband", ShowDeskBand = true)]
     public partial class UserControl1 : INotifyPropertyChanged
     {
         private Orientation _taskbarOrientation;

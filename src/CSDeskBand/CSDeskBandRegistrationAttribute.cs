@@ -15,5 +15,10 @@ namespace CSDeskBand
         /// The name is used to select the deskband from the toolbars menu.
         /// </value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Request ShowDeskBand after succesfully registered deskband
+        /// </summary>
+        public bool ShowDeskBand { get; set; }
     }
 }
