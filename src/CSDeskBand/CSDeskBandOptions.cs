@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CSDeskBand.ContextMenu;
+using CSDeskBand.Logging;
 
 namespace CSDeskBand
 {
@@ -64,6 +65,19 @@ namespace CSDeskBand
         /// Occurs when a property has change.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether library logging is enabled.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> if logging should be enabled for the library; <see langword="false"/> otherwise.
+        /// The default value is <see langword="false"/>.
+        /// </value>
+        public static bool LoggingEnabled
+        {
+            get => ConditionalLogger.LogEnabled;
+            set => ConditionalLogger.LogEnabled = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the height of the horizontal deskband is allowed to change.

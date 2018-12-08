@@ -8,6 +8,8 @@ namespace CSDeskBand.Logging
     /// </summary>
     internal class ConditionalLogger : ILog
     {
+        private static readonly object Lock = new object();
+        private static bool _logEnabled;
         private ILog _logger;
 
         /// <summary>
@@ -20,19 +22,30 @@ namespace CSDeskBand.Logging
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether;
+        /// </summary>
+        internal static bool LogEnabled
+        {
+            get => _logEnabled;
+            set
+            {
+                lock (Lock)
+                {
+                    _logEnabled = value;
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception = null, params object[] formatParameters)
         {
-            var logged = false;
-            LogInternal(ref logged, logLevel, messageFunc, exception, formatParameters);
+            if (LogEnabled)
+            {
+                return _logger.Log(logLevel, messageFunc, exception, formatParameters);
+            }
 
-            return logged;
-        }
-
-        [Conditional("CSDESKBAND_ENABLE_LOG")]
-        private void LogInternal(ref bool logged, LogLevel logLevel, Func<string> messageFunc, Exception exception = null, params object[] formatParameters)
-        {
-            logged = _logger.Log(logLevel, messageFunc, exception, formatParameters);
+            return false;
         }
     }
 }
