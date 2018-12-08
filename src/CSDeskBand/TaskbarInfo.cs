@@ -98,7 +98,7 @@ namespace CSDeskBand
                 }
 
                 _orientation = value;
-                TaskbarOrientationChanged?.Invoke(this, new TaskbarOrientationChangedEventArgs { Orientation = value });
+                TaskbarOrientationChanged?.Invoke(this, new TaskbarOrientationChangedEventArgs(value));
             }
         }
 
@@ -113,14 +113,14 @@ namespace CSDeskBand
             get => _edge;
             private set
             {
-                _logger.Debug($"Taskbar edge: {Enum.GetName(typeof(TaskbarOrientation), value)}");
+                _logger.Debug($"Taskbar edge: {Enum.GetName(typeof(Edge), value)}");
                 if (value == _edge)
                 {
                     return;
                 }
 
                 _edge = value;
-                TaskbarEdgeChanged?.Invoke(this, new TaskbarEdgeChangedEventArgs { Edge = value });
+                TaskbarEdgeChanged?.Invoke(this, new TaskbarEdgeChangedEventArgs(value));
             }
         }
 
@@ -142,7 +142,7 @@ namespace CSDeskBand
                 }
 
                 _size = value;
-                TaskbarSizeChanged?.Invoke(this, new TaskbarSizeChangedEventArgs { Size = value });
+                TaskbarSizeChanged?.Invoke(this, new TaskbarSizeChangedEventArgs(value));
             }
         }
 

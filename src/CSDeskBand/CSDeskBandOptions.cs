@@ -44,7 +44,7 @@ namespace CSDeskBand
         private bool _isFixed = false;
         private int _heightIncrement = 1;
         private bool _heightCanChange = true;
-        private List<DeskBandMenuItem> _contextMenuItems = new List<DeskBandMenuItem>();
+        private ICollection<DeskBandMenuItem> _contextMenuItems = new List<DeskBandMenuItem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CSDeskBandOptions"/> class.
@@ -330,15 +330,16 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Gets or sets the list of <see cref="DeskBandMenuItem"/> the comprise the deskbands context menu.
+        /// Gets or sets the collection of <see cref="DeskBandMenuItem"/> the comprise the deskbands context menu.
         /// </summary>
         /// <value>
-        /// A list of <see cref="DeskBandMenuItem"/> for the context menu. An empty list indicates no context menu.
+        /// A list of <see cref="DeskBandMenuItem"/> for the context menu. An empty collection indicates no context menu.
         /// </value>
         /// <remarks>
         /// These context menu items are in addition of the default ones that windows provides.
+        /// The items will appear in their enumerated order.
         /// </remarks>
-        public List<DeskBandMenuItem> ContextMenuItems
+        public ICollection<DeskBandMenuItem> ContextMenuItems
         {
             get => _contextMenuItems;
             set

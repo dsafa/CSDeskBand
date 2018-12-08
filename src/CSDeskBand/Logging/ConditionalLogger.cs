@@ -3,15 +3,24 @@ using System.Diagnostics;
 
 namespace CSDeskBand.Logging
 {
+    /// <summary>
+    /// Logger wrapper than can be turned off with a symbol.
+    /// </summary>
     internal class ConditionalLogger : ILog
     {
         private ILog _logger;
 
-        public ConditionalLogger(ILog logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConditionalLogger"/> class
+        /// with the logger to wrap.
+        /// </summary>
+        /// <param name="logger">Logger to wrap.</param>
+        internal ConditionalLogger(ILog logger)
         {
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception = null, params object[] formatParameters)
         {
             var logged = false;

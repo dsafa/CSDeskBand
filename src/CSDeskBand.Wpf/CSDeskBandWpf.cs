@@ -52,7 +52,7 @@ namespace CSDeskBand.Wpf
             }
         }
 
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILog _logger = LogHelper.GetLogger(typeof(CSDeskBandWpf));
         private readonly CSDeskBandWpfHost _host;
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
@@ -64,7 +64,7 @@ namespace CSDeskBand.Wpf
         {
             try
             {
-                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
+                Options.Title = RegistrationHelper.GetToolbarName(GetType());
 
                 if (DesignerProperties.GetIsInDesignMode(this))
                 {
@@ -137,13 +137,13 @@ namespace CSDeskBand.Wpf
         [ComRegisterFunction]
         private static void Register(Type t)
         {
-            CSDeskBandImpl.Register(t);
+            RegistrationHelper.Register(t);
         }
 
         [ComUnregisterFunction]
         private static void Unregister(Type t)
         {
-            CSDeskBandImpl.Unregister(t);
+            RegistrationHelper.Unregister(t);
         }
 
         int IDeskBand2.ShowDW(bool fShow)

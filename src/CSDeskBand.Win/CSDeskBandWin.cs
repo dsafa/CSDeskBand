@@ -26,7 +26,7 @@ namespace CSDeskBand.Win
         /// <seealso cref="TaskbarInfo"/>
         protected TaskbarInfo TaskbarInfo { get; }
 
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILog _logger = LogHelper.GetLogger(typeof(CSDeskBandWin));
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
 
@@ -37,7 +37,7 @@ namespace CSDeskBand.Win
         {
             try
             {
-                Options.Title = CSDeskBandImpl.GetToolbarName(GetType());
+                Options.Title = RegistrationHelper.GetToolbarName(GetType());
 
                 _impl = new CSDeskBandImpl(Handle, Options);
                 _impl.VisibilityChanged += VisibilityChanged;
@@ -109,13 +109,13 @@ namespace CSDeskBand.Win
         [ComRegisterFunction]
         private static void Register(Type t)
         {
-            CSDeskBandImpl.Register(t);
+            RegistrationHelper.Register(t);
         }
 
         [ComUnregisterFunction]
         private static void Unregister(Type t)
         {
-            CSDeskBandImpl.Unregister(t);
+            RegistrationHelper.Unregister(t);
         }
 
         int IDeskBand2.ShowDW(bool fShow)
