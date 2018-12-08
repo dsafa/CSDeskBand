@@ -6,7 +6,7 @@ using CSDeskBand.Annotations;
 namespace CSDeskBand
 {
     /// <summary>
-    /// Size class that is used so winforms or wpf is not used.
+    /// Size class that is independent of winforms or wpf.
     /// </summary>
     public sealed class Size : INotifyPropertyChanged
     {
@@ -14,35 +14,7 @@ namespace CSDeskBand
         private int _height;
 
         /// <summary>
-        /// The width component of the size.
-        /// </summary>
-        public int Width
-        {
-            get => _width;
-            set
-            {
-                if (value == _width) return;
-                _width = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// The height component of the size.
-        /// </summary>
-        public int Height
-        {
-            get => _height;
-            set
-            {
-                if (value == _height) return;
-                _height = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Initializes an instance of <see cref="Size"/>.
+        /// Initializes a new instance of the <see cref="Size"/> class.
         /// </summary>
         /// <param name="width">The <see cref="Width"/> component.</param>
         /// <param name="height">The <see cref="Height"/> component.</param>
@@ -50,6 +22,45 @@ namespace CSDeskBand
         {
             Width = width;
             Height = height;
+        }
+
+        /// <inheritdoc/>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets the width component of the size.
+        /// </summary>
+        public int Width
+        {
+            get => _width;
+            set
+            {
+                if (value == _width)
+                {
+                    return;
+                }
+
+                _width = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height component of the size.
+        /// </summary>
+        public int Height
+        {
+            get => _height;
+            set
+            {
+                if (value == _height)
+                {
+                    return;
+                }
+
+                _height = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -87,11 +98,6 @@ namespace CSDeskBand
         {
             return new System.Drawing.Size(size.Width, size.Height);
         }
-
-        /// <summary>
-        /// Occurs when one of the properties has changed its value.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

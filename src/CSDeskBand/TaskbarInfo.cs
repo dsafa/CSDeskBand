@@ -1,6 +1,6 @@
 ﻿using System;
-using CSDeskBand.Interop;
 using System.Runtime.InteropServices;
+using CSDeskBand.Interop;
 using CSDeskBand.Logging;
 
 namespace CSDeskBand
@@ -14,6 +14,7 @@ namespace CSDeskBand
         /// Vertical if the taskbar is either on top or bottom.
         /// </summary>
         Vertical,
+
         /// <summary>
         /// Horizontal if the taskbar is either on the left or right.
         /// </summary>
@@ -29,14 +30,17 @@ namespace CSDeskBand
         /// Taskbar is on the left edge.
         /// </summary>
         Left,
+
         /// <summary>
         /// Taskbar is on the top edge.
         /// </summary>
         Top,
+
         /// <summary>
         /// Taskbar is on the right edge.
         /// </summary>
         Right,
+
         /// <summary>
         /// Taskbar is on the bottom edge.
         /// </summary>
@@ -48,8 +52,36 @@ namespace CSDeskBand
     /// </summary>
     public sealed class TaskbarInfo
     {
+        private static readonly ILog _logger = LogHelper.GetLogger(typeof(TaskbarInfo));
+        private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
+        private Edge _edge = Edge.Bottom;
+        private Size _size;
+
         /// <summary>
-        /// Get the current <see cref="TaskbarOrientation"/> of the main taskbar.
+        /// Initializes a new instance of the <see cref="TaskbarInfo"/> class.
+        /// </summary>
+        internal TaskbarInfo()
+        {
+            UpdateInfo();
+        }
+
+        /// <summary>
+        /// Occurs when the orientation of the main taskbar is changed.
+        /// </summary>
+        public event EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;
+
+        /// <summary>
+        /// Occurs when the edge of the main taskbar is changed.
+        /// </summary>
+        public event EventHandler<TaskbarEdgeChangedEventArgs> TaskbarEdgeChanged;
+
+        /// <summary>
+        /// Occurs when the size of the taskbar is changed.
+        /// </summary>
+        public event EventHandler<TaskbarSizeChangedEventArgs> TaskbarSizeChanged;
+
+        /// <summary>
+        /// Gets the current <see cref="TaskbarOrientation"/> of the main taskbar.
         /// </summary>
         /// <value>
         /// The current orientation.
@@ -71,7 +103,7 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Get the current <see cref="CSDeskBand.Edge"/> of the main taskbar.
+        /// Gets the current <see cref="CSDeskBand.Edge"/> of the main taskbar.
         /// </summary>
         /// <value>
         /// The current edge.
@@ -93,7 +125,7 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Get the current <see cref="CSDeskBand.Size"/> of the main taskbar.
+        /// Gets the current <see cref="CSDeskBand.Size"/> of the main taskbar.
         /// </summary>
         /// <value>
         /// The current size.
@@ -115,30 +147,8 @@ namespace CSDeskBand
         }
 
         /// <summary>
-        /// Occurs when the orientation of the main taskbar is changed.
+        /// Get the latest taskbar information.
         /// </summary>
-        public event EventHandler<TaskbarOrientationChangedEventArgs> TaskbarOrientationChanged;
-
-        /// <summary>
-        /// Occurs when the edge of the main taskbar is changed.
-        /// </summary>
-        public event EventHandler<TaskbarEdgeChangedEventArgs> TaskbarEdgeChanged;
-
-        /// <summary>
-        /// Occurs when the size of the taskbar is changed.
-        /// </summary>
-        public event EventHandler<TaskbarSizeChangedEventArgs> TaskbarSizeChanged;
-
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
-        private TaskbarOrientation _orientation = TaskbarOrientation.Horizontal;
-        private Edge _edge = Edge.Bottom;
-        private Size _size;
-
-        internal TaskbarInfo()
-        {
-            UpdateInfo();
-        }
-
         internal void UpdateInfo()
         {
             _logger.Debug("Getting taskbar information");
