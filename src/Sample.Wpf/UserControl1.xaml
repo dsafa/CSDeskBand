@@ -10,30 +10,39 @@
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              Foreground="White">
-    <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="{Binding TaskbarOrientation}">
-        <GroupBox Header="Deskband" BorderThickness="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="{Binding TaskbarOrientation}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </StackPanel.Resources>
-                <Label ContentStringFormat="Width: {0}" Content="{Binding ActualWidth}"/>
-                <Label ContentStringFormat="Height: {0}" Content="{Binding ActualHeight}"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Taskbar" BorderThickness="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="{Binding TaskbarOrientation}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </StackPanel.Resources>
-                <Label ContentStringFormat="Width: {0}" Content="{Binding TaskbarWidth}"/>
-                <Label ContentStringFormat="Height: {0}" Content="{Binding TaskbarHeight}"/>
-                <Label ContentStringFormat="Edge: {0:F}" Content="{Binding TaskbarEdge}"/>
-                <Label ContentStringFormat="Orientation: {0:F}" Content="{Binding TaskbarOrientation}"/>
-            </StackPanel>
-        </GroupBox>
-    </WrapPanel>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </StackPanel.Resources>
+        <Label ContentStringFormat="Width: {0}" Content="{Binding ActualWidth}" FontSize="14">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Red"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <Label ContentStringFormat="Height: {0}" Content="{Binding ActualHeight}" FontSize="14"/>
+        <Label ContentStringFormat="Width: {0}" Content="{Binding TaskbarWidth}" FontSize="14"/>
+        <Label ContentStringFormat="Height: {0}" Content="{Binding TaskbarHeight}" FontSize="14"/>
+        <Label ContentStringFormat="Edge: {0:F}" Content="{Binding TaskbarEdge}" FontSize="14"/>
+        <Label ContentStringFormat="Orientation: {0:F}" Content="{Binding TaskbarOrientation}" FontSize="14"/>
+        <Canvas  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Rectangle></Rectangle>
+        </Canvas>
+        <Rectangle Height="{Binding ActualHeight}" Width="30" Stroke="Blue" StrokeThickness="5">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="Black" Offset="0.5"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button Content="Test" Click="Button_Click" MouseDown="Button_MouseDown"></Button>
+    </StackPanel>
 </deskband:CSDeskBandWpf>

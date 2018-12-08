@@ -124,10 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSDeskBand.Wpf\CSDeskBand.Wpf.csproj">
-      <Project>{3bee7144-7e4e-44f6-9c36-b147d15f944f}</Project>
-      <Name>CSDeskBand.Wpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CSDeskBand\CSDeskBand.csproj">
       <Project>{37ecdfdd-fa85-4b91-b69f-8b53cb2a23e2}</Project>
       <Name>CSDeskBand</Name>
