@@ -1,7 +1,7 @@
-﻿using CSDeskBand.Interop.COM;
-
-namespace CSDeskBand
+﻿namespace CSDeskBand
 {
+    using CSDeskBand.Interop;
+
     /// <summary>
     /// Deskband Interface
     /// </summary>

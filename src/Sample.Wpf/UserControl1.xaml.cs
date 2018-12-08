@@ -1,5 +1,4 @@
 ﻿using CSDeskBand;
-using CSDeskBand.Annotations;
 using CSDeskBand.ContextMenu;
 using System;
 using System.Collections.Generic;
@@ -89,7 +88,7 @@ namespace Sample.Wpf
         public UserControl1()
         {
             InitializeComponent();
-            Options.MinHorizontalSize.Width = 500;
+            Options.MinHorizontalSize.Width = 0;
             Options.MinVerticalSize.Width = 130;
             Options.MinVerticalSize.Height = 200;
 
@@ -114,6 +113,16 @@ namespace Sample.Wpf
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Button_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
