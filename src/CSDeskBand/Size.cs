@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CSDeskBand.Annotations;
 
 namespace CSDeskBand
 {
@@ -99,7 +98,6 @@ namespace CSDeskBand
             return new System.Drawing.Size(size.Width, size.Height);
         }
 
-        [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

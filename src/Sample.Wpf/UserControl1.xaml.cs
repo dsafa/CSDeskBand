@@ -1,5 +1,4 @@
 ﻿using CSDeskBand;
-using CSDeskBand.Annotations;
 using CSDeskBand.ContextMenu;
 using System;
 using System.Collections.Generic;

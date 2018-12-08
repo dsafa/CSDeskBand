@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CSDeskBand.Annotations;
 using CSDeskBand.ContextMenu;
 
 namespace CSDeskBand
@@ -354,7 +353,6 @@ namespace CSDeskBand
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

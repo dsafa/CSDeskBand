@@ -12,6 +12,7 @@ namespace CSDeskBand.ContextMenu
     {
         private MENUITEMINFO _menuiteminfo;
 
+        /// <inheritdoc/>
         internal override void AddToMenu(IntPtr menu, uint itemPosition, ref uint itemId, Dictionary<uint, DeskBandMenuAction> callbacks)
         {
             _menuiteminfo = new MENUITEMINFO()
