@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using CSDeskBand.Interop;
 using CSDeskBand.Interop.COM;
 using CSDeskBand.Logging;
@@ -17,48 +16,13 @@ namespace CSDeskBand.Wpf
     /// </summary>
     public class CSDeskBandWpf : UserControl, ICSDeskBand
     {
-        /// <summary>
-        /// Options for this deskband.
-        /// </summary>
-        /// <seealso cref="CSDeskBandOptions"/>
-        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
-
-        /// <summary>
-        /// Get the current taskbar information.
-        /// </summary>
-        /// <seealso cref="TaskbarInfo"/>
-        public TaskbarInfo TaskbarInfo { get; }
-
-        /// <summary>
-        /// Determines if transparency is enabled. Note this is color key transparency.
-        /// Use <see cref="TransparencyColorKey"/> so set the color key.
-        /// </summary>
-        public bool TransparencyEnabled
-        {
-            get => _host.AllowTransparency;
-            set => _host.AllowTransparency = value;
-        }
-
-        /// <summary>
-        /// Color to be used for transparency.
-        /// </summary>
-        public Color TransparencyColorKey
-        {
-            get => _host.TransparencyKey.ToColor();
-            set
-            {
-                _host.TransparencyKey = value.ToColor();
-                _host.BackColor = value.ToColor();
-            }
-        }
-
         private readonly ILog _logger = LogHelper.GetLogger(typeof(CSDeskBandWpf));
         private readonly CSDeskBandWpfHost _host;
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="CSDeskBandWpf"/>.
+        /// Initializes a new instance of the <see cref="CSDeskBandWpf"/> class.
         /// </summary>
         public CSDeskBandWpf()
         {
@@ -80,7 +44,6 @@ namespace CSDeskBand.Wpf
                 _impl.Closed += OnClose;
 
                 TaskbarInfo = _impl.TaskbarInfo;
-                SizeChanged += CSDeskBandWpf_SizeChanged;
 
                 _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             }
@@ -91,36 +54,29 @@ namespace CSDeskBand.Wpf
             }
         }
 
-        private void CSDeskBandWpf_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (TaskbarInfo.Orientation == TaskbarOrientation.Horizontal)
-            {
-                Options.HorizontalSize = new System.Windows.Size(ActualWidth, ActualHeight);
-            }
-            else
-            {
-                Options.VerticalSize = new System.Windows.Size(ActualWidth, ActualHeight);
-            }
-        }
+        /// <summary>
+        /// Gets options for this deskband.
+        /// </summary>
+        /// <seealso cref="CSDeskBandOptions"/>
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
 
-        private void OnClose(object sender, EventArgs eventArgs)
-        {
-            OnClose();
-        }
-
-        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
-        {
-            VisibilityChanged(visibilityChangedEventArgs.IsVisible);
-        }
+        /// <summary>
+        /// Gets the current taskbar information.
+        /// </summary>
+        /// <seealso cref="TaskbarInfo"/>
+        public TaskbarInfo TaskbarInfo { get; }
 
         /// <summary>
         /// Method is called when deskband is being closed.
         /// </summary>
-        protected virtual void OnClose() {}
+        protected virtual void OnClose()
+        {
+        }
 
         /// <summary>
         /// Method is called when deskband visibility has changed.
         /// </summary>
+        /// <param name="visible">The value indicating whether the deskband is visible.</param>
         protected virtual void VisibilityChanged(bool visible)
         {
             Visibility = visible ? Visibility.Visible : Visibility.Hidden;
@@ -146,6 +102,19 @@ namespace CSDeskBand.Wpf
             RegistrationHelper.Unregister(t);
         }
 
+        private void OnClose(object sender, EventArgs eventArgs)
+        {
+            _host.Close();
+            OnClose();
+        }
+
+        private void VisibilityChanged(object sender, VisibilityChangedEventArgs visibilityChangedEventArgs)
+        {
+            VisibilityChanged(visibilityChangedEventArgs.IsVisible);
+        }
+
+#pragma warning disable SA1202 // Elements must be ordered by access
+#pragma warning disable SA1600 // Elements must be documented
         int IDeskBand2.ShowDW(bool fShow)
         {
             return _impl.ShowDW(fShow);
@@ -373,4 +342,6 @@ namespace CSDeskBand.Wpf
             return _impl.TranslateAcceleratorIO(ref msg);
         }
     }
+#pragma warning restore SA1202 // Elements must be ordered by access
+#pragma warning restore SA1600 // Elements must be documented
 }

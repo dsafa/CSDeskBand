@@ -10,30 +10,19 @@
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              Foreground="White">
-    <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="{Binding TaskbarOrientation}">
-        <GroupBox Header="Deskband" BorderThickness="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="{Binding TaskbarOrientation}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </StackPanel.Resources>
-                <Label ContentStringFormat="Width: {0}" Content="{Binding ActualWidth}"/>
-                <Label ContentStringFormat="Height: {0}" Content="{Binding ActualHeight}"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Taskbar" BorderThickness="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="{Binding TaskbarOrientation}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </StackPanel.Resources>
-                <Label ContentStringFormat="Width: {0}" Content="{Binding TaskbarWidth}"/>
-                <Label ContentStringFormat="Height: {0}" Content="{Binding TaskbarHeight}"/>
-                <Label ContentStringFormat="Edge: {0:F}" Content="{Binding TaskbarEdge}"/>
-                <Label ContentStringFormat="Orientation: {0:F}" Content="{Binding TaskbarOrientation}"/>
-            </StackPanel>
-        </GroupBox>
-    </WrapPanel>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </StackPanel.Resources>
+        <Label ContentStringFormat="Width: {0}" Content="{Binding ActualWidth}"/>
+        <Label ContentStringFormat="Height: {0}" Content="{Binding ActualHeight}"/>
+        <Label ContentStringFormat="Width: {0}" Content="{Binding TaskbarWidth}"/>
+        <Label ContentStringFormat="Height: {0}" Content="{Binding TaskbarHeight}"/>
+        <Label ContentStringFormat="Edge: {0:F}" Content="{Binding TaskbarEdge}"/>
+        <Label ContentStringFormat="Orientation: {0:F}" Content="{Binding TaskbarOrientation}"/>
+        <Button Content="Decrease" Click="Button_ClickDown"/>
+        <Button Content="Increase" Click="Button_ClickPlus"/>
+    </StackPanel>
 </deskband:CSDeskBandWpf>

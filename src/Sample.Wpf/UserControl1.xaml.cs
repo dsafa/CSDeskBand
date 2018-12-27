@@ -88,7 +88,7 @@ namespace Sample.Wpf
         public UserControl1()
         {
             InitializeComponent();
-            Options.MinHorizontalSize.Width = 500;
+            Options.MinHorizontalSize.Width = 0;
             Options.MinVerticalSize.Width = 130;
             Options.MinVerticalSize.Height = 200;
 
@@ -113,6 +113,22 @@ namespace Sample.Wpf
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Button_ClickDown(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Width = Width - 20;
+            var size = new Size((int)Width, (int)Height);
+            Options.MinHorizontalSize = size;
+            Options.HorizontalSize = size;
+        }
+
+        private void Button_ClickPlus(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Width = Width + 10;
+            var size = new Size((int)Width, (int)Height);
+            Options.MinHorizontalSize = size;
+            Options.HorizontalSize = size;
         }
     }
 }
