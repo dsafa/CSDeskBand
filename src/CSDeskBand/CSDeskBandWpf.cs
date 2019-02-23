@@ -1,4 +1,5 @@
-﻿#if DESKBAND_WPF
+﻿#pragma warning disable 1591
+#if DESKBAND_WPF
 namespace CSDeskBand
 {
     using System;
@@ -12,10 +13,9 @@ namespace CSDeskBand
     /// Wpf implementation of <see cref="ICSDeskBand"/>
     /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
     /// </summary>
-    internal abstract class CSDeskBandWpf : ICSDeskBand, IDeskBandProvider
+    public abstract class CSDeskBandWpf : ICSDeskBand, IDeskBandProvider
     {
         private readonly CSDeskBandImpl _impl;
-        private readonly Guid _deskbandGuid;
         private readonly CSDeskBandWpfHost _host;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace CSDeskBand
             _host = new CSDeskBandWpfHost(UIElement);
             _impl = new CSDeskBandImpl(this);
             _impl.Closed += (o, e) => DeskbandOnClosed();
-            _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
+            Guid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             TaskbarInfo = _impl.TaskbarInfo;
         }
 
@@ -76,8 +76,9 @@ namespace CSDeskBand
         {
         }
 
-        // Requires reference to WindowsFormsIntegration.dll
 #if DESKBAND_WPF_TRANSPARENCY
+        // Requires reference to WindowsFormsIntegration.dll
+
         private class CSDeskBandWpfHost : Form
         {
             private ElementHost _host;
@@ -99,6 +100,39 @@ namespace CSDeskBand
 
                 Controls.Add(_host);
             }
+        }
+
+        /// <summary>
+        /// Determines if transparency is enabled. Note this is color key transparency.
+        /// Use <see cref="TransparencyColorKey"/> so set the color key.
+        /// </summary>
+        public bool TransparencyEnabled
+        {
+            get => _host.AllowTransparency;
+            set => _host.AllowTransparency = value;
+        }
+
+        /// <summary>
+        /// Color to be used for transparency.
+        /// </summary>
+        public System.Windows.Media.Color TransparencyColorKey
+        {
+            get => ToWpfColor(_host.TransparencyKey);
+            set
+            {
+                _host.TransparencyKey = ToWinColor(value);
+                _host.BackColor = ToWinColor(value);
+            }
+        }
+
+        public static System.Windows.Media.Color ToWpfColor(System.Drawing.Color color)
+        {
+            return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        public static System.Drawing.Color ToWinColor(System.Windows.Media.Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 #else
         private class CSDeskBandWpfHost : ElementHost

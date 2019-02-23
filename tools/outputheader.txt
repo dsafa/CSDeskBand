@@ -1,2 +1,2 @@
 // Define the symbol DESKBAND_WINFORMS for winforms or DESKBAND_WPF for wpf
-// For wpf make sure to add a reference to WindowsFormsIntegration.dll
+// For wpf make sure to add a reference to WindowsFormsIntegration.dll and System.Windows.Forms
