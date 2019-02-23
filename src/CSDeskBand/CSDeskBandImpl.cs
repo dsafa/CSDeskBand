@@ -14,7 +14,7 @@
     /// </summary>
     internal sealed class CSDeskBandImpl : ICSDeskBand
     {
-        private readonly IntPtr _handle;
+        private readonly IDeskBandProvider _provider;
         private readonly Dictionary<uint, DeskBandMenuAction> _contextMenuActions = new Dictionary<uint, DeskBandMenuAction>();
         private IntPtr _parentWindowHandle;
         private object _parentSite; // Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
@@ -26,12 +26,10 @@
         /// Initializes a new instance of the <see cref="CSDeskBandImpl"/> class
         /// with the handle to the window and the options.
         /// </summary>
-        /// <param name="handle">Handle to the deskband window.</param>
-        /// <param name="options">Deskband options.</param>
-        public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
+        public CSDeskBandImpl(IDeskBandProvider provider)
         {
-            _handle = handle;
-            Options = options;
+            _provider = provider;
+            Options = provider.Options;
             Options.PropertyChanged += Options_PropertyChanged;
         }
 
@@ -53,7 +51,7 @@
         /// <inheritdoc/>
         public int GetWindow(out IntPtr phwnd)
         {
-            phwnd = _handle;
+            phwnd = _provider.Handle;
             return HRESULT.S_OK;
         }
 
@@ -209,8 +207,7 @@
 
             var oleWindow = (IOleWindow)pUnkSite;
             oleWindow.GetWindow(out _parentWindowHandle);
-            User32.SetParent(_handle, _parentWindowHandle);
-            Marshal.ReleaseComObject(oleWindow);
+            User32.SetParent(_provider.Handle, _parentWindowHandle);
 
             _parentSite = (IInputObjectSite)pUnkSite;
             return HRESULT.S_OK;
@@ -310,7 +307,8 @@
         /// <inheritdoc/>
         public int GetClassID(out Guid pClassID)
         {
-            throw new NotImplementedException();
+            pClassID = _provider.Guid;
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
