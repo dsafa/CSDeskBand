@@ -321,17 +321,17 @@
         /// <inheritdoc/>
         public int IsDirty()
         {
-            return HRESULT.S_OK;
+            return HRESULT.S_FALSE;
         }
 
         /// <inheritdoc/>
-        public int Load(object pStm)
+        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
         {
             return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
-        public int Save(object pStm, bool fClearDirty)
+        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
         {
             return HRESULT.S_OK;
         }

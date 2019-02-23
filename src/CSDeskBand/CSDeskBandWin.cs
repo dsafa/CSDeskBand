@@ -1,4 +1,5 @@
-﻿#if DESKBAND_WINFORMS
+﻿#pragma warning disable 1591
+#if DESKBAND_WINFORMS
 namespace CSDeskBand
 {
     using System;
@@ -23,7 +24,6 @@ namespace CSDeskBand
             Options.Title = RegistrationHelper.GetToolbarName(GetType());
             _impl = new CSDeskBandImpl(this);
             _impl.Closed += (o, e) => DeskbandOnClosed();
-            Guid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             TaskbarInfo = _impl.TaskbarInfo;
         }
 
@@ -63,7 +63,7 @@ namespace CSDeskBand
         /// <summary>
         /// Gets the deskband guid
         /// </summary>
-        public Guid Guid { get; private set; }
+        public Guid Guid => GetType().GUID;
 
         /// <summary>
         /// Handle closing of the deskband.
@@ -167,12 +167,12 @@ namespace CSDeskBand
             return _impl.IsDirty();
         }
 
-        public int Load([In, MarshalAs(UnmanagedType.IUnknown)] object pStm)
+        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save([In, MarshalAs(UnmanagedType.IUnknown)] object pStm, bool fClearDirty)
+        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }
