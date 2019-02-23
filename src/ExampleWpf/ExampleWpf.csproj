@@ -55,7 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="CSDeskBand.cs" />
+    <Compile Include="..\..\output\CSDeskBand.cs">
+      <Link>CSDeskBand.cs</Link>
+    </Compile>
     <Compile Include="Deskband.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>

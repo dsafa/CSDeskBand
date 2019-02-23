@@ -257,10 +257,10 @@ namespace CSDeskBand.Interop
         int IsDirty();
 
         [PreserveSig]
-        int Load([In, MarshalAs(UnmanagedType.IUnknown)] object pStm);
+        int Load([In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IStream pStm);
 
         [PreserveSig]
-        int Save([In, MarshalAs(UnmanagedType.IUnknown)] object pStm, bool fClearDirty);
+        int Save([In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IStream pStm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
     }
 
     [ComImport, Guid("6D67E846-5B9C-4db8-9CBC-DDE12F4254F1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

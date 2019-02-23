@@ -12,7 +12,7 @@ namespace ExampleWpf
 {
     [ComVisible(true)]
     [Guid("AA01ACB3-6CCC-497C-9CE6-9211F2EDFC10")]
-    [CSDeskBandRegistration(Name = "Sample Wpf")]
+    [CSDeskBandRegistration(Name = "Sample wpf")]
     public class Deskband : CSDeskBandWpf
     {
         public Deskband()
