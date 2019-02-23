@@ -17,7 +17,7 @@ namespace CSDeskBand
     /// </summary>
     internal sealed class CSDeskBandImpl : ICSDeskBand
     {
-        private readonly IntPtr _handle;
+        private readonly IDeskBandProvider _provider;
         private readonly Dictionary<uint, DeskBandMenuAction> _contextMenuActions = new Dictionary<uint, DeskBandMenuAction>();
         private IntPtr _parentWindowHandle;
         private object _parentSite; // Has these interfaces: IInputObjectSite, IOleWindow, IOleCommandTarget, IBandSite
@@ -29,12 +29,10 @@ namespace CSDeskBand
         /// Initializes a new instance of the <see cref="CSDeskBandImpl"/> class
         /// with the handle to the window and the options.
         /// </summary>
-        /// <param name="handle">Handle to the deskband window.</param>
-        /// <param name="options">Deskband options.</param>
-        public CSDeskBandImpl(IntPtr handle, CSDeskBandOptions options)
+        public CSDeskBandImpl(IDeskBandProvider provider)
         {
-            _handle = handle;
-            Options = options;
+            _provider = provider;
+            Options = provider.Options;
             Options.PropertyChanged += Options_PropertyChanged;
         }
 
@@ -56,7 +54,7 @@ namespace CSDeskBand
         /// <inheritdoc/>
         public int GetWindow(out IntPtr phwnd)
         {
-            phwnd = _handle;
+            phwnd = _provider.Handle;
             return HRESULT.S_OK;
         }
 
@@ -212,8 +210,7 @@ namespace CSDeskBand
 
             var oleWindow = (IOleWindow)pUnkSite;
             oleWindow.GetWindow(out _parentWindowHandle);
-            User32.SetParent(_handle, _parentWindowHandle);
-            Marshal.ReleaseComObject(oleWindow);
+            User32.SetParent(_provider.Handle, _parentWindowHandle);
 
             _parentSite = (IInputObjectSite)pUnkSite;
             return HRESULT.S_OK;
@@ -313,7 +310,8 @@ namespace CSDeskBand
         /// <inheritdoc/>
         public int GetClassID(out Guid pClassID)
         {
-            throw new NotImplementedException();
+            pClassID = _provider.Guid;
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
@@ -784,10 +782,9 @@ namespace CSDeskBand
     /// Winforms implementation of <see cref="ICSDeskBand"/>.
     /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
     /// </summary>
-    public abstract class CSDeskBandWin : ICSDeskBand
+    public abstract class CSDeskBandWin : ICSDeskBand, IDeskBandProvider
     {
         private readonly CSDeskBandImpl _impl;
-        private readonly Guid _deskbandGuid;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CSDeskBandWin"/> class.
@@ -795,9 +792,9 @@ namespace CSDeskBand
         public CSDeskBandWin()
         {
             Options.Title = RegistrationHelper.GetToolbarName(GetType());
-            _impl = new CSDeskBandImpl(Control.Handle, Options);
+            _impl = new CSDeskBandImpl(this);
             _impl.Closed += (o, e) => DeskbandOnClosed();
-            _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
+            Guid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             TaskbarInfo = _impl.TaskbarInfo;
         }
 
@@ -824,17 +821,27 @@ namespace CSDeskBand
         protected abstract Control Control { get; }
 
         /// <summary>
+        /// Gets the options for this deskband.
+        /// </summary>
+        /// <seealso cref="CSDeskBandOptions"/>
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+
+        /// <summary>
+        /// Gets the handle
+        /// </summary>
+        public IntPtr Handle => Control.Handle;
+
+        /// <summary>
+        /// Gets the deskband guid
+        /// </summary>
+        public Guid Guid { get; private set; }
+
+        /// <summary>
         /// Handle closing of the deskband.
         /// </summary>
         protected virtual void DeskbandOnClosed()
         {
         }
-
-        /// <summary>
-        /// Gets the options for this deskband.
-        /// </summary>
-        /// <seealso cref="CSDeskBandOptions"/>
-        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
 
         public int GetWindow(out IntPtr phwnd)
         {
@@ -918,8 +925,7 @@ namespace CSDeskBand
 
         public int GetClassID(out Guid pClassID)
         {
-            pClassID = _deskbandGuid;
-            return HRESULT.S_OK;
+            return _impl.GetClassID(out pClassID);
         }
 
         public int GetSizeMax(out ulong pcbSize)
@@ -973,7 +979,7 @@ namespace CSDeskBand
     /// Wpf implementation of <see cref="ICSDeskBand"/>
     /// The deskband should also have these attributes <see cref="ComVisibleAttribute"/>, <see cref="GuidAttribute"/>, <see cref="CSDeskBandRegistrationAttribute"/>.
     /// </summary>
-    internal abstract class CSDeskBandWpf : ICSDeskBand
+    internal abstract class CSDeskBandWpf : ICSDeskBand, IDeskBandProvider
     {
         private readonly CSDeskBandImpl _impl;
         private readonly Guid _deskbandGuid;
@@ -986,7 +992,7 @@ namespace CSDeskBand
         {
             Options.Title = RegistrationHelper.GetToolbarName(GetType());
             _host = new CSDeskBandWpfHost(UIElement);
-            _impl = new CSDeskBandImpl(_host.Handle, Options);
+            _impl = new CSDeskBandImpl(this);
             _impl.Closed += (o, e) => DeskbandOnClosed();
             _deskbandGuid = new Guid(GetType().GetCustomAttribute<GuidAttribute>(true)?.Value ?? Guid.Empty.ToString("B"));
             TaskbarInfo = _impl.TaskbarInfo;
@@ -1015,17 +1021,27 @@ namespace CSDeskBand
         protected abstract System.Windows.UIElement UIElement { get; }
 
         /// <summary>
+        /// Gets the options for this deskband.
+        /// </summary>
+        /// <seealso cref="CSDeskBandOptions"/>
+        public CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
+
+        /// <summary>
+        /// Gets the handle
+        /// </summary>
+        public IntPtr Handle => _host.Handle;
+
+        /// <summary>
+        /// Gets the deskband guid
+        /// </summary>
+        public Guid Guid { get; private set; }
+
+        /// <summary>
         /// Handle closing of the deskband.
         /// </summary>
         protected virtual void DeskbandOnClosed()
         {
         }
-
-        /// <summary>
-        /// Gets the options for this deskband.
-        /// </summary>
-        /// <seealso cref="CSDeskBandOptions"/>
-        protected CSDeskBandOptions Options { get; } = new CSDeskBandOptions();
 
         // Requires reference to WindowsFormsIntegration.dll
 #if DESKBAND_WPF_TRANSPARENCY
@@ -1146,8 +1162,7 @@ namespace CSDeskBand
 
         public int GetClassID(out Guid pClassID)
         {
-            pClassID = _deskbandGuid;
-            return HRESULT.S_OK;
+            return _impl.GetClassID(out pClassID);
         }
 
         public int GetSizeMax(out ulong pcbSize)
@@ -1306,6 +1321,17 @@ namespace CSDeskBand
     /// </summary>
     public interface ICSDeskBand : IDeskBand2, IObjectWithSite, IContextMenu3, IPersistStream, IInputObject
     {
+    }
+}
+namespace CSDeskBand
+{
+    using System;
+
+    internal interface IDeskBandProvider
+    {
+        IntPtr Handle { get; }
+        CSDeskBandOptions Options { get; }
+        Guid Guid { get; }
     }
 }
 namespace CSDeskBand

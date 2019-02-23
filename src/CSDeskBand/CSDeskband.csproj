@@ -94,6 +94,7 @@
     <Compile Include="CSDeskBandWin.cs" />
     <Compile Include="CSDeskBandWpf.cs" />
     <Compile Include="ICSDeskBand.cs" />
+    <Compile Include="IDeskBandProvider.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationHelper.cs" />
