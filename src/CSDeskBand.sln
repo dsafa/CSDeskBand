@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSDeskBand", "CSDeskBand\CS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWinforms", "ExampleWinforms\ExampleWinforms.csproj", "{C2C1AC0C-182B-4897-9BD6-B77581146AC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWpf", "ExampleWpf\ExampleWpf.csproj", "{865B7BDC-9818-4ABC-9915-D8B95043DB87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{C2C1AC0C-182B-4897-9BD6-B77581146AC9}.Release|x64.Build.0 = Release|Any CPU
 		{C2C1AC0C-182B-4897-9BD6-B77581146AC9}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2C1AC0C-182B-4897-9BD6-B77581146AC9}.Release|x86.Build.0 = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|x64.Build.0 = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Debug|x86.Build.0 = Debug|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|x64.ActiveCfg = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|x64.Build.0 = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|x86.ActiveCfg = Release|Any CPU
+		{865B7BDC-9818-4ABC-9915-D8B95043DB87}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
