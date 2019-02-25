@@ -197,10 +197,8 @@ namespace CSDeskBand
                 e.If all steps are successful, return S_OK. If not, return the OLE-defined error code indicating what failed.
             **/
 
-            if (_parentSite != null)
-            {
-                Marshal.ReleaseComObject(_parentSite);
-            }
+            // .net will automatically release when garbage collected
+            _parentSite = null;
 
             // pUnkSite null means deskband was closed
             if (pUnkSite == null)
@@ -209,27 +207,31 @@ namespace CSDeskBand
                 return HRESULT.S_OK;
             }
 
-            var oleWindow = (IOleWindow)pUnkSite;
-            oleWindow.GetWindow(out _parentWindowHandle);
-            User32.SetParent(_provider.Handle, _parentWindowHandle);
+            try
+            {
+                var oleWindow = (IOleWindow)pUnkSite;
+                oleWindow.GetWindow(out _parentWindowHandle);
+                User32.SetParent(_provider.Handle, _parentWindowHandle);
 
-            _parentSite = (IInputObjectSite)pUnkSite;
-            return HRESULT.S_OK;
+                _parentSite = (IInputObjectSite)pUnkSite;
+                return HRESULT.S_OK;
+            }
+            catch
+            {
+                return HRESULT.E_FAIL;
+            }
         }
 
         /// <inheritdoc/>
         public int GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out IntPtr ppvSite)
         {
-            if (_parentSite != null)
-            {
-                Marshal.QueryInterface(Marshal.GetIUnknownForObject(_parentSite), ref riid, out ppvSite);
-                return HRESULT.S_OK;
-            }
-            else
+            if (_parentSite == null)
             {
                 ppvSite = IntPtr.Zero;
                 return HRESULT.E_FAIL;
             }
+
+            return Marshal.QueryInterface(Marshal.GetIUnknownForObject(_parentSite), ref riid, out ppvSite);
         }
 
         /// <inheritdoc/>
@@ -325,17 +327,17 @@ namespace CSDeskBand
         /// <inheritdoc/>
         public int IsDirty()
         {
-            return HRESULT.S_FALSE;
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
-        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
+        public int Load(object pStm)
         {
             return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
-        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return HRESULT.S_OK;
         }
@@ -350,9 +352,9 @@ namespace CSDeskBand
         }
 
         /// <inheritdoc/>
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        public int UIActivateIO(int fActivate, ref MSG msg)
         {
-            // TODO
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
@@ -939,19 +941,19 @@ namespace CSDeskBand
             return _impl.IsDirty();
         }
 
-        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
+        public int Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }
 
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        public int UIActivateIO(int fActivate, ref MSG msg)
         {
-            _impl.UIActivateIO(fActivate, ref msg);
+            return _impl.UIActivateIO(fActivate, ref msg);
         }
 
         public int HasFocusIO()
@@ -1209,19 +1211,19 @@ namespace CSDeskBand
             return _impl.IsDirty();
         }
 
-        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
+        public int Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }
 
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        public int UIActivateIO(int fActivate, ref MSG msg)
         {
-            _impl.UIActivateIO(fActivate, ref msg);
+            return _impl.UIActivateIO(fActivate, ref msg);
         }
 
         public int HasFocusIO()
@@ -1769,13 +1771,13 @@ namespace CSDeskBand.Interop
         new int ContextSensitiveHelp(bool fEnterMode);
 
         [PreserveSig]
-        int ShowDW([In] bool fShow);
+        int ShowDW(bool fShow);
 
         [PreserveSig]
-        int CloseDW([In] UInt32 dwReserved);
+        int CloseDW(uint dwReserved);
 
         [PreserveSig]
-        int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
+        int ResizeBorderDW(RECT prcBorder, [MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
     }
 
     [ComImport]
@@ -1790,16 +1792,16 @@ namespace CSDeskBand.Interop
         new int ContextSensitiveHelp(bool fEnterMode);
 
         [PreserveSig]
-        new int ShowDW([In] bool fShow);
+        new int ShowDW(bool fShow);
 
         [PreserveSig]
-        new int CloseDW([In] UInt32 dwReserved);
+        new int CloseDW(uint dwReserved);
 
         [PreserveSig]
-        new int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
+        new int ResizeBorderDW(RECT prcBorder, [MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
 
         [PreserveSig]
-        int GetBandInfo(UInt32 dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi);
+        int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi);
     }
 
     [ComImport]
@@ -1814,16 +1816,16 @@ namespace CSDeskBand.Interop
         new int ContextSensitiveHelp(bool fEnterMode);
 
         [PreserveSig]
-        new int ShowDW([In] bool fShow);
+        new int ShowDW(bool fShow);
 
         [PreserveSig]
-        new int CloseDW([In] UInt32 dwReserved);
+        new int CloseDW(uint dwReserved);
 
         [PreserveSig]
-        new int ResizeBorderDW(RECT prcBorder, [In, MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
+        new int ResizeBorderDW(RECT prcBorder, [MarshalAs(UnmanagedType.IUnknown)] IntPtr punkToolbarSite, bool fReserved);
 
         [PreserveSig]
-        new int GetBandInfo(UInt32 dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi);
+        new int GetBandInfo(uint dwBandID, DESKBANDINFO.DBIF dwViewMode, ref DESKBANDINFO pdbi);
 
         [PreserveSig]
         int CanRenderComposited(out bool pfCanRenderComposited);
@@ -1895,7 +1897,7 @@ namespace CSDeskBand.Interop
     public interface IInputObject
     {
         [PreserveSig]
-        void UIActivateIO(int fActivate, ref MSG msg);
+        int UIActivateIO(int fActivate, ref MSG msg);
 
         [PreserveSig]
         int HasFocusIO();
@@ -1911,7 +1913,7 @@ namespace CSDeskBand.Interop
     public interface IInputObjectSite
     {
         [PreserveSig]
-        Int32 OnFocusChangeIS([MarshalAs(UnmanagedType.IUnknown)] object punkObj, Int32 fSetFocus);
+        int OnFocusChangeIS([MarshalAs(UnmanagedType.IUnknown)] object punkObj, Int32 fSetFocus);
     }
 
     //https://msdn.microsoft.com/en-us/library/windows/desktop/ms693765(v=vs.85).aspx
@@ -1920,9 +1922,8 @@ namespace CSDeskBand.Interop
     [Guid("FC4801A3-2BA9-11CF-A229-00AA003D7352")]
     public interface IObjectWithSite
     {
-        //Deskband does not work when these methods return a value
         [PreserveSig]
-        int SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite);
+        int SetSite([MarshalAs(UnmanagedType.IUnknown)] object pUnkSite);
 
         [PreserveSig]
         int GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out IntPtr ppvSite);
@@ -1978,10 +1979,10 @@ namespace CSDeskBand.Interop
         int IsDirty();
 
         [PreserveSig]
-        int Load([In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IStream pStm);
+        int Load([In, MarshalAs(UnmanagedType.Interface)] object pStm);
 
         [PreserveSig]
-        int Save([In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IStream pStm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
+        int Save([In, MarshalAs(UnmanagedType.Interface)] IntPtr pStm, bool fClearDirty);
     }
 
     [ComImport, Guid("6D67E846-5B9C-4db8-9CBC-DDE12F4254F1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

@@ -193,10 +193,8 @@
                 e.If all steps are successful, return S_OK. If not, return the OLE-defined error code indicating what failed.
             **/
 
-            if (_parentSite != null)
-            {
-                Marshal.ReleaseComObject(_parentSite);
-            }
+            // .net will automatically release when garbage collected
+            _parentSite = null;
 
             // pUnkSite null means deskband was closed
             if (pUnkSite == null)
@@ -205,27 +203,31 @@
                 return HRESULT.S_OK;
             }
 
-            var oleWindow = (IOleWindow)pUnkSite;
-            oleWindow.GetWindow(out _parentWindowHandle);
-            User32.SetParent(_provider.Handle, _parentWindowHandle);
+            try
+            {
+                var oleWindow = (IOleWindow)pUnkSite;
+                oleWindow.GetWindow(out _parentWindowHandle);
+                User32.SetParent(_provider.Handle, _parentWindowHandle);
 
-            _parentSite = (IInputObjectSite)pUnkSite;
-            return HRESULT.S_OK;
+                _parentSite = (IInputObjectSite)pUnkSite;
+                return HRESULT.S_OK;
+            }
+            catch
+            {
+                return HRESULT.E_FAIL;
+            }
         }
 
         /// <inheritdoc/>
         public int GetSite(ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out IntPtr ppvSite)
         {
-            if (_parentSite != null)
-            {
-                Marshal.QueryInterface(Marshal.GetIUnknownForObject(_parentSite), ref riid, out ppvSite);
-                return HRESULT.S_OK;
-            }
-            else
+            if (_parentSite == null)
             {
                 ppvSite = IntPtr.Zero;
                 return HRESULT.E_FAIL;
             }
+
+            return Marshal.QueryInterface(Marshal.GetIUnknownForObject(_parentSite), ref riid, out ppvSite);
         }
 
         /// <inheritdoc/>
@@ -321,17 +323,17 @@
         /// <inheritdoc/>
         public int IsDirty()
         {
-            return HRESULT.S_FALSE;
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
-        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
+        public int Load(object pStm)
         {
             return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
-        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return HRESULT.S_OK;
         }
@@ -346,9 +348,9 @@
         }
 
         /// <inheritdoc/>
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        public int UIActivateIO(int fActivate, ref MSG msg)
         {
-            // TODO
+            return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>

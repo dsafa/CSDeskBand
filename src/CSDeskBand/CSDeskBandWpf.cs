@@ -241,19 +241,19 @@ namespace CSDeskBand
             return _impl.IsDirty();
         }
 
-        public int Load(System.Runtime.InteropServices.ComTypes.IStream pStm)
+        public int Load(object pStm)
         {
             return _impl.Load(pStm);
         }
 
-        public int Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty)
+        public int Save(IntPtr pStm, bool fClearDirty)
         {
             return _impl.Save(pStm, fClearDirty);
         }
 
-        public void UIActivateIO(int fActivate, ref MSG msg)
+        public int UIActivateIO(int fActivate, ref MSG msg)
         {
-            _impl.UIActivateIO(fActivate, ref msg);
+            return _impl.UIActivateIO(fActivate, ref msg);
         }
 
         public int HasFocusIO()
