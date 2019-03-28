@@ -14,11 +14,12 @@ namespace ExampleWinforms
     [CSDeskBand.CSDeskBandRegistration(Name = "Sample winforms", ShowDeskBand = false)]
     public class Deskband : CSDeskBand.CSDeskBandWin
     {
-        private static Control _control = new UserControl1();
+        private static Control _control;
 
         public Deskband()
         {
             Options.MinHorizontalSize = new Size(100, 30);
+            _control = new UserControl1(this);
         }
 
         protected override Control Control => _control;

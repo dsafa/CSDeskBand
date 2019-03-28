@@ -3,7 +3,6 @@
 namespace CSDeskBand
 {
     using System;
-    using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
     using System.Windows.Forms.Integration;
@@ -67,6 +66,27 @@ namespace CSDeskBand
         /// Gets the deskband guid
         /// </summary>
         public Guid Guid => GetType().GUID;
+
+        public bool HasFocus
+        {
+            get => UIElement?.IsKeyboardFocusWithin ?? false;
+            set
+            {
+                if (value)
+                {
+                    UIElement?.Focus();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the focus on this deskband.
+        /// </summary>
+        /// <param name="focused"><see langword="true"/> if focused.</param>
+        public void UpdateFocus(bool focused)
+        {
+            _impl.UpdateFocus(focused);
+        }
 
         /// <summary>
         /// Handle closing of the deskband.

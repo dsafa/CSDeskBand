@@ -182,16 +182,7 @@
         /// <inheritdoc/>
         public int SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite)
         {
-            //1.Release any site pointer that is currently being held.
-            //2.If the pointer passed to SetSite is set to NULL, the band is being removed. SetSite can return S_OK.
-            //3.If the pointer passed to SetSite is non-NULL, a new site is being set. SetSite should do the following:
-            //    a.Call QueryInterface on the site for its IOleWindow interface.
-            //    b.Call IOleWindow::GetWindow to obtain the parent window's handle. Save the handle for later use. Release IOleWindow if it is no longer needed.
-            //    c.Create the band object's window as a child of the window obtained in the previous step. Do not create it as a visible window.
-            //    d.If the band object implements IInputObject, call QueryInterface on the site for its IInputObjectSite interface. Store the pointer to this interface for use later.
-            //    e.If all steps are successful, return S_OK. If not, return the OLE-defined error code indicating what failed.
-
-            // .net will automatically release when garbage collected
+            // Let gc release old site
             _parentSite = null;
 
             // pUnkSite null means deskband was closed
@@ -348,19 +339,31 @@
         /// <inheritdoc/>
         public int UIActivateIO(int fActivate, ref MSG msg)
         {
+            _provider.HasFocus = fActivate != 0;
+            UpdateFocus(_provider.HasFocus);
             return HRESULT.S_OK;
         }
 
         /// <inheritdoc/>
         public int HasFocusIO()
         {
-            return HRESULT.E_NOTIMPL;
+            return _provider.HasFocus ? HRESULT.S_OK : HRESULT.S_FALSE;
         }
 
         /// <inheritdoc/>
         public int TranslateAcceleratorIO(ref MSG msg)
         {
-            return HRESULT.E_NOTIMPL;
+            return HRESULT.S_OK;
+        }
+
+        /// <summary>
+        /// Updates the focus on the deskband. Explorer will call <see cref="UIActivateIO(int, ref MSG)"/> for example if tabbing when the taskbar is focused. 
+        /// But if focus is acquired without in other ways, then explorer isn't aware of it and <see cref="IInputObjectSite.OnFocusChangeIS(object, int)"/> needs to be called.
+        /// </summary>
+        /// <param name="focused">True if focused.</param>
+        public void UpdateFocus(bool focused)
+        {
+            (_parentSite as IInputObjectSite)?.OnFocusChangeIS(this, focused ? 1 : 0);
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

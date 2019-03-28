@@ -292,6 +292,12 @@ namespace CSDeskBand.Interop
         [DllImport("user32.dll")]
         public static extern IntPtr CreatePopupMenu();
 
+        [DllImport("user32.dll")]
+        public static extern bool TranslateMessage([In] ref MSG lpMsg);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
+
         public static int HiWord(int val)
         {
             return Convert.ToInt32(BitConverter.ToInt16(BitConverter.GetBytes(val), 2));
