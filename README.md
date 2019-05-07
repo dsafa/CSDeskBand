@@ -10,23 +10,56 @@ CSDeskBand makes it easy to create a deskband using Winforms or WPF.
 
 _Images taken from the sample projects_
 
+## Table of Contents
+- [Usage](#usage)
+  - [Library Installation](#installation)
+  - [Winforms deskband](#winforms)
+  - [Wpf deskband](#wpf)
+- [Notes](#notes)
+- [Deskband installation](#deskband-installation)
+- [Examples](#examples)
+
+## Version 2 -> version 3 migration
+The library is now a single `.cs` file. This is to help prevent conflicts if explorer loads different versions.
+The new entry point for the deskband has also changed.
+
+Before:
+```cs
+[ComVisible(true)]
+[Guid("5731FC61-8530-404C-86C1-86CCB8738D06")]
+[CSDeskBandRegistration(Name = "Sample Winforms Deskband")]
+public partial class UserControl1 : CSDeskBandWin
+{
+}
+```
+The main usercontrol would derive from the deskband.
+
+New:
+```cs
+[ComVisible(true)]
+[Guid("FB17B6DA-E3D7-4D17-9E43-3416983372A9")]
+[CSDeskBand.CSDeskBandRegistration(Name = "Sample winforms")]
+public class Deskband : CSDeskBand.CSDeskBandWin
+{
+    protected override Control Control => new UserControl1();
+}
+```
+The entry point is a separate class now and instantiates your main window. It also means that the main deskband window can be any `control`. Remember to re-register the deskband after updating.
+
+
 ## Usage
 
 ### Installation
-Nuget packages are available here:
-- [CSDeskBand.Win](https://www.nuget.org/packages/CSDeskBand.Win)
-- [CSDeskBand.Wpf](https://www.nuget.org/packages/CSDeskBand.Wpf)
+Available as a single file at [output/CSDeskBand.cs](https://github.com/dsafa/CSDeskBand/blob/master/output/CSDeskBand.cs). Copy the file and add to your project.
 
-### Usage
-Use `CSDeskBandWin` for winforms or `CSDeskBandWpf` for wpf
-- For a winforms usercontrol, inherit the `CSDeskBandWin` base class. _See Sample.Win_
-- For a wpf usercontol, Set `CSdeskBandWpf` as the root element in the XAML. _See Sample.Wpf_
-
-Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class.
-The `CSDeskBandRegistration` attribute allows you to configure:
-- Name : The name of the deskband shown in the toolbars menu
-- ShowDeskBand : True if the deskband should be shown automatically after registration
-
+### Winforms
+- Add the compilation symbol `DESKBAND_WINFORMS` to your winforms project.
+- Create a new **public** class that will host your deskband and make it inherit from the abstract class `CSDeskBandWin`. Namespace in `CSDeskBand`
+  - Implement the `Control` property to return your main winforms control.
+- Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class.
+  - The `CSDeskBandRegistration` attribute allows you to configure:
+    - **Name** : The name of the deskband shown in the toolbars menu
+    - **ShowDeskBand** : True if the deskband should be shown automatically after registration
 
 ```C#
 using CSDeskBand.Win;
@@ -34,39 +67,86 @@ using CSDeskBand;
 
 [ComVisible(true)]
 [Guid("5731FC61-8530-404C-86C1-86CCB8738D06")]
-[CSDeskBandRegistration(Name = "Sample Winforms Deskband", ShowDeskBand = True)]
+[CSDeskBandRegistration(Name = "Sample Winforms Deskband")]
 public partial class UserControl1 : CSDeskBandWin
 {
-...
+    public Deskband()
+    {
+        Options.MinHorizontalSize = new Size(100, 30);
+    }
+
+    protected override Control Control => new UserControl1(); // Returns your main control
+}
 ```
 
-Now you are ready to start working on it like a normal user control.
+### WPF
+- Add the compilation symbol `DESKBAND_WPF` to your wpf project.
+  - If you want transparency support, you have to also add the symbol `DESKBAND_WPF_TRANSPARENCY`. This is because it requires special operation.
+- Add references to `WindowsFormsIntegration.dll`, `System.Windows.Forms` and `System.Drawing`. See notes below for why.
+- Create a new **public** class that will host your deskband and make it inherit from the abstract class `CSDeskBandWpf`. Namespace in `CSDeskBand`
+  - Implement the `UIElement` property to return your main wpf control
+- Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class.
+  - The `CSDeskBandRegistration` attribute allows you to configure:
+    - **Name** : The name of the deskband shown in the toolbars menu
+    - **ShowDeskBand** : True if the deskband should be shown automatically after registration
 
-**Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more details.**
+```cs
+    [ComVisible(true)]
+    [Guid("AA01ACB3-6CCC-497C-9CE6-9211F2EDFC10")]
+    [CSDeskBandRegistration(Name = "Sample wpf")]
+    public class Deskband : CSDeskBandWpf
+    {
+        public Deskband()
+        {
+            Options.ContextMenuItems = ContextMenuItems;
+        }
+
+        protected override UIElement UIElement => new UserControl1(); // Return the main wpf control
+
+        private List<DeskBandMenuItem> ContextMenuItems
+        {
+            get
+            {
+                var action = new DeskBandMenuAction("Action");
+                return new List<DeskBandMenuItem>() { action };
+            }
+        }
+    }
+```
+
+### Both
+You can access the `Options` property to change deskband settings such as minimal size or the context menu items available.
+Now you are ready to start working on the deskband like a normal user control.
+
+**Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more configuration options**
 **Patch notes will be in the [release](https://github.com/dsafa/CSDeskBand/releases) page**
 
-### Deskband Installation
+## Notes
+Wpf support is added by hosting it in a [ElementHost](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.integration.elementhost?view=netframework-4.7.2) which is why those extra references are needed. Wpf transparency is also supported by using the Winforms [Form.TransparencyColorKey](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.form.transparencykey?view=netframework-4.7.2) so beware of the drawbacks.
+
+## Deskband Installation
 You need to start an elevated command prompt and be able to use `regasm.exe`. Make sure that you use the correct version of regasm that matches your platform (x86/x64).
 ```
-cd Sample.Win\bin\Debug
+cd ExampleWinforms\bin\Debug
 
-regasm /codebase Sample.Win.dll
+regasm /codebase ExampleWinforms.dll
 ```
 The `/codebase` switch will add the path of the dll into the registry entry.
 
 Alternatively, register the assemblies into the Global Assembly Cache.
 ```
-gacutil -i CSDeskBand.dll
-gacutil -i CSDeskBand.Win.dll
-gacutil -i Sample.Win.dll
-regasm Sample.Win.dll
+gacutil -i ExampleWinforms.dll
+regasm ExampleWinforms.dll
 ```
 _Note that GAC installation requires the assemblies to be [Strong-Named](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)_
 
 Here is an [example .bat file](./tools/install-example.bat) for installing a deskband.
 
 ## Examples
-There are example deskbands included for Winforms and WPF in the [Sample.Win](https://github.com/dsafa/CSDeskBand/tree/master/src/Sample.Win) and [Sample.Wpf](https://github.com/dsafa/CSDeskBand/tree/master/src/Sample.Wpf) projects.
+There are example deskbands included for Winforms and WPF in the [Sample winforms](https://github.com/dsafa/CSDeskBand/tree/master/src/ExampleWinforms) and [Sample wpf](https://github.com/dsafa/CSDeskBand/tree/master/src/ExampleWpf) projects.
 
-### Compatibility
+## Compatibility
 Tested on Windows 10 x64
+
+## Building
+Built in Visual studio 2017. The script `tools/merge.ps1` is used to merge the files.

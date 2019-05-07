@@ -17,9 +17,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DESKBAND_WINFORMS DESKBAND_WPF</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\CSDeskBand.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +33,7 @@
     <DocumentationFile>bin\Release\CSDeskBand.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\build\sn\csdeskband.snk</AssemblyOriginatorKeyFile>
@@ -73,68 +75,31 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSDeskBandEvents.cs" />
     <Compile Include="CSDeskBandImpl.cs" />
-    <Compile Include="ContextMenu\DeskBandMenu.cs" />
-    <Compile Include="ContextMenu\DeskBandMenuAction.cs" />
     <Compile Include="ContextMenu\DeskBandMenuItem.cs" />
-    <Compile Include="ContextMenu\DeskBandMenuSeparator.cs" />
     <Compile Include="CSDeskBandRegistrationAttribute.cs" />
     <Compile Include="CSDeskBandOptions.cs" />
-    <Compile Include="Interop\CATEGORYINFO.cs" />
-    <Compile Include="Interop\CMINVOKECOMMANDINFO.cs" />
-    <Compile Include="Interop\COM\ICatRegister.cs" />
-    <Compile Include="Interop\COM\IContextMenu2.cs" />
-    <Compile Include="Interop\COM\IContextMenu3.cs" />
-    <Compile Include="Interop\COM\IInputObject.cs" />
-    <Compile Include="Interop\COM\IPersist.cs" />
-    <Compile Include="Interop\COM\IPersistStream.cs" />
-    <Compile Include="Interop\COM\ITrayDeskband.cs" />
-    <Compile Include="Interop\HRESULT.cs" />
+    <Compile Include="CSDeskBandWin.cs" />
+    <Compile Include="CSDeskBandWpf.cs" />
     <Compile Include="ICSDeskBand.cs" />
-    <Compile Include="Interop\APPBARDATA.cs" />
-    <Compile Include="Interop\APPBARMESSAGE.cs" />
-    <Compile Include="Interop\BANDSITEINFO.cs" />
-    <Compile Include="Interop\CMINVOKECOMMANDINFOEX.cs" />
-    <Compile Include="Interop\COLORREF.cs" />
-    <Compile Include="Interop\COM\IBandSite.cs" />
-    <Compile Include="Interop\COM\IContextMenu.cs" />
-    <Compile Include="Interop\COM\IDeskBand.cs" />
-    <Compile Include="Interop\COM\IDeskBand2.cs" />
-    <Compile Include="Interop\COM\IDockingWindow.cs" />
-    <Compile Include="Interop\COM\IInputObjectSite.cs" />
-    <Compile Include="Interop\COM\IObjectWithSite.cs" />
-    <Compile Include="Interop\COM\IOleCommandTarget.cs" />
-    <Compile Include="Interop\COM\IOleWindow.cs" />
-    <Compile Include="Interop\DESKBANDINFO.cs" />
-    <Compile Include="Interop\MENUITEMINFO.cs" />
-    <Compile Include="Interop\MSG.cs" />
-    <Compile Include="Interop\OLECMD.cs" />
-    <Compile Include="Interop\OLECMDTEXT.cs" />
-    <Compile Include="Interop\POINT.cs" />
-    <Compile Include="Interop\QueryContextMenuFlags.cs" />
-    <Compile Include="Interop\RECT.cs" />
-    <Compile Include="Interop\Shell32.cs" />
-    <Compile Include="Interop\tagDeskBandCID.cs" />
-    <Compile Include="Interop\User32.cs" />
-    <Compile Include="LibLog\LibLog.cs" />
-    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="IDeskBandProvider.cs" />
+    <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Size.cs" />
+    <Compile Include="RegistrationHelper.cs" />
+    <Compile Include="DeskBandSize.cs" />
     <Compile Include="TaskbarInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\build\sn\csdeskband.snk">
-      <Link>csdeskband.snk</Link>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
