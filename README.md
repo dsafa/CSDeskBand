@@ -19,6 +19,9 @@ _Images taken from the sample projects_
 - [Deskband installation](#deskband-installation)
 - [Examples](#examples)
 
+## Version 3.1 (latest)
+Removed need for `DESKBAND_WPF_TRANSPARENCY` and references to windows forms dlls. Wpf deskbands work with transparency (tested windows 10 1903, might not work before then).
+
 ## Version 2 -> version 3 migration
 The library is now a single `.cs` file. This is to help prevent conflicts if explorer loads different versions.
 The new entry point for the deskband has also changed.
@@ -81,8 +84,6 @@ public partial class UserControl1 : CSDeskBandWin
 
 ### WPF
 - Add the compilation symbol `DESKBAND_WPF` to your wpf project.
-  - If you want transparency support, you have to also add the symbol `DESKBAND_WPF_TRANSPARENCY`. This is because it requires special operation.
-- Add references to `WindowsFormsIntegration.dll`, `System.Windows.Forms` and `System.Drawing`. See notes below for why.
 - Create a new **public** class that will host your deskband and make it inherit from the abstract class `CSDeskBandWpf`. Namespace in `CSDeskBand`
   - Implement the `UIElement` property to return your main wpf control
 - Add `[ComVisible(true)]`, `[Guid("xx-xx-xx-xx-xx")]`, `[CSDeskBandRegistration()]` attributes to the class.
@@ -119,10 +120,9 @@ You can access the `Options` property to change deskband settings such as minima
 Now you are ready to start working on the deskband like a normal user control.
 
 **Check the [Wiki](https://github.com/dsafa/CSDeskBand/wiki) for more configuration options**
-**Patch notes will be in the [release](https://github.com/dsafa/CSDeskBand/releases) page**
 
 ## Notes
-Wpf support is added by hosting it in a [ElementHost](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.integration.elementhost?view=netframework-4.7.2) which is why those extra references are needed. Wpf transparency is also supported by using the Winforms [Form.TransparencyColorKey](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.form.transparencykey?view=netframework-4.7.2) so beware of the drawbacks.
+The nuget packages are outdated and currently not being updated for versions > 3.
 
 ## Deskband Installation
 You need to start an elevated command prompt and be able to use `regasm.exe`. Make sure that you use the correct version of regasm that matches your platform (x86/x64).
